@@ -10,6 +10,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
@@ -23,7 +24,6 @@ public class GuiView {
 		
 		try {
 		  		  
-			System.out.println("TryInit");
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(GuiView.class.getResource("GuiFX.fxml"));
 			rootLayout = (AnchorPane)  loader.load();
@@ -36,7 +36,7 @@ public class GuiView {
 			
 			primaryStage.setScene(scene);
 			primaryStage.show();
-			
+						
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -46,6 +46,18 @@ public class GuiView {
   public void setGrid(GridPane grid) {
     ((BorderPane) rootLayout.getChildren().get(0)).setCenter(grid);
   } 
+  
+  public int getWindowHeight () {
+    System.out.println( (int) rootLayout.getHeight());
+    return (int) rootLayout.getHeight();
+    
+  }
+  
+  public int getWindowWidth () {
+    System.out.println( (int) rootLayout.getWidth());
+    return (int) rootLayout.getWidth();
+    
+  }
 	
 	
 }

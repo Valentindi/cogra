@@ -34,7 +34,7 @@ public void start(Stage primaryStage) throws Exception {
 	guiView.initGuiView(primaryStage);
 	
 	gc.setGui(guiView);
-	gc.startGridBuilder(10);
+	gc.startGridBuilder(5);
 
 }
 
