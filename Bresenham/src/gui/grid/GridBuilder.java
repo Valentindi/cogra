@@ -1,12 +1,12 @@
 package gui.grid;
  
-import javafx.scene.control.Button;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
  
-public class gridBuilder {
+public class GridBuilder {
     
     Rectangle[][] gridArray;
     static final int offset = 1;
@@ -30,6 +30,7 @@ public class gridBuilder {
             gridArray[i][t] = new Rectangle();
             gridArray[i][t].setWidth(pixelSize);
             gridArray[i][t].setHeight(pixelSize);
+            gridArray[i][t].setFill(Color.WHITE);
             
             root.getColumnConstraints().add(new ColumnConstraints(pixelSize+offset)); //next column  is 30 wide
             GridPane.setConstraints(gridArray[i][t], i, t);
@@ -43,7 +44,7 @@ public class gridBuilder {
     }
 
     private int getCountY(int pixelSize, int windowWidth) {
-      int pixelCountY = windowWidth / (pixelSize);
+      int pixelCountY = windowWidth / (pixelSize) + 1;
       
       if (pixelCountY * pixelSize != windowWidth)
         pixelCountY++;
@@ -51,7 +52,10 @@ public class gridBuilder {
     }
 
     private int getCountX(int pixelSize, int windowHeight) {
-      int pixelCountX = getCountY(pixelSize, windowHeight);
+      int pixelCountX = windowHeight / (pixelSize) + 1;
+      
+      if (pixelCountX * pixelSize != windowHeight)
+        pixelCountX++;
       
       return pixelCountX;
     }

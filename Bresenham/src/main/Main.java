@@ -5,8 +5,9 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import gui.GuiController;
 import gui.GuiView;
+import gui.grid.GridBuilder;
 
-public class main extends Application {
+public class Main extends Application {
 
 	private Stage primaryStage;
 	
@@ -20,21 +21,18 @@ public class main extends Application {
 
   }
 
-
-
 @Override
 public void start(Stage primaryStage) throws Exception {
 
 	this.primaryStage = primaryStage;
-	//this.primaryStage.setTitle("AntiAliasing und Bresenham");
+	this.primaryStage.setTitle("AntiAliasing und Bresenham");
 	
 	GuiView guiView = new GuiView();
-	GuiController gc = new GuiController();
+	GridBuilder gridBuilder = new GridBuilder();
+	GuiController gc = new GuiController(guiView, gridBuilder);
 	
 	guiView.initGuiView(primaryStage);
-	
-	gc.setGui(guiView);
-	gc.startGridBuilder(5);
+	gc.buildGrid();
 
 }
 
