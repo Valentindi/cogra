@@ -43,10 +43,11 @@ public class GridBuilder {
       }
       root.getRowConstraints().add(new RowConstraints(pixelSize + offset));
     }
-
     return root;
-
+    
   }
+  
+
 
   private int getCountY(int pixelSize, int windowWidth) {
     int pixelCountY = windowWidth / (pixelSize);
@@ -95,5 +96,51 @@ public class GridBuilder {
     
     return pixelCords;
   }
+  
+  public void paintAPixel(int x, int y, Color color){
+	  gridArray[x][y].setFill(color);
+  }
+
+public Rectangle getPixel(int x, int y){
+	return gridArray[x][y];
+}
+/**
+ * 
+ * @param r Rectangle
+ * @param x x-Koordinate
+ * @param y y-Koordinate
+ * @return true, wenn erfolgreich, false, wenn gescheitert
+ */
+public boolean setRectange (Rectangle r, int x, int y){
+	try {
+		gridArray[x][y]=r;
+	} catch (Exception e) {
+		return false;
+	}
+	return true;
+	
+}
+  
+public Rectangle[][] getGridArray() {
+	return gridArray;
+}
+
+public void setGridArray(Rectangle[][] gridArray) {
+	this.gridArray = gridArray;
+}
+
+public EventHandler<MouseEvent> getHandleClickOnPixel() {
+	return handleClickOnPixel;
+}
+
+public void setHandleClickOnPixel(EventHandler<MouseEvent> handleClickOnPixel) {
+	this.handleClickOnPixel = handleClickOnPixel;
+}
+
+public static int getOffset() {
+	return offset;
+}
+  
+  
 
 }

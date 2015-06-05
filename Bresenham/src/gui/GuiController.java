@@ -61,6 +61,8 @@ public class GuiController {
     System.out.println("ZoomOut. New PixelSize: " + pixelSize);
     buildGrid();
   }
+  
+
 
   class ZoomInHandler implements EventHandler<MouseEvent> {
 
@@ -117,9 +119,32 @@ public class GuiController {
 	@Override
 	public void handle(MouseEvent event) {
 		System.out.println("Mouse UP test");
+		Rectangle pixel = new Rectangle();
+		double foo;
+		double endY = event.getY();
+		double endX = event.getX();
+		if (beginY>endY) {
+			foo = beginY;
+			beginY = endY;
+			endY = foo;
+		}
+		if (beginX>endX) {
+			foo = beginX;
+			beginX = endX;
+			endX = foo;
+		}
 		if(mouseDown==true){
 			mouseDown = false;
-			DummyAlgoithm.run(beginX, beginY, event.getX(), event.getY());
+			Color[][] dummyRectColor = DummyAlgoithm.run(beginX, beginY, endX, endY);
+			for (int i = 0; i < dummyRectColor.length; i++) {
+				for (int j = 0; j < dummyRectColor[i].length; j++) {
+					pixel = gridBuilder.getPixel(1, 1);
+					pixel.setFill(dummyRectColor[i][j]);
+					System.out.println((int)(beginX + i) + "  " + (int)( beginY + j) + "  " + dummyRectColor[i][j].toString());
+					gridBuilder.setRectange(pixel, (int)(beginX + i),(int)( beginY + j));
+				}
+				
+			}
 		}
 		
 		
