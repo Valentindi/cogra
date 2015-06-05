@@ -1,5 +1,7 @@
 package gui;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -13,38 +15,40 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class GuiView {
-	
-	private AnchorPane rootLayout;
-    private Pane backgroundPane;
-    private Stage primaryStage;
-    private Button zoomIn = new Button("+");
-    private Button zoomOut = new Button("-");
-    private VBox buttonBox = new VBox();
+
+  private AnchorPane rootLayout;
+  private Pane backgroundPane;
+  private Stage primaryStage;
+  private Button zoomInButton = new Button("+");
+  private Button zoomOutButton = new Button("-");
+  private VBox buttonBox;
+  private Scene scene;
 
 
-	public void initGuiView(Stage primaryStage) {
-	  this.primaryStage = primaryStage;
-		
-		try {
-		  		  
-			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(GuiView.class.getResource("GuiFX.fxml"));
-			rootLayout = (AnchorPane)  loader.load();
-			
-			
-			System.out.println(rootLayout.toString());
-			Scene scene = new Scene(rootLayout);
-			System.out.println(scene.toString());
-			
-			
-			primaryStage.setScene(scene);
-			primaryStage.show();
-						
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-	}
+  public GuiView(Stage primaryStage) {
+    // TODO Auto-generated constructor stub
+    
+    this.primaryStage = primaryStage;
+
+    try {
+
+      FXMLLoader loader = new FXMLLoader();
+      loader.setLocation(GuiView.class.getResource("GuiFX.fxml"));
+      rootLayout = (AnchorPane) loader.load();
+
+      System.out.println(rootLayout.toString());
+      scene = new Scene(rootLayout);
+      System.out.println(scene.toString());
+
+      primaryStage.setScene(scene);
+      primaryStage.show();
+
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    
+  }
+
 
   public void setGrid(GridPane grid) {
     backgroundPane = new Pane();
@@ -52,39 +56,46 @@ public class GuiView {
     backgroundPane.getChildren().add(grid);
     backgroundPane = addZoomButton(backgroundPane);
     ((BorderPane) rootLayout.getChildren().get(0)).setCenter(backgroundPane);
-  } 
-  
+  }
+
   private Pane addZoomButton(Pane backgroundPane) {
     // TODO Auto-generated method stub
 
     VBox buttonBox = new VBox();
-    
-    zoomIn.setPrefWidth(25);
-    zoomOut.setPrefWidth(25);
-    
-    buttonBox.getChildren().addAll(zoomIn,zoomOut);
+
+    zoomInButton.setPrefWidth(25);
+    zoomOutButton.setPrefWidth(25);
+
+    buttonBox.getChildren().addAll(zoomInButton, zoomOutButton);
     backgroundPane.getChildren().add(buttonBox);
-    
+
     return backgroundPane;
   }
 
-  public int getWindowHeight () {
+  public int getWindowHeight() {
     return (int) rootLayout.getHeight();
-    
+
   }
-  
-  public int getWindowWidth () {
+
+  public int getWindowWidth() {
     return (int) rootLayout.getWidth();
+
+  }
+
+  public void addZoomInListener(EventHandler<MouseEvent> handleZoomIn) {
+    zoomInButton.addEventHandler(MouseEvent.MOUSE_PRESSED, handleZoomIn);
+  }
+
+  public void addZoomOutListener(EventHandler<MouseEvent> handleZoomOut) {
+    zoomOutButton.addEventHandler(MouseEvent.MOUSE_PRESSED, handleZoomOut);
+  }
+  
+  public void addResizeListener(ChangeListener<Number> resizeListener) {
+    System.out.println(scene.toString());
+    System.out.println(resizeListener.toString());
     
+    scene.widthProperty().addListener(resizeListener);
+    scene.heightProperty().addListener(resizeListener);
   }
-  
-  void addZoomInListener(EventHandler<MouseEvent> handleZoomIn){
-    zoomIn.addEventHandler(MouseEvent.MOUSE_PRESSED, handleZoomIn);
-  }
-  
-  void addZoomOutListener(EventHandler<MouseEvent> handleZoomOut){
-    zoomOut.addEventHandler(MouseEvent.MOUSE_PRESSED, handleZoomOut);
-  }
-  
-	
+
 }

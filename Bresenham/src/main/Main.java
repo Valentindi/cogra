@@ -9,31 +9,31 @@ import gui.grid.GridBuilder;
 
 public class Main extends Application {
 
-	private Stage primaryStage;
-	
+  private Stage primaryStage;
+
   public static void main(String[] args) {
     // TODO Auto-generated method stub
     System.out.println("Hallo Cogra-Welt!");
     System.out.println("Guten Morgen Fabian");
     System.out.println("Hallo Leute!");
-    
+
     launch(args);
 
   }
 
-@Override
-public void start(Stage primaryStage) throws Exception {
+  @Override
+  public void start(Stage primaryStage) throws Exception {
 
-	this.primaryStage = primaryStage;
-	this.primaryStage.setTitle("AntiAliasing und Bresenham");
-	
-	GuiView guiView = new GuiView();
-	GridBuilder gridBuilder = new GridBuilder();
-	GuiController gc = new GuiController(guiView, gridBuilder);
-	
-	guiView.initGuiView(primaryStage);
-	gc.buildGrid();
+    this.primaryStage = primaryStage;
+    this.primaryStage.setTitle("AntiAliasing und Bresenham");
 
-}
+    GuiView guiView = new GuiView(primaryStage);
+    
+    GridBuilder gridBuilder = new GridBuilder();
+    
+    GuiController gc = new GuiController(guiView, gridBuilder);
+    gc.buildGrid();
+
+  }
 
 }
