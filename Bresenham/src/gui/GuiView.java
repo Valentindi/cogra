@@ -26,7 +26,6 @@ public class GuiView {
 
 
   public GuiView(Stage primaryStage) {
-    // TODO Auto-generated constructor stub
     
     this.primaryStage = primaryStage;
 
@@ -59,7 +58,6 @@ public class GuiView {
   }
 
   private Pane addZoomButton(Pane backgroundPane) {
-    // TODO Auto-generated method stub
 
     VBox buttonBox = new VBox();
 

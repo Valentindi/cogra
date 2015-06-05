@@ -56,7 +56,6 @@ public class GuiController {
 
     @Override
     public void handle(MouseEvent event) {
-      // TODO Auto-generated method stub
       incPixelSize();
     }
   }
@@ -65,7 +64,6 @@ public class GuiController {
 
     @Override
     public void handle(MouseEvent event) {
-      // TODO Auto-generated method stub
       decPixelSize();
     }
   }
@@ -81,7 +79,6 @@ public class GuiController {
 
     @Override
     public void handle(MouseEvent event) {
-      // TODO Auto-generated method stub
       final Rectangle pixel = (Rectangle) (event.getTarget());
       gridBuilder.setRectColor(pixel);
     }
