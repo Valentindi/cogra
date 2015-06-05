@@ -72,9 +72,7 @@ public class GridBuilder {
   public void setRectColor(Rectangle pixel) {
 	  Random r = new Random();
 	  double greyScale = r.nextDouble();
-	  System.out.println("GreyScale " + greyScale);
 	  pixel.setFill(GreyScaleFactory.getGreyScale(greyScale));
-	  System.out.println("Color " + GreyScaleFactory.getGreyScale(greyScale).toString());
     System.out.println("Pixel: " + getPixelCords(pixel)[0] + " " + getPixelCords(pixel)[1] + " clicked!");
   }
 

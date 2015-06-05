@@ -1,7 +1,8 @@
 package gui;
 
+import gui.GuiController.MouseDragEnteredListener;
+import gui.GuiController.MouseDragLeaveListener;
 import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -95,5 +96,23 @@ public class GuiView {
     scene.widthProperty().addListener(resizeListener);
     scene.heightProperty().addListener(resizeListener);
   }
+
+
+
+
+public void addMouseDragEnteredListener(
+		MouseDragEnteredListener mouseDragEnteredListener) {
+		scene.addEventHandler(MouseEvent.MOUSE_PRESSED, mouseDragEnteredListener);
+	
+}
+
+
+public void addMouseDragLeaveListener(
+		MouseDragLeaveListener mouseDragLeaveListener) {
+	
+		scene.addEventHandler(MouseEvent.MOUSE_RELEASED, mouseDragLeaveListener);
+	
+}
+  
 
 }

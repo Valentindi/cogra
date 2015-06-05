@@ -1,9 +1,14 @@
 package gui;
 
+import algorithm.DummyAlgoithm;
+
+import com.sun.javafx.scene.control.skin.ComboBoxListViewSkin.FakeFocusTextField;
+
 import gui.grid.GridBuilder;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
+import javafx.scene.input.DragEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -12,6 +17,10 @@ public class GuiController {
 
   private GuiView guiView;
   private GridBuilder gridBuilder;
+  
+  private Boolean mouseDown = false;
+  private double beginX;
+  private double beginY;
 
   private int pixelSize = 15;
 
@@ -23,7 +32,8 @@ public class GuiController {
     this.guiView.addZoomOutListener(new ZoomOutHandler());//Button Listener ZoomOut
     this.guiView.addResizeListener(new ResizeListener()); //Fenster  ResizeListener 
     this.gridBuilder.setCickOnPixelHandler(new ClickOnPixelHandler()); //Pixel ClickListener
-    
+    this.guiView.addMouseDragEnteredListener(new MouseDragEnteredListener());//Drag Begonnen
+    this.guiView.addMouseDragLeaveListener(new MouseDragLeaveListener());
   }
 
 
@@ -82,6 +92,39 @@ public class GuiController {
       final Rectangle pixel = (Rectangle) (event.getTarget());
       gridBuilder.setRectColor(pixel);
     }
+  }
+  
+  
+  class MouseDragEnteredListener implements EventHandler<MouseEvent>{
+
+	@Override
+	public void handle(MouseEvent event) {
+		System.out.println("Mouse Down test");
+		if(mouseDown == false){
+			mouseDown = true;
+			beginX = event.getX();
+			beginY = event.getY();
+		}
+		
+		
+	}
+	  
+  }
+  
+  
+  class MouseDragLeaveListener implements EventHandler<MouseEvent>{
+
+	@Override
+	public void handle(MouseEvent event) {
+		System.out.println("Mouse UP test");
+		if(mouseDown==true){
+			mouseDown = false;
+			DummyAlgoithm.run(beginX, beginY, event.getX(), event.getY());
+		}
+		
+		
+	}
+	  
   }
 
 
