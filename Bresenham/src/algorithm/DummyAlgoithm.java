@@ -22,7 +22,7 @@ public class DummyAlgoithm {
 		Color[][] dummyRectGreyScale = new Color[(int) (endX-beginX)][(int) (endY-beginY)];
 		Random r = new Random();
 		System.out.println("The Dummy is running!");
-		System.out.println(beginX + "  " + beginY + "  " + endX + "  " + endY);
+		//System.out.println(beginX + "  " + beginY + "  " + endX + "  " + endY);
 		
 		for (int i = 0 ; i < (endX - beginX); i++) {
 			for (int j = 0; j < endY-beginY; j++) {

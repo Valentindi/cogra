@@ -35,6 +35,7 @@ public class GuiController {
     this.gridBuilder.setCickOnPixelHandler(new ClickOnPixelHandler()); //Pixel ClickListener
     this.guiView.addMouseDragEnteredListener(new MouseDragEnteredListener());//Drag Begonnen
     this.guiView.addMouseDragLeaveListener(new MouseDragLeaveListener());
+   
   }
 
 
@@ -69,8 +70,11 @@ public class GuiController {
 	  pixel.setHeight(pixelSize);
 	  for (int i = 0; i < colorRect.length; i++) {
 		  for (int j = 0; j < colorRect[i].length; j++) {
-			pixel.setFill(colorRect[i][j]);
-			gridBuilder.setRectange(pixel, beginX + i, beginY + j);
+			  
+			 // System.out.println((beginX + i) + " paint " + (beginY + j));
+			pixel = gridBuilder.getPixel((beginX+i), (beginY+j));
+			gridBuilder.setRectColor(pixel);
+			
 		}
 		
 	}
@@ -106,7 +110,8 @@ public class GuiController {
     @Override
     public void handle(MouseEvent event) {
       final Rectangle pixel = (Rectangle) (event.getTarget());
-      gridBuilder.setRectColor(pixel);
+      
+      //gridBuilder.setRectColor(pixel);
     }
   }
   
@@ -116,11 +121,11 @@ public class GuiController {
 	@Override
 	public void handle(MouseEvent event) {
 		System.out.println("Mouse Down test");
-		if(mouseDown == false){
-			mouseDown = true;
+		
 			beginX = event.getX();
 			beginY = event.getY();
-		}
+			System.out.println(beginX + " BEGIN " + beginY);
+		
 		
 		
 	}
@@ -133,31 +138,32 @@ public class GuiController {
 	@Override
 	public void handle(MouseEvent event) {
 		System.out.println("Mouse UP test");
-		Rectangle pixel = new Rectangle();
-		int foo;
+		double foo;
 		double endY = event.getY();
 		double endX = event.getX();
 		
-		int beginXLine = FindeLineColumnFactory.getLineORColumn(beginX, pixelSize);
-		int beginYLine = FindeLineColumnFactory.getLineORColumn(beginY, pixelSize);
-		int endXLine = FindeLineColumnFactory.getLineORColumn(endX, pixelSize);
-		int endYLine = FindeLineColumnFactory.getLineORColumn(endY, pixelSize);
-		/*
-		if (endYLine< beginYLine) {
-			foo = endYLine;
-			endYLine = beginYLine;
-			beginYLine = foo;
+		if (endY< beginY) {
+			foo = endY;
+			endY = beginY;
+			beginY = foo;
 		}
 		
-		if (endXLine< beginXLine) {
-			foo = endXLine;
-			endXLine = beginXLine;
-			beginXLine = foo;
+		if (endX< beginX) {
+			foo = endX;
+			endX = beginX;
+			beginX = foo;
 		}
-		*/
-		Color rectDummyColors[][] = DummyAlgoithm.run(beginXLine, beginYLine, endYLine, endYLine);
 		
-		colorTheRect(rectDummyColors, beginYLine, beginYLine);
+		int beginXLine = FindeLineColumnFactory.getLineORColumn(beginX, pixelSize) ;
+		int beginYLine = FindeLineColumnFactory.getLineORColumn(beginY, pixelSize)  ;
+		int endXLine = FindeLineColumnFactory.getLineORColumn(endX, pixelSize) + 1;
+		int endYLine = FindeLineColumnFactory.getLineORColumn(endY, pixelSize) + 1;
+		
+		System.out.println(beginXLine + " " + beginYLine +" " + endXLine +" "+endYLine);
+		
+		Color rectDummyColors[][] = DummyAlgoithm.run(beginXLine, beginYLine, endXLine, endYLine);
+		
+		colorTheRect(rectDummyColors, beginXLine, beginYLine);
 	}
 	  
   }

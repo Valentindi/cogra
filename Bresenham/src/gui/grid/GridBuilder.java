@@ -74,7 +74,12 @@ public class GridBuilder {
 	  Random r = new Random();
 	  double greyScale = r.nextDouble();
 	  pixel.setFill(GreyScaleFactory.getGreyScale(greyScale));
-    System.out.println("Pixel: " + getPixelCords(pixel)[0] + " " + getPixelCords(pixel)[1] + " clicked!");
+    //System.out.println("Pixel: " + getPixelCords(pixel)[0] + " " + getPixelCords(pixel)[1] + " clicked!");
+  }
+  
+  public void setPixel(Rectangle pixel, int x, int y) {
+	  this.gridArray[x][y] = pixel;
+    //System.out.println("Pixel: " + getPixelCords(pixel)[0] + " " + getPixelCords(pixel)[1] + " clicked!");
   }
 
   /**
