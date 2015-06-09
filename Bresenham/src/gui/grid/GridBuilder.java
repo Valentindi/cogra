@@ -17,14 +17,24 @@ public class GridBuilder {
 
   private Rectangle[][] gridArray;
   private EventHandler<MouseEvent> handleClickOnPixel;
+  private EventHandler<MouseEvent> handleMouseDragEnteredListener;
+  private EventHandler<MouseEvent> handleMouseDragLeaveListener;
+ 
 
-  public GridPane buildGrid(int pixelSize, int windowHeight, int windowWidth) {
+
+
+
+
+public GridPane buildGrid(int pixelSize, int windowHeight, int windowWidth) {
 
     // Dynamische berechnung wie viele Pixel man braucht.
     int pixelCountX = getCountX(pixelSize, windowHeight);
     int pixelCountY = getCountY(pixelSize, windowWidth);
 
     GridPane root = new GridPane();
+    
+    root.addEventHandler(MouseEvent.MOUSE_PRESSED, handleMouseDragEnteredListener);
+    root.addEventHandler(MouseEvent.MOUSE_RELEASED, handleMouseDragLeaveListener);
     gridArray = new Rectangle[pixelCountY][pixelCountX];
 
     for (int i = 0; i < gridArray.length; i++) {
@@ -144,6 +154,22 @@ public void setHandleClickOnPixel(EventHandler<MouseEvent> handleClickOnPixel) {
 
 public static int getOffset() {
 	return offset;
+}
+
+
+
+public void addMouseDragEnteredListener(
+		EventHandler<MouseEvent> mouseDragEnteredListener) {
+	this.handleMouseDragEnteredListener = mouseDragEnteredListener;
+	
+}
+
+
+
+public void addMouseDragLeaveListener(
+		EventHandler<MouseEvent> mouseDragLeaveListener) {
+	this.handleMouseDragLeaveListener = mouseDragLeaveListener;
+	
 }
   
   

@@ -33,8 +33,8 @@ public class GuiController {
     this.guiView.addZoomOutListener(new ZoomOutHandler());//Button Listener ZoomOut
     this.guiView.addResizeListener(new ResizeListener()); //Fenster  ResizeListener 
     this.gridBuilder.setCickOnPixelHandler(new ClickOnPixelHandler()); //Pixel ClickListener
-    this.guiView.addMouseDragEnteredListener(new MouseDragEnteredListener());//Drag Begonnen
-    this.guiView.addMouseDragLeaveListener(new MouseDragLeaveListener());
+    this.gridBuilder.addMouseDragEnteredListener(new MouseDragEnteredListener());//Drag Begonnen
+    this.gridBuilder.addMouseDragLeaveListener(new MouseDragLeaveListener());
    
   }
 
@@ -156,8 +156,8 @@ public class GuiController {
 		
 		int beginXLine = FindeLineColumnFactory.getLineORColumn(beginX, pixelSize) ;
 		int beginYLine = FindeLineColumnFactory.getLineORColumn(beginY, pixelSize)  ;
-		int endXLine = FindeLineColumnFactory.getLineORColumn(endX, pixelSize) + 1;
-		int endYLine = FindeLineColumnFactory.getLineORColumn(endY, pixelSize) + 1;
+		int endXLine = FindeLineColumnFactory.getLineORColumn(endX, pixelSize);
+		int endYLine = FindeLineColumnFactory.getLineORColumn(endY, pixelSize);
 		
 		System.out.println(beginXLine + " " + beginYLine +" " + endXLine +" "+endYLine);
 		
