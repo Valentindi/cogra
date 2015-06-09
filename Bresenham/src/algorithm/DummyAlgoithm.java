@@ -18,7 +18,7 @@ public class DummyAlgoithm {
 	 * @param endY
 	 * @return 
 	 */
-	public static Color[][] run(Double beginX, Double beginY, Double endX, Double endY){
+	public static Color[][] run(int beginX, int beginY, int endX, int endY){
 		Color[][] dummyRectGreyScale = new Color[(int) (endX-beginX)][(int) (endY-beginY)];
 		Random r = new Random();
 		System.out.println("The Dummy is running!");

@@ -4,6 +4,7 @@ import algorithm.DummyAlgoithm;
 
 import com.sun.javafx.scene.control.skin.ComboBoxListViewSkin.FakeFocusTextField;
 
+import factories.FindeLineColumnFactory;
 import gui.grid.GridBuilder;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -60,6 +61,19 @@ public class GuiController {
 
     System.out.println("ZoomOut. New PixelSize: " + pixelSize);
     buildGrid();
+  }
+  
+  public void colorTheRect(Color[][] colorRect, int beginX, int beginY){
+	  Rectangle pixel = new Rectangle();
+	  pixel.setWidth(pixelSize);
+	  pixel.setHeight(pixelSize);
+	  for (int i = 0; i < colorRect.length; i++) {
+		  for (int j = 0; j < colorRect[i].length; j++) {
+			pixel.setFill(colorRect[i][j]);
+			gridBuilder.setRectange(pixel, beginX + i, beginY + j);
+		}
+		
+	}
   }
   
 
@@ -120,34 +134,30 @@ public class GuiController {
 	public void handle(MouseEvent event) {
 		System.out.println("Mouse UP test");
 		Rectangle pixel = new Rectangle();
-		double foo;
+		int foo;
 		double endY = event.getY();
 		double endX = event.getX();
-		if (beginY>endY) {
-			foo = beginY;
-			beginY = endY;
-			endY = foo;
-		}
-		if (beginX>endX) {
-			foo = beginX;
-			beginX = endX;
-			endX = foo;
-		}
-		if(mouseDown==true){
-			mouseDown = false;
-			Color[][] dummyRectColor = DummyAlgoithm.run(beginX, beginY, endX, endY);
-			for (int i = 0; i < dummyRectColor.length; i++) {
-				for (int j = 0; j < dummyRectColor[i].length; j++) {
-					pixel = gridBuilder.getPixel(1, 1);
-					pixel.setFill(dummyRectColor[i][j]);
-					System.out.println((int)(beginX + i) + "  " + (int)( beginY + j) + "  " + dummyRectColor[i][j].toString());
-					gridBuilder.setRectange(pixel, (int)(beginX + i),(int)( beginY + j));
-				}
-				
-			}
+		
+		int beginXLine = FindeLineColumnFactory.getLineORColumn(beginX, pixelSize);
+		int beginYLine = FindeLineColumnFactory.getLineORColumn(beginY, pixelSize);
+		int endXLine = FindeLineColumnFactory.getLineORColumn(endX, pixelSize);
+		int endYLine = FindeLineColumnFactory.getLineORColumn(endY, pixelSize);
+		/*
+		if (endYLine< beginYLine) {
+			foo = endYLine;
+			endYLine = beginYLine;
+			beginYLine = foo;
 		}
 		
+		if (endXLine< beginXLine) {
+			foo = endXLine;
+			endXLine = beginXLine;
+			beginXLine = foo;
+		}
+		*/
+		Color rectDummyColors[][] = DummyAlgoithm.run(beginXLine, beginYLine, endYLine, endYLine);
 		
+		colorTheRect(rectDummyColors, beginYLine, beginYLine);
 	}
 	  
   }
