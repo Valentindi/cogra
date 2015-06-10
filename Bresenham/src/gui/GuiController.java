@@ -159,9 +159,9 @@ public class GuiController {
 			int beginYLine = FindeLineColumnFactory.getLineORColumn(beginY,
 					pixelSize);
 			int endXLine = FindeLineColumnFactory.getLineORColumn(endX,
-					pixelSize);
+					pixelSize)+1;
 			int endYLine = FindeLineColumnFactory.getLineORColumn(endY,
-					pixelSize);
+					pixelSize)+1;
 
 			System.out.println(beginXLine + " " + beginYLine + " " + endXLine
 					+ " " + endYLine);
