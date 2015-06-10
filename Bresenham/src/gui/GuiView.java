@@ -3,10 +3,15 @@ package gui;
 import gui.GuiController.MouseDragEnteredListener;
 import gui.GuiController.MouseDragLeaveListener;
 import javafx.beans.value.ChangeListener;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.RadioMenuItem;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
@@ -24,10 +29,25 @@ public class GuiView {
 	private Button zoomOutButton = new Button("-");
 	private VBox buttonBox;
 	private Scene scene;
+	
+	MenuBar menubar = new MenuBar();
+	Menu menuDatei = new Menu("Datei");
+	Menu menuAlgorithmen = new Menu("Algorithmen");
+	Menu menuZoom = new Menu("Zoom");
+	MenuItem miBeenden = new MenuItem("Beenden");
+
+	RadioMenuItem miADummy = new RadioMenuItem("Dummy");
+	RadioMenuItem miABresenham = new RadioMenuItem("Rasterkonvertierung Linie - Bresenham-Algorithmus");
+	RadioMenuItem miAvereinfB = new RadioMenuItem("Antialising Linie - abgewandelter Bresenham-Algorithmus");
+	
+	MenuItem miZPlus = new MenuItem("Zoom +");
+	MenuItem miZMinus = new MenuItem("Zoom -");
+
 
 	public GuiView(Stage primaryStage) {
 
 		this.primaryStage = primaryStage;
+		
 
 		try {
 
@@ -37,7 +57,7 @@ public class GuiView {
 
 			System.out.println(rootLayout.toString());
 			scene = new Scene(rootLayout);
-			System.out.println(scene.toString());
+			
 
 			primaryStage.setScene(scene);
 			primaryStage.show();
@@ -48,6 +68,26 @@ public class GuiView {
 
 	}
 
+	public void addMenu(){
+		
+		miBeenden.setOnAction(new EventHandler<ActionEvent>() {
+			
+			@Override
+			public void handle(ActionEvent event) {
+				System.out.println("BEENDEN");
+				
+			}
+		});
+		
+		menuDatei.getItems().addAll(miBeenden);
+		menuAlgorithmen.getItems().addAll(miADummy, miABresenham, miAvereinfB);
+		menuZoom.getItems().addAll(miZPlus, miZMinus);
+		
+		menubar.getMenus().addAll(menuDatei, menuAlgorithmen, menuZoom);
+		scene.getRoot().getChildrenUnmodifiable().add(menubar);
+			
+		}
+	
 	public void setGrid(GridPane grid) {
 		backgroundPane = new Pane();
 		backgroundPane.setStyle("-fx-background-color: Black");

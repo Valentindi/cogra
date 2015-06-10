@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.BorderPane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <BorderPane prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <top>
@@ -17,11 +17,19 @@
                     <MenuItem mnemonicParsing="false" text="Close" />
                   </items>
                 </Menu>
-                <Menu fx:id="menuEdit" mnemonicParsing="false" text="Edit">
-                  <items>
-                    <MenuItem mnemonicParsing="false" text="Delete" />
-                  </items>
-                </Menu>
+                  <Menu mnemonicParsing="false" text="Algorithmen">
+                    <items>
+                      <MenuItem mnemonicParsing="false" text="Dummy" />
+                        <MenuItem mnemonicParsing="false" text="Rasterkonvertierung Linie - Bresenham-Algorithmus" />
+                        <MenuItem mnemonicParsing="false" text="Antialising Linie - abgewandelter Bresenham-Algorithmus" />
+                    </items>
+                  </Menu>
+                  <Menu mnemonicParsing="false" text="Zoom">
+                    <items>
+                      <MenuItem mnemonicParsing="false" text="Zoom + " />
+                        <MenuItem mnemonicParsing="false" text="Zoom -" />
+                    </items>
+                  </Menu>
               </menus>
             </MenuBar>
          </top>

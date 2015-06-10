@@ -8,6 +8,7 @@ import factories.FindeLineColumnFactory;
 import gui.grid.GridBuilder;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.MouseEvent;
@@ -83,7 +84,13 @@ public class GuiController {
 			}
 
 		}
+		
+	
 	}
+	
+	public void onCloseClick (ActionEvent event){
+		System.out.println("CLOSE");
+		}
 
 	class ZoomInHandler implements EventHandler<MouseEvent> {
 
