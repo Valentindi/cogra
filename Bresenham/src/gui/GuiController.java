@@ -2,6 +2,7 @@ package gui;
 
 import algorithm.Bresenham;
 import algorithm.DummyAlgoithm;
+import algorithm.exampleLine;
 import algorithm.vereinfachterBresenham;
 
 import com.sun.javafx.scene.control.skin.ComboBoxListViewSkin.FakeFocusTextField;
@@ -34,10 +35,6 @@ public class GuiController {
 		this.guiView = guiView;
 		this.gridBuilder = gridBuilder;
 
-		this.guiView.addZoomInListener(new ZoomInHandler()); // Button Listener
-																// ZoomIn
-		this.guiView.addZoomOutListener(new ZoomOutHandler());// Button Listener
-																// ZoomOut
 		this.guiView.addResizeListener(new ResizeListener()); // Fenster
 																// ResizeListener
 		this.gridBuilder.setCickOnPixelHandler(new ClickOnPixelHandler()); // Pixel
@@ -47,9 +44,12 @@ public class GuiController {
 																				// Begonnen
 		this.gridBuilder
 				.addMouseDragLeaveListener(new MouseDragLeaveListener());
-		this.guiView.addSetDummyHandler(new SetDummyHandler());
-		this.guiView.addSetBresenhamHandler(new SetBresenhamHandler());
-		this.guiView.addSetvereinfHandler(new SetVereinfHandler());
+		this.guiView.miADummy.setOnAction(new SetDummyHandler());
+		this.guiView.miABresenham.setOnAction(new SetBresenhamHandler());
+		this.guiView.miAvereinfB.setOnAction(new SetVereinfHandler());
+		this.guiView.miZPlus.setOnAction(new ZoomInHandler());
+		this.guiView.miZMinus.setOnAction(new ZoomOutHandler());
+		this.guiView.miAexamplLine.setOnAction(new SetExampleLineHandler());
 
 	}
 
@@ -79,25 +79,24 @@ public class GuiController {
 	}
 
 	public void colorTheRect(Color[][] colorRect, int beginX, int beginY) {
+		System.out.println("I am at Color The Rect");
 		Rectangle pixel = new Rectangle();
 		pixel.setWidth(pixelSize);
 		pixel.setHeight(pixelSize);
 		for (int i = 0; i < colorRect.length; i++) {
 			for (int j = 0; j < colorRect[i].length; j++) {
 
-				// System.out.println((beginX + i) + " paint " + (beginY + j));
 				pixel = gridBuilder.getPixel((beginX + i), (beginY + j));
-				gridBuilder.setRectColor(pixel);
-
+				if (colorRect[i][j] != null) {
+					gridBuilder.setRectColor(pixel, colorRect[i][j]);
+				}
 			}
 
 		}
 
 	}
 
-
-
-	class SetDummyHandler implements EventHandler<ActionEvent>{
+	class SetDummyHandler implements EventHandler<ActionEvent> {
 
 		@Override
 		public void handle(ActionEvent event) {
@@ -105,13 +104,15 @@ public class GuiController {
 			guiView.miADummy.setSelected(true);
 			guiView.miABresenham.setSelected(false);
 			guiView.miAvereinfB.setSelected(false);
+			guiView.miAexamplLine.setSelected(false);
+
 			activeAlgorithm = "Dummy";
 			System.out.println(activeAlgorithm);
 		}
-		
+
 	}
-	
-	class SetBresenhamHandler implements EventHandler<ActionEvent>{
+
+	class SetBresenhamHandler implements EventHandler<ActionEvent> {
 
 		@Override
 		public void handle(ActionEvent event) {
@@ -119,27 +120,49 @@ public class GuiController {
 			guiView.miADummy.setSelected(false);
 			guiView.miABresenham.setSelected(true);
 			guiView.miAvereinfB.setSelected(false);
+			guiView.miAexamplLine.setSelected(false);
+
 			activeAlgorithm = "Bresenham";
 			System.out.println(activeAlgorithm);
-			
+
 		}
-		
+
 	}
-	
-	class SetVereinfHandler implements EventHandler<ActionEvent>{
+
+	class SetVereinfHandler implements EventHandler<ActionEvent> {
 
 		@Override
 		public void handle(ActionEvent event) {
-			guiView.menuAlgorithmen.setText("Active Algorithm: vereinfachter Bresenham");
+			guiView.menuAlgorithmen
+					.setText("Active Algorithm: vereinfachter Bresenham");
 			guiView.miADummy.setSelected(false);
 			guiView.miABresenham.setSelected(false);
 			guiView.miAvereinfB.setSelected(true);
+			guiView.miAexamplLine.setSelected(false);
+
 			activeAlgorithm = "vereinfachterBresenham";
 			System.out.println(activeAlgorithm);
-			
+
 		}
-		
+
 	}
+
+	class SetExampleLineHandler implements EventHandler<ActionEvent> {
+
+		@Override
+		public void handle(ActionEvent event) {
+			guiView.menuAlgorithmen.setText("Active Algorithm: Example Line");
+			guiView.miADummy.setSelected(false);
+			guiView.miABresenham.setSelected(false);
+			guiView.miAvereinfB.setSelected(false);
+			guiView.miAexamplLine.setSelected(true);
+			activeAlgorithm = "exampleLine";
+			System.out.println(activeAlgorithm);
+
+		}
+
+	}
+
 	class ZoomInHandler implements EventHandler<ActionEvent> {
 
 		@Override
@@ -220,29 +243,34 @@ public class GuiController {
 
 			System.out.println(beginXLine + " " + beginYLine + " " + endXLine
 					+ " " + endYLine);
-			Color rectDummyColors[][] = new Color[endXLine-beginXLine][endYLine-beginYLine];
+			Color rectColors[][] = new Color[endXLine - beginXLine][endYLine
+					- beginYLine];
 
 			switch (activeAlgorithm) {
 			case "Dummy":
-				rectDummyColors = DummyAlgoithm.run(beginXLine,
-						beginYLine, endXLine, endYLine);
+				rectColors = DummyAlgoithm.run(beginXLine, beginYLine,
+						endXLine, endYLine);
 				break;
 			case "Bresenham":
-				rectDummyColors = Bresenham.run(beginXLine,
-						beginYLine, endXLine, endYLine);
+				rectColors = Bresenham.run(beginXLine, beginYLine, endXLine,
+						endYLine);
 				break;
 			case "vereinfachterBresenham":
-				rectDummyColors = vereinfachterBresenham.run(beginXLine,
-						beginYLine, endXLine, endYLine);
-				return;
-				//break;
+				rectColors = vereinfachterBresenham.run(beginXLine, beginYLine,
+						endXLine, endYLine);
+				break;
+
+			case "exampleLine":
+				rectColors = exampleLine.run(beginXLine, beginYLine, endXLine,
+						endYLine);
+				break;
+			// break;
 
 			default:
 				break;
 			}
-			
 
-			colorTheRect(rectDummyColors, beginXLine, beginYLine);
+			colorTheRect(rectColors, beginXLine, beginYLine);
 		}
 
 	}

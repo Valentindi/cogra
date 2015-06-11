@@ -20,7 +20,7 @@ public class Bresenham {
 		endY=1;
 		Color[][] dummyRectGreyScale = new Color[(int) (endX-beginX)][(int) (endY-beginY)];
 		Random r = new Random();
-		System.out.println("The Dummy is running!");
+		System.out.println("The Bresenham is running!");
 		//System.out.println(beginX + "  " + beginY + "  " + endX + "  " + endY);
 		
 		for (int i = 0 ; i < (endX - beginX); i++) {

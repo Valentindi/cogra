@@ -47,6 +47,8 @@ public class GuiView {
 			"Rasterkonvertierung Linie - Bresenham-Algorithmus");
 	RadioMenuItem miAvereinfB = new RadioMenuItem(
 			"Antialising Linie - abgewandelter Bresenham-Algorithmus");
+	RadioMenuItem miAexamplLine = new RadioMenuItem(
+			"Example Line");
 
 	MenuItem miZPlus = new MenuItem("Zoom +");
 	MenuItem miZMinus = new MenuItem("Zoom -");
@@ -79,7 +81,7 @@ public class GuiView {
 		addEventHandler();
 
 		menuDatei.getItems().addAll(miBeenden);
-		menuAlgorithmen.getItems().addAll(miADummy, miABresenham, miAvereinfB);
+		menuAlgorithmen.getItems().addAll(miADummy, miABresenham, miAvereinfB, miAexamplLine);
 		menuZoom.getItems().addAll(miZPlus, miZMinus);
 
 		menubar.getMenus().addAll(menuDatei, menuAlgorithmen, menuZoom);
@@ -126,15 +128,6 @@ public class GuiView {
 
 	}
 
-	public void addZoomInListener(EventHandler<ActionEvent> zoomInHandler) {
-		// miZPlus.addEventHandler(MouseEvent.MOUSE_PRESSED, handleZoomIn);
-		miZPlus.setOnAction(zoomInHandler);
-	}
-
-	public void addZoomOutListener(EventHandler<ActionEvent> zoomOutHandler) {
-		miZMinus.setOnAction(zoomOutHandler);
-	}
-
 	public void addResizeListener(ChangeListener<Number> resizeListener) {
 		System.out.println(scene.toString());
 		System.out.println(resizeListener.toString());
@@ -154,28 +147,6 @@ public class GuiView {
 			MouseDragLeaveListener mouseDragLeaveListener) {
 
 		scene.addEventHandler(MouseEvent.MOUSE_RELEASED, mouseDragLeaveListener);
-
-	}
-
-	public void close() {
-		System.out.println("Close");
-	}
-
-	public void addSetDummyHandler(SetDummyHandler setDummyHandler) {
-		miADummy.setOnAction(setDummyHandler);
-		
-
-	}
-
-	public void addSetBresenhamHandler(SetBresenhamHandler setBresenhamHandler) {
-		miABresenham.setOnAction(setBresenhamHandler);
-		
-
-	}
-
-	public void addSetvereinfHandler(SetVereinfHandler setVereinfHandler) {
-		miAvereinfB.setOnAction(setVereinfHandler);
-		
 
 	}
 

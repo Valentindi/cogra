@@ -80,10 +80,9 @@ public class GridBuilder {
 		this.handleClickOnPixel = handleClickOnPixel;
 	}
 
-	public void setRectColor(Rectangle pixel) {
-		Random r = new Random();
-		double greyScale = r.nextDouble();
-		pixel.setFill(GreyScaleFactory.getGreyScale(greyScale));
+	public void setRectColor(Rectangle pixel, Color colorRect) {
+
+		pixel.setFill(colorRect);
 		// System.out.println("Pixel: " + getPixelCords(pixel)[0] + " " +
 		// getPixelCords(pixel)[1] + " clicked!");
 	}
