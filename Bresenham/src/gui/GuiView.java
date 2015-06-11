@@ -19,6 +19,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.scene.Group;
 
 public class GuiView {
 
@@ -27,7 +28,6 @@ public class GuiView {
 	private Stage primaryStage;
 	private Button zoomInButton = new Button("+");
 	private Button zoomOutButton = new Button("-");
-	private VBox buttonBox;
 	private Scene scene;
 	
 	MenuBar menubar = new MenuBar();
@@ -58,6 +58,7 @@ public class GuiView {
 			System.out.println(rootLayout.toString());
 			scene = new Scene(rootLayout);
 			
+			addMenu();
 
 			primaryStage.setScene(scene);
 			primaryStage.show();
@@ -84,7 +85,14 @@ public class GuiView {
 		menuZoom.getItems().addAll(miZPlus, miZMinus);
 		
 		menubar.getMenus().addAll(menuDatei, menuAlgorithmen, menuZoom);
-		scene.getRoot().getChildrenUnmodifiable().add(menubar);
+		//try {
+			((AnchorPane) scene.getRoot()).getChildren().addAll(menubar);
+			//scene.getRoot().getChildrenUnmodifiable().add(menubar);
+			/*
+		} catch (Exception e) {
+			System.out.println("Failed Build Menu");
+			System.out.println(e);
+		}*/
 			
 		}
 	
@@ -148,6 +156,10 @@ public class GuiView {
 
 		scene.addEventHandler(MouseEvent.MOUSE_RELEASED, mouseDragLeaveListener);
 
+	}
+	
+	public void close(){
+		System.out.println("Close");
 	}
 
 }
