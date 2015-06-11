@@ -1,5 +1,6 @@
 package gui;
 
+import factories.DialogFactory;
 import gui.GuiController.MouseDragEnteredListener;
 import gui.GuiController.MouseDragLeaveListener;
 import javafx.beans.value.ChangeListener;
@@ -8,6 +9,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Dialog;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
@@ -29,7 +31,7 @@ public class GuiView {
 	private Button zoomInButton = new Button("+");
 	private Button zoomOutButton = new Button("-");
 	private Scene scene;
-	
+
 	MenuBar menubar = new MenuBar();
 	Menu menuDatei = new Menu("Datei");
 	Menu menuAlgorithmen = new Menu("Algorithmen");
@@ -37,17 +39,17 @@ public class GuiView {
 	MenuItem miBeenden = new MenuItem("Beenden");
 
 	RadioMenuItem miADummy = new RadioMenuItem("Dummy");
-	RadioMenuItem miABresenham = new RadioMenuItem("Rasterkonvertierung Linie - Bresenham-Algorithmus");
-	RadioMenuItem miAvereinfB = new RadioMenuItem("Antialising Linie - abgewandelter Bresenham-Algorithmus");
-	
+	RadioMenuItem miABresenham = new RadioMenuItem(
+			"Rasterkonvertierung Linie - Bresenham-Algorithmus");
+	RadioMenuItem miAvereinfB = new RadioMenuItem(
+			"Antialising Linie - abgewandelter Bresenham-Algorithmus");
+
 	MenuItem miZPlus = new MenuItem("Zoom +");
 	MenuItem miZMinus = new MenuItem("Zoom -");
-
 
 	public GuiView(Stage primaryStage) {
 
 		this.primaryStage = primaryStage;
-		
 
 		try {
 
@@ -57,7 +59,7 @@ public class GuiView {
 
 			System.out.println(rootLayout.toString());
 			scene = new Scene(rootLayout);
-			
+
 			addMenu();
 
 			primaryStage.setScene(scene);
@@ -69,34 +71,77 @@ public class GuiView {
 
 	}
 
-	public void addMenu(){
+	public void addMenu() {
+		addEventHandler();
+
 		
+
+		menuDatei.getItems().addAll(miBeenden);
+		menuAlgorithmen.getItems().addAll(miADummy, miABresenham, miAvereinfB);
+		menuZoom.getItems().addAll(miZPlus, miZMinus);
+
+		menubar.getMenus().addAll(menuDatei, menuAlgorithmen, menuZoom);
+		menubar.setLayoutX(scene.getWidth());
+		// try {
+		((BorderPane) rootLayout.getChildren().get(0)).setTop(menubar);
+		// scene.getRoot().getChildrenUnmodifiable().add(menubar);
+		/*
+		 * } catch (Exception e) { System.out.println("Failed Build Menu");
+		 * System.out.println(e); }
+		 */
+
+	}
+
+	private void addEventHandler() {
 		miBeenden.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				if (DialogFactory.acceptDialog(null, "Beenden", null)) {
+					System.exit(0);
+				}
+
+			}
+		});
+		miADummy.setOnAction(new EventHandler<ActionEvent>() {
 			
 			@Override
 			public void handle(ActionEvent event) {
-				System.out.println("BEENDEN");
+				menuAlgorithmen.setText("Active Algorithm: Dummy" );
+				miADummy.setSelected(true);
+				miABresenham.setSelected(false);
+				miAvereinfB.setSelected(false);
+				GuiController.setActiveAlgorithmDummy();
+			}
+		});
+		
+		miABresenham.setOnAction(new EventHandler<ActionEvent>() {
+			
+			@Override
+			public void handle(ActionEvent event) {
+				menuAlgorithmen.setText("Active Algorithm: Bresenham" );
+				miADummy.setSelected(false);
+				miABresenham.setSelected(true);
+				miAvereinfB.setSelected(false);
+				GuiController.setActiveAlgorithmBresenham();
+
 				
 			}
 		});
 		
-		menuDatei.getItems().addAll(miBeenden);
-		menuAlgorithmen.getItems().addAll(miADummy, miABresenham, miAvereinfB);
-		menuZoom.getItems().addAll(miZPlus, miZMinus);
-		
-		menubar.getMenus().addAll(menuDatei, menuAlgorithmen, menuZoom);
-		menubar.setLayoutX(scene.getWidth());
-		//try {
-		((BorderPane) rootLayout.getChildren().get(0)).setTop(menubar);
-			//scene.getRoot().getChildrenUnmodifiable().add(menubar);
-			/*
-		} catch (Exception e) {
-			System.out.println("Failed Build Menu");
-			System.out.println(e);
-		}*/
+		miAvereinfB.setOnAction(new EventHandler<ActionEvent>() {
 			
-		}
-	
+			@Override
+			public void handle(ActionEvent event) {
+				menuAlgorithmen.setText("Active Algorithm: vereinfachter Bresenham");
+				miADummy.setSelected(false);
+				miABresenham.setSelected(false);
+				miAvereinfB.setSelected(true);
+				GuiController.setActiveAlgorithmVereinfB();
+			}
+		});
+	}
+
 	public void setGrid(GridPane grid) {
 		backgroundPane = new Pane();
 		backgroundPane.setStyle("-fx-background-color: Black");
@@ -158,8 +203,8 @@ public class GuiView {
 		scene.addEventHandler(MouseEvent.MOUSE_RELEASED, mouseDragLeaveListener);
 
 	}
-	
-	public void close(){
+
+	public void close() {
 		System.out.println("Close");
 	}
 

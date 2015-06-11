@@ -23,6 +23,7 @@ public class GuiController {
 	private double beginX;
 	private double beginY;
 
+	public static String activeAlgorithm = "Dummy";
 	private int pixelSize = 15;
 
 	public GuiController(GuiView guiView, GridBuilder gridBuilder) {
@@ -88,9 +89,19 @@ public class GuiController {
 	
 	}
 	
-	public void onCloseClick (ActionEvent event){
-		System.out.println("CLOSE");
-		}
+
+	
+	public static void setActiveAlgorithmDummy(){
+		activeAlgorithm = "Dummy";
+	}
+	
+	public static void setActiveAlgorithmBresenham(){
+		activeAlgorithm = "Bresenham";
+	}
+	
+	public static void setActiveAlgorithmVereinfB(){
+		activeAlgorithm = "vereinfachterBresenham";
+	}
 
 	class ZoomInHandler implements EventHandler<MouseEvent> {
 
@@ -180,5 +191,6 @@ public class GuiController {
 		}
 
 	}
+	
 
 }
