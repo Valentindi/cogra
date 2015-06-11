@@ -78,8 +78,6 @@ public class GuiView {
 	public void addMenu() {
 		addEventHandler();
 
-		
-
 		menuDatei.getItems().addAll(miBeenden);
 		menuAlgorithmen.getItems().addAll(miADummy, miABresenham, miAvereinfB);
 		menuZoom.getItems().addAll(miZPlus, miZMinus);
@@ -107,43 +105,7 @@ public class GuiView {
 
 			}
 		});
-		miADummy.setOnAction(new EventHandler<ActionEvent>() {
-			
-			@Override
-			public void handle(ActionEvent event) {
-				menuAlgorithmen.setText("Active Algorithm: Dummy" );
-				miADummy.setSelected(true);
-				miABresenham.setSelected(false);
-				miAvereinfB.setSelected(false);
-			}
-		});
-		
-		miABresenham.setOnAction(new EventHandler<ActionEvent>() {
-			
-			@Override
-			public void handle(ActionEvent event) {
-				menuAlgorithmen.setText("Active Algorithm: Bresenham" );
-				miADummy.setSelected(false);
-				miABresenham.setSelected(true);
-				miAvereinfB.setSelected(false);
 
-				
-			}
-		});
-		
-		miAvereinfB.setOnAction(new EventHandler<ActionEvent>() {
-			
-			@Override
-			public void handle(ActionEvent event) {
-				menuAlgorithmen.setText("Active Algorithm: vereinfachter Bresenham");
-				miADummy.setSelected(false);
-				miABresenham.setSelected(false);
-				miAvereinfB.setSelected(true);
-			}
-		});
-		
-		
-		
 	}
 
 	public void setGrid(GridPane grid) {
@@ -153,7 +115,6 @@ public class GuiView {
 		((BorderPane) rootLayout.getChildren().get(0))
 				.setCenter(backgroundPane);
 	}
-
 
 	public int getWindowHeight() {
 		return (int) rootLayout.getHeight();
@@ -166,7 +127,7 @@ public class GuiView {
 	}
 
 	public void addZoomInListener(EventHandler<ActionEvent> zoomInHandler) {
-		//miZPlus.addEventHandler(MouseEvent.MOUSE_PRESSED, handleZoomIn);
+		// miZPlus.addEventHandler(MouseEvent.MOUSE_PRESSED, handleZoomIn);
 		miZPlus.setOnAction(zoomInHandler);
 	}
 
@@ -203,16 +164,19 @@ public class GuiView {
 	public void addSetDummyHandler(SetDummyHandler setDummyHandler) {
 		miADummy.setOnAction(setDummyHandler);
 		
+
 	}
 
 	public void addSetBresenhamHandler(SetBresenhamHandler setBresenhamHandler) {
 		miABresenham.setOnAction(setBresenhamHandler);
 		
+
 	}
 
 	public void addSetvereinfHandler(SetVereinfHandler setVereinfHandler) {
-		miABresenham.setOnAction(setVereinfHandler);
+		miAvereinfB.setOnAction(setVereinfHandler);
 		
+
 	}
 
 }

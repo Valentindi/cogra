@@ -2,6 +2,7 @@ package gui;
 
 import algorithm.Bresenham;
 import algorithm.DummyAlgoithm;
+import algorithm.vereinfachterBresenham;
 
 import com.sun.javafx.scene.control.skin.ComboBoxListViewSkin.FakeFocusTextField;
 
@@ -100,6 +101,10 @@ public class GuiController {
 
 		@Override
 		public void handle(ActionEvent event) {
+			guiView.menuAlgorithmen.setText("Active Algorithm: Dummy");
+			guiView.miADummy.setSelected(true);
+			guiView.miABresenham.setSelected(false);
+			guiView.miAvereinfB.setSelected(false);
 			activeAlgorithm = "Dummy";
 			System.out.println(activeAlgorithm);
 		}
@@ -110,6 +115,10 @@ public class GuiController {
 
 		@Override
 		public void handle(ActionEvent event) {
+			guiView.menuAlgorithmen.setText("Active Algorithm: Bresenham");
+			guiView.miADummy.setSelected(false);
+			guiView.miABresenham.setSelected(true);
+			guiView.miAvereinfB.setSelected(false);
 			activeAlgorithm = "Bresenham";
 			System.out.println(activeAlgorithm);
 			
@@ -121,6 +130,10 @@ public class GuiController {
 
 		@Override
 		public void handle(ActionEvent event) {
+			guiView.menuAlgorithmen.setText("Active Algorithm: vereinfachter Bresenham");
+			guiView.miADummy.setSelected(false);
+			guiView.miABresenham.setSelected(false);
+			guiView.miAvereinfB.setSelected(true);
 			activeAlgorithm = "vereinfachterBresenham";
 			System.out.println(activeAlgorithm);
 			
@@ -219,7 +232,8 @@ public class GuiController {
 						beginYLine, endXLine, endYLine);
 				break;
 			case "vereinfachterBresenham":
-				DialogFactory.ErrorDialog(null, "Noch nicht Implementiert", null);
+				rectDummyColors = vereinfachterBresenham.run(beginXLine,
+						beginYLine, endXLine, endYLine);
 				return;
 				//break;
 
