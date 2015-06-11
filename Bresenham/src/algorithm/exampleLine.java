@@ -47,12 +47,12 @@ public class exampleLine {
 			matrix[i][j]=true;
 			if(i/j<(xy+0.5)){
 				i++;
-				i++;
-				j++;
+				//i++;
+				//j++;
 			}else{
 				j++;
-				i++;
-				j++;
+				//i++;
+				//j++;
 			}
 			
 		}
