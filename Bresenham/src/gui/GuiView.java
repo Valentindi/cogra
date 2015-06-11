@@ -85,8 +85,9 @@ public class GuiView {
 		menuZoom.getItems().addAll(miZPlus, miZMinus);
 		
 		menubar.getMenus().addAll(menuDatei, menuAlgorithmen, menuZoom);
+		menubar.setLayoutX(scene.getWidth());
 		//try {
-			((AnchorPane) scene.getRoot()).getChildren().addAll(menubar);
+		((BorderPane) rootLayout.getChildren().get(0)).setTop(menubar);
 			//scene.getRoot().getChildrenUnmodifiable().add(menubar);
 			/*
 		} catch (Exception e) {
