@@ -54,6 +54,7 @@ public class GuiController {
 	}
 
 	public void buildGrid() {
+		
 		guiView.setGrid(gridBuilder.buildGrid(pixelSize,
 				guiView.getWindowHeight(), guiView.getWindowWidth()));
 	}
@@ -79,7 +80,7 @@ public class GuiController {
 	}
 
 	public void colorTheRect(Color[][] colorRect, int beginX, int beginY) {
-		System.out.println("I am at Color The Rect");
+		
 		Rectangle pixel = new Rectangle();
 		pixel.setWidth(pixelSize);
 		pixel.setHeight(pixelSize);
@@ -202,7 +203,7 @@ public class GuiController {
 		@Override
 		public void handle(MouseEvent event) {
 			System.out.println("Mouse Down test");
-
+			//Zuweisung der Pixel bei Begin des Mausziehens.
 			beginX = event.getX();
 			beginY = event.getY();
 			System.out.println(beginX + " BEGIN " + beginY);
@@ -219,7 +220,7 @@ public class GuiController {
 			double foo;
 			double endY = event.getY();
 			double endX = event.getX();
-
+			//Austauschen der Variablen, falls End > Begin
 			if (endY < beginY) {
 				foo = endY;
 				endY = beginY;
@@ -231,7 +232,8 @@ public class GuiController {
 				endX = beginX;
 				beginX = foo;
 			}
-
+			
+			//Berechnung des Gedrückten Rectangle
 			int beginXLine = FindeLineColumnFactory.getLineORColumn(beginX,
 					pixelSize);
 			int beginYLine = FindeLineColumnFactory.getLineORColumn(beginY,
@@ -241,11 +243,11 @@ public class GuiController {
 			int endYLine = FindeLineColumnFactory.getLineORColumn(endY,
 					pixelSize) + 1;
 
-			System.out.println(beginXLine + " " + beginYLine + " " + endXLine
-					+ " " + endYLine);
+			//Erstellung des der FarbMatrix
 			Color rectColors[][] = new Color[endXLine - beginXLine][endYLine
 					- beginYLine];
-
+			
+			//aufruf des aktiven Algoritmus
 			switch (activeAlgorithm) {
 			case "Dummy":
 				rectColors = DummyAlgoithm.run(beginXLine, beginYLine,
@@ -269,7 +271,7 @@ public class GuiController {
 			default:
 				break;
 			}
-
+			//Zeichnen des Grids
 			colorTheRect(rectColors, beginXLine, beginYLine);
 		}
 
