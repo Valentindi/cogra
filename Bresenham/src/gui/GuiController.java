@@ -1,5 +1,6 @@
 package gui;
 
+import algorithm.Bresenham;
 import algorithm.DummyAlgoithm;
 
 import com.sun.javafx.scene.control.skin.ComboBoxListViewSkin.FakeFocusTextField;
@@ -45,6 +46,9 @@ public class GuiController {
 																				// Begonnen
 		this.gridBuilder
 				.addMouseDragLeaveListener(new MouseDragLeaveListener());
+		this.guiView.addSetDummyHandler(new SetDummyHandler());
+		this.guiView.addSetBresenhamHandler(new SetBresenhamHandler());
+		this.guiView.addSetvereinfHandler(new SetVereinfHandler());
 
 	}
 
@@ -90,18 +94,39 @@ public class GuiController {
 
 	}
 
-	public static void setActiveAlgorithmDummy() {
-		activeAlgorithm = "Dummy";
-	}
 
-	public static void setActiveAlgorithmBresenham() {
-		activeAlgorithm = "Bresenham";
-	}
 
-	public static void setActiveAlgorithmVereinfB() {
-		activeAlgorithm = "vereinfachterBresenham";
-	}
+	class SetDummyHandler implements EventHandler<ActionEvent>{
 
+		@Override
+		public void handle(ActionEvent event) {
+			activeAlgorithm = "Dummy";
+			System.out.println(activeAlgorithm);
+		}
+		
+	}
+	
+	class SetBresenhamHandler implements EventHandler<ActionEvent>{
+
+		@Override
+		public void handle(ActionEvent event) {
+			activeAlgorithm = "Bresenham";
+			System.out.println(activeAlgorithm);
+			
+		}
+		
+	}
+	
+	class SetVereinfHandler implements EventHandler<ActionEvent>{
+
+		@Override
+		public void handle(ActionEvent event) {
+			activeAlgorithm = "vereinfachterBresenham";
+			System.out.println(activeAlgorithm);
+			
+		}
+		
+	}
 	class ZoomInHandler implements EventHandler<ActionEvent> {
 
 		@Override
@@ -182,9 +207,26 @@ public class GuiController {
 
 			System.out.println(beginXLine + " " + beginYLine + " " + endXLine
 					+ " " + endYLine);
+			Color rectDummyColors[][] = new Color[endXLine-beginXLine][endYLine-beginYLine];
 
-			Color rectDummyColors[][] = DummyAlgoithm.run(beginXLine,
-					beginYLine, endXLine, endYLine);
+			switch (activeAlgorithm) {
+			case "Dummy":
+				rectDummyColors = DummyAlgoithm.run(beginXLine,
+						beginYLine, endXLine, endYLine);
+				break;
+			case "Bresenham":
+				rectDummyColors = Bresenham.run(beginXLine,
+						beginYLine, endXLine, endYLine);
+				break;
+			case "vereinfachterBresenham":
+				DialogFactory.ErrorDialog(null, "Noch nicht Implementiert", null);
+				return;
+				//break;
+
+			default:
+				break;
+			}
+			
 
 			colorTheRect(rectDummyColors, beginXLine, beginYLine);
 		}

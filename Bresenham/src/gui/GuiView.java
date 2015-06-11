@@ -3,6 +3,9 @@ package gui;
 import factories.DialogFactory;
 import gui.GuiController.MouseDragEnteredListener;
 import gui.GuiController.MouseDragLeaveListener;
+import gui.GuiController.SetBresenhamHandler;
+import gui.GuiController.SetDummyHandler;
+import gui.GuiController.SetVereinfHandler;
 import gui.GuiController.ZoomInHandler;
 import gui.GuiController.ZoomOutHandler;
 import javafx.beans.value.ChangeListener;
@@ -34,7 +37,7 @@ public class GuiView {
 	private Scene scene;
 
 	MenuBar menubar = new MenuBar();
-	Menu menuDatei = new Menu("Datei");
+	Menu menuDatei = new Menu("File");
 	Menu menuAlgorithmen = new Menu("Algorithmen");
 	Menu menuZoom = new Menu("Zoom");
 	MenuItem miBeenden = new MenuItem("Beenden");
@@ -112,7 +115,6 @@ public class GuiView {
 				miADummy.setSelected(true);
 				miABresenham.setSelected(false);
 				miAvereinfB.setSelected(false);
-				GuiController.setActiveAlgorithmDummy();
 			}
 		});
 		
@@ -124,7 +126,6 @@ public class GuiView {
 				miADummy.setSelected(false);
 				miABresenham.setSelected(true);
 				miAvereinfB.setSelected(false);
-				GuiController.setActiveAlgorithmBresenham();
 
 				
 			}
@@ -138,7 +139,6 @@ public class GuiView {
 				miADummy.setSelected(false);
 				miABresenham.setSelected(false);
 				miAvereinfB.setSelected(true);
-				GuiController.setActiveAlgorithmVereinfB();
 			}
 		});
 		
@@ -198,6 +198,21 @@ public class GuiView {
 
 	public void close() {
 		System.out.println("Close");
+	}
+
+	public void addSetDummyHandler(SetDummyHandler setDummyHandler) {
+		miADummy.setOnAction(setDummyHandler);
+		
+	}
+
+	public void addSetBresenhamHandler(SetBresenhamHandler setBresenhamHandler) {
+		miABresenham.setOnAction(setBresenhamHandler);
+		
+	}
+
+	public void addSetvereinfHandler(SetVereinfHandler setVereinfHandler) {
+		miABresenham.setOnAction(setVereinfHandler);
+		
 	}
 
 }
