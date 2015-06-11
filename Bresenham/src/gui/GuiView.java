@@ -3,6 +3,8 @@ package gui;
 import factories.DialogFactory;
 import gui.GuiController.MouseDragEnteredListener;
 import gui.GuiController.MouseDragLeaveListener;
+import gui.GuiController.ZoomInHandler;
+import gui.GuiController.ZoomOutHandler;
 import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -28,8 +30,7 @@ public class GuiView {
 	private AnchorPane rootLayout;
 	private Pane backgroundPane;
 	private Stage primaryStage;
-	private Button zoomInButton = new Button("+");
-	private Button zoomOutButton = new Button("-");
+
 	private Scene scene;
 
 	MenuBar menubar = new MenuBar();
@@ -140,29 +141,19 @@ public class GuiView {
 				GuiController.setActiveAlgorithmVereinfB();
 			}
 		});
+		
+		
+		
 	}
 
 	public void setGrid(GridPane grid) {
 		backgroundPane = new Pane();
 		backgroundPane.setStyle("-fx-background-color: Black");
 		backgroundPane.getChildren().add(grid);
-		backgroundPane = addZoomButton(backgroundPane);
 		((BorderPane) rootLayout.getChildren().get(0))
 				.setCenter(backgroundPane);
 	}
 
-	private Pane addZoomButton(Pane backgroundPane) {
-
-		VBox buttonBox = new VBox();
-
-		zoomInButton.setPrefWidth(25);
-		zoomOutButton.setPrefWidth(25);
-
-		buttonBox.getChildren().addAll(zoomInButton, zoomOutButton);
-		backgroundPane.getChildren().add(buttonBox);
-
-		return backgroundPane;
-	}
 
 	public int getWindowHeight() {
 		return (int) rootLayout.getHeight();
@@ -174,12 +165,13 @@ public class GuiView {
 
 	}
 
-	public void addZoomInListener(EventHandler<MouseEvent> handleZoomIn) {
-		zoomInButton.addEventHandler(MouseEvent.MOUSE_PRESSED, handleZoomIn);
+	public void addZoomInListener(EventHandler<ActionEvent> zoomInHandler) {
+		//miZPlus.addEventHandler(MouseEvent.MOUSE_PRESSED, handleZoomIn);
+		miZPlus.setOnAction(zoomInHandler);
 	}
 
-	public void addZoomOutListener(EventHandler<MouseEvent> handleZoomOut) {
-		zoomOutButton.addEventHandler(MouseEvent.MOUSE_PRESSED, handleZoomOut);
+	public void addZoomOutListener(EventHandler<ActionEvent> zoomOutHandler) {
+		miZMinus.setOnAction(zoomOutHandler);
 	}
 
 	public void addResizeListener(ChangeListener<Number> resizeListener) {

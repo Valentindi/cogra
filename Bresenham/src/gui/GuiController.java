@@ -4,12 +4,14 @@ import algorithm.DummyAlgoithm;
 
 import com.sun.javafx.scene.control.skin.ComboBoxListViewSkin.FakeFocusTextField;
 
+import factories.DialogFactory;
 import factories.FindeLineColumnFactory;
 import gui.grid.GridBuilder;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.control.MenuBar;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
@@ -85,36 +87,33 @@ public class GuiController {
 			}
 
 		}
-		
-	
-	}
-	
 
-	
-	public static void setActiveAlgorithmDummy(){
+	}
+
+	public static void setActiveAlgorithmDummy() {
 		activeAlgorithm = "Dummy";
 	}
-	
-	public static void setActiveAlgorithmBresenham(){
+
+	public static void setActiveAlgorithmBresenham() {
 		activeAlgorithm = "Bresenham";
 	}
-	
-	public static void setActiveAlgorithmVereinfB(){
+
+	public static void setActiveAlgorithmVereinfB() {
 		activeAlgorithm = "vereinfachterBresenham";
 	}
 
-	class ZoomInHandler implements EventHandler<MouseEvent> {
+	class ZoomInHandler implements EventHandler<ActionEvent> {
 
 		@Override
-		public void handle(MouseEvent event) {
+		public void handle(ActionEvent event) {
 			incPixelSize();
 		}
 	}
 
-	class ZoomOutHandler implements EventHandler<MouseEvent> {
+	class ZoomOutHandler implements EventHandler<ActionEvent> {
 
 		@Override
-		public void handle(MouseEvent event) {
+		public void handle(ActionEvent event) {
 			decPixelSize();
 		}
 	}
@@ -177,9 +176,9 @@ public class GuiController {
 			int beginYLine = FindeLineColumnFactory.getLineORColumn(beginY,
 					pixelSize);
 			int endXLine = FindeLineColumnFactory.getLineORColumn(endX,
-					pixelSize)+1;
+					pixelSize) + 1;
 			int endYLine = FindeLineColumnFactory.getLineORColumn(endY,
-					pixelSize)+1;
+					pixelSize) + 1;
 
 			System.out.println(beginXLine + " " + beginYLine + " " + endXLine
 					+ " " + endYLine);
@@ -191,6 +190,5 @@ public class GuiController {
 		}
 
 	}
-	
 
 }
