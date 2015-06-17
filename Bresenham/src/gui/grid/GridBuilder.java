@@ -1,19 +1,19 @@
 package gui.grid;
 
 
+import gui.grid.components.CograRectangle;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 
 public class GridBuilder {
 
 	static final int offset = 1;
 
-	private Rectangle[][] gridArray;
+	private CograRectangle[][] gridArray;
 	private EventHandler<MouseEvent> handleClickOnPixel;
 	private EventHandler<MouseEvent> handleMouseDragEnteredListener;
 	private EventHandler<MouseEvent> handleMouseDragLeaveListener;
@@ -30,19 +30,22 @@ public class GridBuilder {
 				handleMouseDragEnteredListener);
 		root.addEventHandler(MouseEvent.MOUSE_RELEASED,
 				handleMouseDragLeaveListener);
-		gridArray = new Rectangle[pixelCountY][pixelCountX];
+		gridArray = new CograRectangle[pixelCountY][pixelCountX];
 
 		for (int i = 0; i < gridArray.length; i++) {
 			for (int t = 0; t < gridArray[i].length; t++) {
 				// Hier wird das gridArray erstellt und mit weißen Pixeln
 				// gefüllt
 
-				gridArray[i][t] = new Rectangle();
+				gridArray[i][t] = new CograRectangle();
 				gridArray[i][t].setWidth(pixelSize);
 				gridArray[i][t].setHeight(pixelSize);
 				gridArray[i][t].setFill(Color.WHITE);
-				gridArray[i][t].addEventHandler(MouseEvent.MOUSE_PRESSED,
-						handleClickOnPixel);
+				gridArray[i][t].setPosX(i);
+				gridArray[i][t].setPosY(t);
+				//gridArray[i][t].set
+				//gridArray[i][t].addEventHandler(MouseEvent.MOUSE_PRESSED,0
+				//		handleClickOnPixel);
 
 				root.getColumnConstraints().add(
 						new ColumnConstraints(pixelSize + offset));
@@ -78,14 +81,14 @@ public class GridBuilder {
 		this.handleClickOnPixel = handleClickOnPixel;
 	}
 
-	public void setRectColor(Rectangle pixel, Color colorRect) {
+	public void setRectColor(CograRectangle pixel, Color colorRect) {
 
 		pixel.setFill(colorRect);
 		// System.out.println("Pixel: " + getPixelCords(pixel)[0] + " " +
 		// getPixelCords(pixel)[1] + " clicked!");
 	}
 
-	public void setPixel(Rectangle pixel, int x, int y) {
+	public void setPixel(CograRectangle pixel, int x, int y) {
 		this.gridArray[x][y] = pixel;
 		// System.out.println("Pixel: " + getPixelCords(pixel)[0] + " " +
 		// getPixelCords(pixel)[1] + " clicked!");
@@ -98,7 +101,7 @@ public class GridBuilder {
 	 *            Ein Rechteck (pixel)
 	 * @return Die Koordinaten des Pixels im Grid als Array
 	 */
-	public int[] getPixelCords(Rectangle pixel) {
+	public int[] getPixelCords(CograRectangle pixel) {
 		int[] pixelCords = new int[2];
 
 		for (int i = 0; i < gridArray.length; i++) {
@@ -116,21 +119,21 @@ public class GridBuilder {
 		gridArray[x][y].setFill(color);
 	}
 
-	public Rectangle getPixel(int x, int y) {
+	public CograRectangle getPixel(int x, int y) {
 		return gridArray[x][y];
 	}
 
 	/**
 	 * 
 	 * @param r
-	 *            Rectangle
+	 *            CograRectangle
 	 * @param x
 	 *            x-Koordinate
 	 * @param y
 	 *            y-Koordinate
 	 * @return true, wenn erfolgreich, false, wenn gescheitert
 	 */
-	public boolean setRectange(Rectangle r, int x, int y) {
+	public boolean setRectange(CograRectangle r, int x, int y) {
 		try {
 			gridArray[x][y] = r;
 		} catch (Exception e) {

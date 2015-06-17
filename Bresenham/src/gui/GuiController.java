@@ -10,6 +10,7 @@ import com.sun.javafx.scene.control.skin.ComboBoxListViewSkin.FakeFocusTextField
 import factories.DialogFactory;
 import factories.FindeLineColumnFactory;
 import gui.grid.GridBuilder;
+import gui.grid.components.CograRectangle;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -18,7 +19,6 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 
 public class GuiController {
 
@@ -81,7 +81,7 @@ public class GuiController {
 
 	public void colorTheRect(Color[][] colorRect, int beginX, int beginY) {
 		
-		Rectangle pixel = new Rectangle();
+		CograRectangle pixel = new CograRectangle();
 		pixel.setWidth(pixelSize);
 		pixel.setHeight(pixelSize);
 		for (int i = 0; i < colorRect.length; i++) {
@@ -192,7 +192,7 @@ public class GuiController {
 
 		@Override
 		public void handle(MouseEvent event) {
-			final Rectangle pixel = (Rectangle) (event.getTarget());
+			final CograRectangle pixel = (CograRectangle) (event.getTarget());
 
 			// gridBuilder.setRectColor(pixel);
 		}
@@ -233,7 +233,7 @@ public class GuiController {
 				beginX = foo;
 			}
 			
-			//Berechnung des Gedrückten Rectangle
+			//Berechnung des Gedrückten CograRectangle
 			int beginXLine = FindeLineColumnFactory.getLineORColumn(beginX,
 					pixelSize);
 			int beginYLine = FindeLineColumnFactory.getLineORColumn(beginY,

@@ -1,9 +1,9 @@
 package gui.grid.components;
 
-import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Rectangle;
+
 
 public class CograRectangle extends Rectangle implements EventHandler<MouseEvent>{
 	
@@ -30,9 +30,17 @@ public class CograRectangle extends Rectangle implements EventHandler<MouseEvent
 		this.posY = posY;
 	}
 	
+	
 	@Override
 	public void handle(MouseEvent event) {
-		// TODO Auto-generated method stub
+		if(event.equals(event.MOUSE_PRESSED)){
+			System.out.println("Mouse Pressed at: " + posX +" : " + posY);
+		}
+		if(event.equals(event.MOUSE_RELEASED)){
+			System.out.println("Mouse Released at: " + posX +" : " + posY);
+
+			
+		}
 		
 	}
 
