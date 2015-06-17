@@ -19,11 +19,13 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.RadioMenuItem;
+import javafx.scene.control.SplitPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.scene.Group;
@@ -33,6 +35,7 @@ public class GuiView {
 	private AnchorPane rootLayout;
 	private Pane backgroundPane;
 	private Stage primaryStage;
+	private SplitPane bottom;
 
 	private Scene scene;
 
@@ -53,9 +56,9 @@ public class GuiView {
 	MenuItem miZPlus = new MenuItem("Zoom +");
 	MenuItem miZMinus = new MenuItem("Zoom -");
 	
-	//MenuLabel status = new Label("Auf Raster Klicken um Startpunkt zu wählen");
-	MenuButton mbZPlus = new MenuButton("+");
-	MenuButton mbZMinus = new MenuButton("-");
+	public Label status = new Label("Auf Raster Klicken um Startpunkt zu wählen");
+	Button mbZPlus = new Button("+");
+	Button mbZMinus = new Button("-");
 
 	public GuiView(Stage primaryStage) {
 
@@ -71,6 +74,7 @@ public class GuiView {
 			scene = new Scene(rootLayout);
 
 			addMenu();
+			addBottom();
 
 			primaryStage.setScene(scene);
 			primaryStage.show();
@@ -81,6 +85,12 @@ public class GuiView {
 
 	}
 
+	private void addBottom() {
+
+		
+
+	}
+
 	public void addMenu() {
 		addEventHandler();
 
@@ -88,11 +98,38 @@ public class GuiView {
 		menuAlgorithmen.getItems().addAll(miADummy, miABresenham, miAvereinfB, miAexamplLine);
 		menuZoom.getItems().addAll(miZPlus, miZMinus);
 
-		menubar.getMenus().addAll(menuDatei, menuAlgorithmen, menuZoom);
+		menubar.getMenus().addAll(menuDatei, menuAlgorithmen);
 		menubar.setLayoutX(scene.getWidth());
+		
+		final StackPane stZoomPlus = new StackPane();
+		final StackPane stZoomMinus = new StackPane();
+		final StackPane stStatusLabel = new StackPane(status);
+		
+		final SplitPane topSP = new SplitPane();
+		
+		mbZPlus.setLayoutX(150);
+		mbZMinus.setLayoutX(150);
+
+		stZoomPlus.getChildren().add(mbZPlus);
+		stZoomPlus.setLayoutX(100);
+		stZoomMinus.getChildren().add(mbZMinus);
+		stZoomMinus.setLayoutX(100);
+		bottom = new SplitPane();
+		bottom.getItems().addAll(stStatusLabel, mbZPlus, mbZMinus);
+		bottom.setDividerPositions(0.5f, 0.75f);
+		
+		menubar.setLayoutX(200);
+		
+		
+		topSP.getItems().addAll(menubar,
+				bottom);
+		topSP.setDividerPositions(0.4f);
+		((BorderPane) rootLayout.getChildren().get(0)).setTop(topSP);
+
+		
 		// try {
-		((BorderPane) rootLayout.getChildren().get(0)).setTop(menubar);
-		// scene.getRoot().getChildrenUnmodifiable().add(menubar);
+		//((BorderPane) rootLayout.getChildren().get(0)).setTop(menubar);
+		// scene.getRoot().getChildrenUnmodifiable().add(st);
 		/*
 		 * } catch (Exception e) { System.out.println("Failed Build Menu");
 		 * System.out.println(e); }
@@ -123,7 +160,7 @@ public class GuiView {
 	}
 
 	public int getWindowHeight() {
-		return (int) rootLayout.getHeight();
+		return (int) (rootLayout.getHeight());
 
 	}
 

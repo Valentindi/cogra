@@ -49,6 +49,8 @@ public class GuiController {
 		this.guiView.miAvereinfB.setOnAction(new SetVereinfHandler());
 		this.guiView.miZPlus.setOnAction(new ZoomInHandler());
 		this.guiView.miZMinus.setOnAction(new ZoomOutHandler());
+		this.guiView.mbZPlus.setOnAction(new ZoomInHandler());
+		this.guiView.mbZMinus.setOnAction(new ZoomOutHandler());
 		this.guiView.miAexamplLine.setOnAction(new SetExampleLineHandler());
 
 	}
@@ -248,7 +250,8 @@ public class GuiController {
 				}
 
 				colorTheRect(rectColors, beginX, beginY);
-
+				
+				guiView.status.setText("Klick für Zeichnen");
 				beginX = Integer.MIN_VALUE;
 				beginY = Integer.MIN_VALUE;
 			} else {
@@ -262,7 +265,7 @@ public class GuiController {
 							"Drag wurde festgestellt",
 							"Strukturen werden durch 2 Klicks erstellt");
 				}
-
+				guiView.status.setText("Kick für Fertigstellen");
 			}
 
 		}
