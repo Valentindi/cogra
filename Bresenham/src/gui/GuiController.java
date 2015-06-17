@@ -25,8 +25,8 @@ public class GuiController {
 	private GuiView guiView;
 	private GridBuilder gridBuilder;
 
-	private int beginX;
-	private int beginY;
+	private int beginX=-1;
+	private int beginY=-1;
 
 	public static String activeAlgorithm = "Dummy";
 	private int pixelSize = 15;
@@ -243,8 +243,13 @@ public class GuiController {
 				beginX = Integer.MIN_VALUE;
 				beginY = Integer.MIN_VALUE;
 			} else {
-				beginX = ((CograRectangle) event.getTarget()).getPosX();
-				beginY = ((CograRectangle) event.getTarget()).getPosY();
+				try {
+					beginX = ((CograRectangle) event.getTarget()).getPosX();
+					beginY = ((CograRectangle) event.getTarget()).getPosY();
+				} catch (Exception e) {
+					DialogFactory.ErrorDialog("ERROR", "by: " + activeAlgorithm, e.toString());
+				}
+				
 			}
 
 		}
