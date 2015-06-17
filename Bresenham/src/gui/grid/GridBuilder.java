@@ -25,11 +25,15 @@ public class GridBuilder {
 		int pixelCountY = getCountY(pixelSize, windowWidth);
 
 		GridPane root = new GridPane();
-
+/*
 		root.addEventHandler(MouseEvent.MOUSE_PRESSED,
 				handleMouseDragEnteredListener);
 		root.addEventHandler(MouseEvent.MOUSE_RELEASED,
 				handleMouseDragLeaveListener);
+				
+
+*/		
+		root.addEventHandler(MouseEvent.MOUSE_CLICKED, handleClickOnPixel);
 		gridArray = new CograRectangle[pixelCountY][pixelCountX];
 
 		for (int i = 0; i < gridArray.length; i++) {
@@ -44,8 +48,7 @@ public class GridBuilder {
 				gridArray[i][t].setPosX(i);
 				gridArray[i][t].setPosY(t);
 				//gridArray[i][t].set
-				//gridArray[i][t].addEventHandler(MouseEvent.MOUSE_PRESSED,0
-				//		handleClickOnPixel);
+				//gridArray[i][t].addEventHandler(MouseEvent.MOUSE_PRESSED,0,handleClickOnPixel);
 
 				root.getColumnConstraints().add(
 						new ColumnConstraints(pixelSize + offset));

@@ -25,8 +25,8 @@ public class GuiController {
 	private GuiView guiView;
 	private GridBuilder gridBuilder;
 
-	private double beginX;
-	private double beginY;
+	private int beginX;
+	private int beginY;
 
 	public static String activeAlgorithm = "Dummy";
 	private int pixelSize = 15;
@@ -39,11 +39,11 @@ public class GuiController {
 																// ResizeListener
 		this.gridBuilder.setCickOnPixelHandler(new ClickOnPixelHandler()); // Pixel
 																			// ClickListener
-		this.gridBuilder
-				.addMouseDragEnteredListener(new MouseDragEnteredListener());// Drag
-																				// Begonnen
-		this.gridBuilder
-				.addMouseDragLeaveListener(new MouseDragLeaveListener());
+		// this.gridBuilder
+		// .addMouseDragEnteredListener(new MouseDragEnteredListener());// Drag
+		// Begonnen
+		// this.gridBuilder
+		// .addMouseDragLeaveListener(new MouseDragLeaveListener());
 		this.guiView.miADummy.setOnAction(new SetDummyHandler());
 		this.guiView.miABresenham.setOnAction(new SetBresenhamHandler());
 		this.guiView.miAvereinfB.setOnAction(new SetVereinfHandler());
@@ -54,7 +54,7 @@ public class GuiController {
 	}
 
 	public void buildGrid() {
-		
+
 		guiView.setGrid(gridBuilder.buildGrid(pixelSize,
 				guiView.getWindowHeight(), guiView.getWindowWidth()));
 	}
@@ -80,7 +80,7 @@ public class GuiController {
 	}
 
 	public void colorTheRect(Color[][] colorRect, int beginX, int beginY) {
-		
+
 		CograRectangle pixel = new CograRectangle();
 		pixel.setWidth(pixelSize);
 		pixel.setHeight(pixelSize);
@@ -192,89 +192,109 @@ public class GuiController {
 
 		@Override
 		public void handle(MouseEvent event) {
-			final CograRectangle pixel = (CograRectangle) (event.getTarget());
+			// final CograRectangle pixel = (CograRectangle)
+			// (event.getTarget());
 
 			// gridBuilder.setRectColor(pixel);
+			System.out.println("Läuft");
+			if (beginX > -1 && beginY > -1) {
+				int endX = ((CograRectangle) event.getTarget()).getPosX();
+				int endY = ((CograRectangle) event.getTarget()).getPosY();
+
+				if (endX < beginX) {
+					int foo = endX;
+					endX = beginX;
+					beginX = foo;
+				}
+
+				if (endY < beginY) {
+					int foo = endY;
+					endY = beginY;
+					beginY = foo;
+				}
+				
+				endX++;
+				endY++;
+
+				Color rectColors[][] = new Color[endX - beginX][endY - beginY];
+				switch (activeAlgorithm) {
+				case "Dummy":
+					rectColors = DummyAlgoithm.run(beginX, beginY, endX, endY);
+					break;
+				case "Bresenham":
+					rectColors = Bresenham.run(beginX, beginY, endX, endY);
+					break;
+				case "vereinfachterBresenham":
+					rectColors = vereinfachterBresenham.run(beginX, beginY,
+							endX, endY);
+					break;
+
+				case "exampleLine":
+					rectColors = exampleLine.run(beginX, beginY, endX, endY);
+					break;
+				// break;
+
+				default:
+					break;
+				}
+
+				colorTheRect(rectColors, beginX, beginY);
+
+				beginX = Integer.MIN_VALUE;
+				beginY = Integer.MIN_VALUE;
+			} else {
+				beginX = ((CograRectangle) event.getTarget()).getPosX();
+				beginY = ((CograRectangle) event.getTarget()).getPosY();
+			}
+
 		}
 	}
 
-	class MouseDragEnteredListener implements EventHandler<MouseEvent> {
-
-		@Override
-		public void handle(MouseEvent event) {
-			System.out.println("Mouse Down test");
-			//Zuweisung der Pixel bei Begin des Mausziehens.
-			beginX = event.getX();
-			beginY = event.getY();
-			System.out.println(beginX + " BEGIN " + beginY);
-
-		}
-
-	}
-
-	class MouseDragLeaveListener implements EventHandler<MouseEvent> {
-
-		@Override
-		public void handle(MouseEvent event) {
-			System.out.println("Mouse UP test");
-			double foo;
-			double endY = event.getY();
-			double endX = event.getX();
-			//Austauschen der Variablen, falls End > Begin
-			if (endY < beginY) {
-				foo = endY;
-				endY = beginY;
-				beginY = foo;
-			}
-
-			if (endX < beginX) {
-				foo = endX;
-				endX = beginX;
-				beginX = foo;
-			}
-			
-			//Berechnung des Gedrückten CograRectangle
-			int beginXLine = FindeLineColumnFactory.getLineORColumn(beginX,
-					pixelSize);
-			int beginYLine = FindeLineColumnFactory.getLineORColumn(beginY,
-					pixelSize);
-			int endXLine = FindeLineColumnFactory.getLineORColumn(endX,
-					pixelSize) + 1;
-			int endYLine = FindeLineColumnFactory.getLineORColumn(endY,
-					pixelSize) + 1;
-
-			//Erstellung des der FarbMatrix
-			Color rectColors[][] = new Color[endXLine - beginXLine][endYLine
-					- beginYLine];
-			
-			//aufruf des aktiven Algoritmus
-			switch (activeAlgorithm) {
-			case "Dummy":
-				rectColors = DummyAlgoithm.run(beginXLine, beginYLine,
-						endXLine, endYLine);
-				break;
-			case "Bresenham":
-				rectColors = Bresenham.run(beginXLine, beginYLine, endXLine,
-						endYLine);
-				break;
-			case "vereinfachterBresenham":
-				rectColors = vereinfachterBresenham.run(beginXLine, beginYLine,
-						endXLine, endYLine);
-				break;
-
-			case "exampleLine":
-				rectColors = exampleLine.run(beginXLine, beginYLine, endXLine,
-						endYLine);
-				break;
-			// break;
-
-			default:
-				break;
-			}
-			//Zeichnen des Grids
-			colorTheRect(rectColors, beginXLine, beginYLine);
-		}
-
-	}
-
+	/*
+	 * class MouseDragEnteredListener implements EventHandler<MouseEvent> {
+	 * 
+	 * @Override public void handle(MouseEvent event) {
+	 * System.out.println("Mouse Down test"); //Zuweisung der Pixel bei Begin
+	 * des Mausziehens. beginX = event.getX(); beginY = event.getY();
+	 * System.out.println(beginX + " BEGIN " + beginY);
+	 * 
+	 * }
+	 * 
+	 * }
+	 * 
+	 * class MouseDragLeaveListener implements EventHandler<MouseEvent> {
+	 * 
+	 * @Override public void handle(MouseEvent event) {
+	 * System.out.println("Mouse UP test"); double foo; double endY =
+	 * event.getY(); double endX = event.getX(); //Austauschen der Variablen,
+	 * falls End > Begin if (endY < beginY) { foo = endY; endY = beginY; beginY
+	 * = foo; }
+	 * 
+	 * if (endX < beginX) { foo = endX; endX = beginX; beginX = foo; }
+	 * 
+	 * //Berechnung des Gedrückten CograRectangle int beginXLine =
+	 * FindeLineColumnFactory.getLineORColumn(beginX, pixelSize); int beginYLine
+	 * = FindeLineColumnFactory.getLineORColumn(beginY, pixelSize); int endXLine
+	 * = FindeLineColumnFactory.getLineORColumn(endX, pixelSize) + 1; int
+	 * endYLine = FindeLineColumnFactory.getLineORColumn(endY, pixelSize) + 1;
+	 * 
+	 * //Erstellung des der FarbMatrix Color rectColors[][] = new Color[endXLine
+	 * - beginXLine][endYLine - beginYLine];
+	 * 
+	 * //aufruf des aktiven Algoritmus switch (activeAlgorithm) { case "Dummy":
+	 * rectColors = DummyAlgoithm.run(beginXLine, beginYLine, endXLine,
+	 * endYLine); break; case "Bresenham": rectColors =
+	 * Bresenham.run(beginXLine, beginYLine, endXLine, endYLine); break; case
+	 * "vereinfachterBresenham": rectColors =
+	 * vereinfachterBresenham.run(beginXLine, beginYLine, endXLine, endYLine);
+	 * break;
+	 * 
+	 * case "exampleLine": rectColors = exampleLine.run(beginXLine, beginYLine,
+	 * endXLine, endYLine); break; // break;
+	 * 
+	 * default: break; } //Zeichnen des Grids colorTheRect(rectColors,
+	 * beginXLine, beginYLine); }
+	 * 
+	 * }
+	 */
 }

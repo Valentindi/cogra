@@ -1,8 +1,6 @@
 package gui;
 
 import factories.DialogFactory;
-import gui.GuiController.MouseDragEnteredListener;
-import gui.GuiController.MouseDragLeaveListener;
 import gui.GuiController.SetBresenhamHandler;
 import gui.GuiController.SetDummyHandler;
 import gui.GuiController.SetVereinfHandler;
@@ -136,7 +134,7 @@ public class GuiView {
 		scene.heightProperty().addListener(resizeListener);
 	}
 
-	public void addMouseDragEnteredListener(
+/*	public void addMouseDragEnteredListener(
 			MouseDragEnteredListener mouseDragEnteredListener) {
 		scene.addEventHandler(MouseEvent.MOUSE_PRESSED,
 				mouseDragEnteredListener);
@@ -148,6 +146,6 @@ public class GuiView {
 
 		scene.addEventHandler(MouseEvent.MOUSE_RELEASED, mouseDragLeaveListener);
 
-	}
+	}*/
 
 }
