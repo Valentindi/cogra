@@ -1,8 +1,6 @@
 package gui.grid;
 
-import java.util.Random;
 
-import factories.GreyScaleFactory;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.ColumnConstraints;
