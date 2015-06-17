@@ -25,8 +25,8 @@ public class GuiController {
 	private GuiView guiView;
 	private GridBuilder gridBuilder;
 
-	private int beginX=-1;
-	private int beginY=-1;
+	private int beginX = -1;
+	private int beginY = -1;
 
 	public static String activeAlgorithm = "Dummy";
 	private int pixelSize = 15;
@@ -198,8 +198,17 @@ public class GuiController {
 			// gridBuilder.setRectColor(pixel);
 			System.out.println("Läuft");
 			if (beginX > -1 && beginY > -1) {
-				int endX = ((CograRectangle) event.getTarget()).getPosX();
-				int endY = ((CograRectangle) event.getTarget()).getPosY();
+				int endX, endY;
+				try {
+					endX = ((CograRectangle) event.getTarget()).getPosX();
+					endY = ((CograRectangle) event.getTarget()).getPosY();
+
+				} catch (Exception e) {
+					DialogFactory.ErrorDialog("Error",
+							"Drag wurde festgestellt",
+							"Strukturen werden durch 2 Klicks erstellt");
+					return;
+				}
 
 				if (endX < beginX) {
 					int foo = endX;
@@ -212,7 +221,7 @@ public class GuiController {
 					endY = beginY;
 					beginY = foo;
 				}
-				
+
 				endX++;
 				endY++;
 
@@ -243,13 +252,17 @@ public class GuiController {
 				beginX = Integer.MIN_VALUE;
 				beginY = Integer.MIN_VALUE;
 			} else {
+
 				try {
 					beginX = ((CograRectangle) event.getTarget()).getPosX();
 					beginY = ((CograRectangle) event.getTarget()).getPosY();
+
 				} catch (Exception e) {
-					DialogFactory.ErrorDialog("ERROR", "by: " + activeAlgorithm, e.toString());
+					DialogFactory.ErrorDialog("Error",
+							"Drag wurde festgestellt",
+							"Strukturen werden durch 2 Klicks erstellt");
 				}
-				
+
 			}
 
 		}

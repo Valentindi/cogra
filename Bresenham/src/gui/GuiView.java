@@ -13,8 +13,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Dialog;
+import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.RadioMenuItem;
 import javafx.scene.input.MouseEvent;
@@ -50,6 +52,10 @@ public class GuiView {
 
 	MenuItem miZPlus = new MenuItem("Zoom +");
 	MenuItem miZMinus = new MenuItem("Zoom -");
+	
+	//MenuLabel status = new Label("Auf Raster Klicken um Startpunkt zu wählen");
+	MenuButton mbZPlus = new MenuButton("+");
+	MenuButton mbZMinus = new MenuButton("-");
 
 	public GuiView(Stage primaryStage) {
 

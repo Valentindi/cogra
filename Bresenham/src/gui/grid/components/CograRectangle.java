@@ -44,4 +44,9 @@ public class CograRectangle extends Rectangle implements EventHandler<MouseEvent
 		
 	}
 
+	@Override
+	public String toString() {
+		return "CograRectangle [posX=" + posX + ", posY=" + posY + "]";
+	}
+
 }
