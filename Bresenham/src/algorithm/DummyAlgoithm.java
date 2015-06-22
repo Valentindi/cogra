@@ -27,6 +27,7 @@ public class DummyAlgoithm {
 		for (int i = 0 ; i < (endX - beginX); i++) {
 			for (int j = 0; j < endY-beginY; j++) {
 				dummyRectGreyScale[i][j] = GreyScaleFactory.getGreyScale(r.nextDouble());
+				//System.out.println(dummyRectGreyScale[i][j]);
 			}
 			
 		}

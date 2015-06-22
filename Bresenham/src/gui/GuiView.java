@@ -33,7 +33,7 @@ import javafx.scene.Group;
 public class GuiView {
 
 	private AnchorPane rootLayout;
-	private Pane backgroundPane;
+	public Pane backgroundPane;
 	private Stage primaryStage;
 	private SplitPane bottom;
 
@@ -44,21 +44,22 @@ public class GuiView {
 	Menu menuAlgorithmen = new Menu("Algorithmen");
 	Menu menuZoom = new Menu("Zoom");
 	MenuItem miBeenden = new MenuItem("Beenden");
-
+	RadioMenuItem miShowLine = new RadioMenuItem("Hilfslinie anzeigen");
 	RadioMenuItem miADummy = new RadioMenuItem("Dummy");
 	RadioMenuItem miABresenham = new RadioMenuItem(
 			"Rasterkonvertierung Linie - Bresenham-Algorithmus");
 	RadioMenuItem miAvereinfB = new RadioMenuItem(
 			"Antialising Linie - abgewandelter Bresenham-Algorithmus");
-	RadioMenuItem miAexamplLine = new RadioMenuItem(
-			"Example Line");
+	RadioMenuItem miAexamplLine = new RadioMenuItem("Example Line");
 
 	MenuItem miZPlus = new MenuItem("Zoom +");
+
 	MenuItem miZMinus = new MenuItem("Zoom -");
-	
-	public Label status = new Label("Auf Raster Klicken um Startpunkt zu wählen");
-	Button mbZPlus = new Button("+");
-	Button mbZMinus = new Button("-");
+
+	public Label status = new Label(
+			"Auf Raster Klicken um Startpunkt zu wählen");
+	Button mbZPlus = new Button("Zoom +");
+	Button mbZMinus = new Button("Zoom -");
 
 	public GuiView(Stage primaryStage) {
 
@@ -87,54 +88,38 @@ public class GuiView {
 
 	private void addBottom() {
 
-		
-
 	}
 
 	public void addMenu() {
 		addEventHandler();
-
-		menuDatei.getItems().addAll(miBeenden);
-		menuAlgorithmen.getItems().addAll(miADummy, miABresenham, miAvereinfB, miAexamplLine);
+		menuDatei.getItems().addAll(miShowLine, miBeenden);
+		menuAlgorithmen.getItems().addAll(miADummy, miABresenham, miAvereinfB,
+				miAexamplLine);
 		menuZoom.getItems().addAll(miZPlus, miZMinus);
 
 		menubar.getMenus().addAll(menuDatei, menuAlgorithmen);
 		menubar.setLayoutX(scene.getWidth());
-		
+
 		final StackPane stZoomPlus = new StackPane();
 		final StackPane stZoomMinus = new StackPane();
 		final StackPane stStatusLabel = new StackPane(status);
-		
+
 		final SplitPane topSP = new SplitPane();
-		
-		mbZPlus.setLayoutX(150);
-		mbZMinus.setLayoutX(150);
+
 
 		stZoomPlus.getChildren().add(mbZPlus);
-		stZoomPlus.setLayoutX(100);
 		stZoomMinus.getChildren().add(mbZMinus);
-		stZoomMinus.setLayoutX(100);
 		bottom = new SplitPane();
 		bottom.getItems().addAll(stStatusLabel, mbZPlus, mbZMinus);
 		bottom.setDividerPositions(0.5f, 0.75f);
-		
+
 		menubar.setLayoutX(200);
-		
-		
-		topSP.getItems().addAll(menubar,
-				bottom);
+
+		topSP.getItems().addAll(menubar, bottom);
 		topSP.setDividerPositions(0.4f);
 		((BorderPane) rootLayout.getChildren().get(0)).setTop(topSP);
 
-		
-		// try {
-		//((BorderPane) rootLayout.getChildren().get(0)).setTop(menubar);
-		// scene.getRoot().getChildrenUnmodifiable().add(st);
-		/*
-		 * } catch (Exception e) { System.out.println("Failed Build Menu");
-		 * System.out.println(e); }
-		 */
-
+	
 	}
 
 	private void addEventHandler() {
@@ -177,18 +162,20 @@ public class GuiView {
 		scene.heightProperty().addListener(resizeListener);
 	}
 
-/*	public void addMouseDragEnteredListener(
-			MouseDragEnteredListener mouseDragEnteredListener) {
-		scene.addEventHandler(MouseEvent.MOUSE_PRESSED,
-				mouseDragEnteredListener);
-
-	}
-
-	public void addMouseDragLeaveListener(
-			MouseDragLeaveListener mouseDragLeaveListener) {
-
-		scene.addEventHandler(MouseEvent.MOUSE_RELEASED, mouseDragLeaveListener);
-
-	}*/
+	/*
+	 * public void addMouseDragEnteredListener( MouseDragEnteredListener
+	 * mouseDragEnteredListener) {
+	 * scene.addEventHandler(MouseEvent.MOUSE_PRESSED,
+	 * mouseDragEnteredListener);
+	 * 
+	 * }
+	 * 
+	 * public void addMouseDragLeaveListener( MouseDragLeaveListener
+	 * mouseDragLeaveListener) {
+	 * 
+	 * scene.addEventHandler(MouseEvent.MOUSE_RELEASED, mouseDragLeaveListener);
+	 * 
+	 * }
+	 */
 
 }

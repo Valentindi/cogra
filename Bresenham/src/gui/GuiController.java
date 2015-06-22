@@ -19,6 +19,7 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Line;
 
 public class GuiController {
 
@@ -27,6 +28,9 @@ public class GuiController {
 
 	private int beginX = -1;
 	private int beginY = -1;
+	
+	private CograRectangle beginPixel;
+	private CograRectangle endPixel;
 
 	public static String activeAlgorithm = "Dummy";
 	private int pixelSize = 15;
@@ -88,8 +92,8 @@ public class GuiController {
 		pixel.setHeight(pixelSize);
 		for (int i = 0; i < colorRect.length; i++) {
 			for (int j = 0; j < colorRect[i].length; j++) {
-
 				pixel = gridBuilder.getPixel((beginX + i), (beginY + j));
+
 				if (colorRect[i][j] != null) {
 					gridBuilder.setRectColor(pixel, colorRect[i][j]);
 				}
@@ -194,17 +198,16 @@ public class GuiController {
 
 		@Override
 		public void handle(MouseEvent event) {
-			// final CograRectangle pixel = (CograRectangle)
-			// (event.getTarget());
 
-			// gridBuilder.setRectColor(pixel);
-			System.out.println("Läuft");
+			Boolean changeX = false;
+			Boolean changeY = false;
 			if (beginX > -1 && beginY > -1) {
 				int endX, endY;
 				try {
 					endX = ((CograRectangle) event.getTarget()).getPosX();
 					endY = ((CograRectangle) event.getTarget()).getPosY();
-
+					endPixel = (CograRectangle) event.getTarget();
+			
 				} catch (Exception e) {
 					DialogFactory.ErrorDialog("Error",
 							"Drag wurde festgestellt",
@@ -213,12 +216,14 @@ public class GuiController {
 				}
 
 				if (endX < beginX) {
+					changeX = true;
 					int foo = endX;
 					endX = beginX;
 					beginX = foo;
 				}
 
 				if (endY < beginY) {
+					changeY = true;
 					int foo = endY;
 					endY = beginY;
 					beginY = foo;
@@ -241,16 +246,48 @@ public class GuiController {
 					break;
 
 				case "exampleLine":
-					rectColors = exampleLine.run(beginX, beginY, endX, endY);
+					exampleLine activeAlgortithm = new exampleLine();
+					rectColors = activeAlgortithm.run(beginX, beginY, endX,
+							endY);
 					break;
 				// break;
 
 				default:
 					break;
 				}
+				// System.out.println(rectColors.toString());
+
+				if (guiView.miShowLine.isSelected()) {
+					System.out.println("ShowHelpLine");
+					Line helpLine = new Line();
+					if(changeX == false){
+						helpLine.setStartX(beginX*(pixelSize +1 ) + (0.5*pixelSize + 1));
+						helpLine.setEndX(endX * (pixelSize +1) - (0.5*pixelSize + 1));
+						
+					}else{
+						helpLine.setEndX(beginX*(pixelSize +1 ) + (0.5*pixelSize + 1));
+						helpLine.setStartX(endX * (pixelSize +1) - (0.5*pixelSize + 1));
+						
+					}
+						
+					if(changeY == false){
+						helpLine.setStartY(beginY* (pixelSize+1) + (0.5*pixelSize + 1));
+						helpLine.setEndY(endY * (pixelSize +1)- + (0.5*pixelSize + 1));
+						
+					}else{
+						helpLine.setEndY(beginY* (pixelSize+1) + (0.5*pixelSize + 1));
+						helpLine.setStartY(endY * (pixelSize +1)- + (0.5*pixelSize + 1));
+						
+					}
+					helpLine.setFill(Color.RED);
+					helpLine.setStroke(Color.RED);
+
+					System.out.println(helpLine.toString());
+					guiView.backgroundPane.getChildren().add(helpLine);
+				}
 
 				colorTheRect(rectColors, beginX, beginY);
-				
+
 				guiView.status.setText("Klick für Zeichnen");
 				beginX = Integer.MIN_VALUE;
 				beginY = Integer.MIN_VALUE;
@@ -259,7 +296,10 @@ public class GuiController {
 				try {
 					beginX = ((CograRectangle) event.getTarget()).getPosX();
 					beginY = ((CograRectangle) event.getTarget()).getPosY();
+					beginPixel = (CograRectangle) event.getTarget();
 
+					System.out.println("BeginX: " + beginX);
+					System.out.println("BeginY: " + beginY);
 				} catch (Exception e) {
 					DialogFactory.ErrorDialog("Error",
 							"Drag wurde festgestellt",

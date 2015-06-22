@@ -76,7 +76,6 @@ public class GridBuilder {
 	}
 
 	public void setRectColor(CograRectangle pixel, Color colorRect) {
-
 		pixel.setFill(colorRect);
 		// System.out.println("Pixel: " + getPixelCords(pixel)[0] + " " +
 		// getPixelCords(pixel)[1] + " clicked!");
