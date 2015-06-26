@@ -27,24 +27,38 @@ public class GridBuilder {
 		GridPane root = new GridPane();
 
 		root.addEventHandler(MouseEvent.MOUSE_CLICKED, handleClickOnPixel);
-		gridArray = new CograRectangle[pixelCountY][pixelCountX];
+		
+		//if(gridArray == null)
+		  gridArray = new CograRectangle[pixelCountY][pixelCountX];
 
 		for (int i = 0; i < gridArray.length; i++) {
 			for (int t = 0; t < gridArray[i].length; t++) {
 				// Hier wird das gridArray erstellt und mit weißen Pixeln
 				// gefüllt
+			    
+			    //if(gridArray[i][t] == null)
+			    //{
+			    gridArray[i][t] = new CograRectangle();
+	            gridArray[i][t].setFill(Color.WHITE);
+			    //}
 
-				gridArray[i][t] = new CograRectangle();
 				gridArray[i][t].setWidth(pixelSize);
 				gridArray[i][t].setHeight(pixelSize);
-				gridArray[i][t].setFill(Color.WHITE);
 				gridArray[i][t].setPosX(i);
 				gridArray[i][t].setPosY(t);
 				
 				root.getColumnConstraints().add(
 						new ColumnConstraints(pixelSize + offset));
 				GridPane.setConstraints(gridArray[i][t], i, t);
-				root.getChildren().add(gridArray[i][t]);
+				
+				Boolean PixelAlreadyExists = false;
+				
+				for(int j = 0; j < root.getChildren().size(); j++)
+				  if(root.getChildren().get(j) == gridArray[i][t])
+				    PixelAlreadyExists = true;
+				
+				//if(!PixelAlreadyExists)
+				  root.getChildren().add(gridArray[i][t]);
 			}
 			root.getRowConstraints()
 					.add(new RowConstraints(pixelSize + offset));
@@ -77,6 +91,7 @@ public class GridBuilder {
 
 	public void setRectColor(CograRectangle pixel, Color colorRect) {
 		pixel.setFill(colorRect);
+		gridArray[getPixelCords(pixel)[0]][getPixelCords(pixel)[1]] = pixel;
 		// System.out.println("Pixel: " + getPixelCords(pixel)[0] + " " +
 		// getPixelCords(pixel)[1] + " clicked!");
 	}

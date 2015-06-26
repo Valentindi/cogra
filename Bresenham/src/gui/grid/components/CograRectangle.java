@@ -33,10 +33,10 @@ public class CograRectangle extends Rectangle implements EventHandler<MouseEvent
 	
 	@Override
 	public void handle(MouseEvent event) {
-		if(event.equals(event.MOUSE_PRESSED)){
+		if(event.equals(MouseEvent.MOUSE_PRESSED)){
 			System.out.println("Mouse Pressed at: " + posX +" : " + posY);
 		}
-		if(event.equals(event.MOUSE_RELEASED)){
+		if(event.equals(MouseEvent.MOUSE_RELEASED)){
 			System.out.println("Mouse Released at: " + posX +" : " + posY);
 
 			
