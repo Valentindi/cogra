@@ -1,6 +1,8 @@
 package gui.grid;
 
 
+import java.util.ArrayList;
+
 import gui.grid.components.CograRectangle;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
@@ -14,6 +16,7 @@ public class GridBuilder {
 	static final int offset = 1;
 
 	private CograRectangle[][] gridArray;
+	private ArrayList<CograRectangle> savedRects = new ArrayList<CograRectangle> ();
 	private EventHandler<MouseEvent> handleClickOnPixel;
 	private EventHandler<MouseEvent> handleMouseDragEnteredListener;
 	private EventHandler<MouseEvent> handleMouseDragLeaveListener;
@@ -28,20 +31,15 @@ public class GridBuilder {
 
 		root.addEventHandler(MouseEvent.MOUSE_CLICKED, handleClickOnPixel);
 		
-		//if(gridArray == null)
-		  gridArray = new CograRectangle[pixelCountY][pixelCountX];
+		gridArray = new CograRectangle[pixelCountY][pixelCountX];
 
 		for (int i = 0; i < gridArray.length; i++) {
 			for (int t = 0; t < gridArray[i].length; t++) {
 				// Hier wird das gridArray erstellt und mit weißen Pixeln
 				// gefüllt
 			    
-			    //if(gridArray[i][t] == null)
-			    //{
 			    gridArray[i][t] = new CograRectangle();
 	            gridArray[i][t].setFill(Color.WHITE);
-			    //}
-
 				gridArray[i][t].setWidth(pixelSize);
 				gridArray[i][t].setHeight(pixelSize);
 				gridArray[i][t].setPosX(i);
@@ -51,14 +49,10 @@ public class GridBuilder {
 						new ColumnConstraints(pixelSize + offset));
 				GridPane.setConstraints(gridArray[i][t], i, t);
 				
-				Boolean PixelAlreadyExists = false;
+				updateSavedRects(pixelSize);
+				gridArray = loadSavedRects(gridArray, pixelSize);
 				
-				for(int j = 0; j < root.getChildren().size(); j++)
-				  if(root.getChildren().get(j) == gridArray[i][t])
-				    PixelAlreadyExists = true;
-				
-				//if(!PixelAlreadyExists)
-				  root.getChildren().add(gridArray[i][t]);
+				root.getChildren().add(gridArray[i][t]);
 			}
 			root.getRowConstraints()
 					.add(new RowConstraints(pixelSize + offset));
@@ -67,7 +61,29 @@ public class GridBuilder {
 
 	}
 
-	private int getCountY(int pixelSize, int windowWidth) {
+	private void updateSavedRects(int pixelSize) {
+	  
+	  for (CograRectangle pixel : savedRects) {
+        pixel.setHeight(pixelSize);
+        pixel.setWidth(pixelSize);
+    }    
+	  
+  }
+
+  private CograRectangle[][] loadSavedRects(CograRectangle[][] gridArray, int pixelSize) {
+	  
+	for (CograRectangle pixel : savedRects) {
+	  int x = pixel.getPosX();
+	  int y = pixel.getPosY();
+	  
+	  if(gridArray.length > x && gridArray[x].length > y )
+        gridArray[pixel.getPosX()][pixel.getPosY()] = pixel;
+	  
+    }	  
+    return gridArray;
+  }
+
+  private int getCountY(int pixelSize, int windowWidth) {
 		int pixelCountY = windowWidth / (pixelSize);
 
 		if (pixelCountY * pixelSize != windowWidth)
@@ -91,7 +107,7 @@ public class GridBuilder {
 
 	public void setRectColor(CograRectangle pixel, Color colorRect) {
 		pixel.setFill(colorRect);
-		gridArray[getPixelCords(pixel)[0]][getPixelCords(pixel)[1]] = pixel;
+		savedRects.add(pixel);
 		// System.out.println("Pixel: " + getPixelCords(pixel)[0] + " " +
 		// getPixelCords(pixel)[1] + " clicked!");
 	}
