@@ -155,7 +155,7 @@ public class GuiController {
 			guiView.miAexamplLine.setSelected(false);
 
 			activeAlgorithm = "Dummy";
-			System.out.println(activeAlgorithm);
+			//System.out.println(activeAlgorithm);
 		}
 
 	}
@@ -171,7 +171,7 @@ public class GuiController {
 			guiView.miAexamplLine.setSelected(false);
 
 			activeAlgorithm = "Bresenham";
-			System.out.println(activeAlgorithm);
+			//System.out.println(activeAlgorithm);
 
 		}
 
@@ -189,7 +189,7 @@ public class GuiController {
 			guiView.miAexamplLine.setSelected(false);
 
 			activeAlgorithm = "vereinfachterBresenham";
-			System.out.println(activeAlgorithm);
+			//System.out.println(activeAlgorithm);
 
 		}
 
@@ -205,7 +205,7 @@ public class GuiController {
 			guiView.miAvereinfB.setSelected(false);
 			guiView.miAexamplLine.setSelected(true);
 			activeAlgorithm = "exampleLine";
-			System.out.println(activeAlgorithm);
+			//System.out.println(activeAlgorithm);
 
 		}
 
@@ -250,6 +250,7 @@ public class GuiController {
 
 			Boolean changeX = false;
 			Boolean changeY = false;
+			Boolean change = false;
 			if (beginX > -1 && beginY > -1) {
 				int endX, endY;
 				try {
@@ -277,9 +278,17 @@ public class GuiController {
 					endY = beginY;
 					beginY = foo;
 				}
-
+				
+				if((changeX||changeY)&&(!(changeX&&changeY))){
+					System.out.println("CHANGE");
+					change=true;
+				}
+				
 				endX++;
 				endY++;
+				
+				System.out.println("EndX: " + endX);
+				System.out.println("EndY: " + endY);
 
 				Color rectColors[][] = new Color[endX - beginX][endY - beginY];
 				switch (activeAlgorithm) {
@@ -287,7 +296,7 @@ public class GuiController {
 					rectColors = DummyAlgoithm.run(beginX, beginY, endX, endY);
 					break;
 				case "Bresenham":
-					rectColors = Bresenham.run(beginX, beginY, endX, endY);
+					rectColors = Bresenham.run(beginX, beginY, endX, endY, change);
 					break;
 				case "vereinfachterBresenham":
 					rectColors = vereinfachterBresenham.run(beginX, beginY,
@@ -307,7 +316,7 @@ public class GuiController {
 				// System.out.println(rectColors.toString());
 
 				if (guiView.miShowLine.isSelected()) {
-					System.out.println("ShowHelpLine");
+					//System.out.println("ShowHelpLine");
 					Line helpLine = new Line();
 					if (changeX == false) {
 						helpLine.setStartX(beginX * (pixelSize + 1)
@@ -339,7 +348,7 @@ public class GuiController {
 					helpLine.setFill(Color.RED);
 					helpLine.setStroke(Color.RED);
 
-					System.out.println(helpLine.toString());
+					//System.out.println(helpLine.toString());
 					guiView.backgroundPane.getChildren().add(helpLine);
 				}
 
@@ -357,6 +366,7 @@ public class GuiController {
 
 					System.out.println("BeginX: " + beginX);
 					System.out.println("BeginY: " + beginY);
+
 				} catch (Exception e) {
 					DialogFactory.ErrorDialog("Error",
 							"Drag wurde festgestellt",

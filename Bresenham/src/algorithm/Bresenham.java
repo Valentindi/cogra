@@ -8,7 +8,7 @@ import javafx.scene.paint.Color;
 
 public class Bresenham {
 
-	public static Color[][] run(int beginX, int beginY, int endX, int endY) {
+	public static Color[][] run(int beginX, int beginY, int endX, int endY, Boolean change) {
 		Color[][] dummyRectGreyScale = new Color[(int) (endX - beginX) + 1][(int) (endY - beginY) + 1];
 		System.out.println("The Bresenham is running!");
 
@@ -24,16 +24,16 @@ public class Bresenham {
 
 		// Valentins angepasste Interpretation
 		dummyRectGreyScale = valentinsBresenham(dummyRectGreyScale, 0, 0,
-				(endX - beginX), (endY - beginY), Color.BLACK);
+				(endX - beginX), (endY - beginY), Color.BLACK, change);
 
 		return dummyRectGreyScale;
 	}
 
 	private static Color[][] valentinsBresenham(Color[][] dummyRectGreyScale,
-			int x0, int y0, int xn, int yn, Color black) {
-		int dx =  abs(xn-x0); 
+			int x0, int y0, int xn, int yn, Color black, Boolean change) {
+		int dx = abs(xn - x0);
 		int sx = sgn(xn - x0);
-		int dy = -abs(yn-y0);
+		int dy = -abs(yn - y0);
 		int sy = sgn(yn - y0);
 
 		int x = 0;
@@ -44,21 +44,26 @@ public class Bresenham {
 		double ascending = ((double) dx / (double) dy) * 2;
 		double actascnding = 0;
 		dummyRectGreyScale[x][y] = Color.BLACK;
-		while (x < dx ) {
-			System.out.println(x + " : " + y);
+		while (x < dx) {
+			// System.out.println(x + " : " + y);
 			dummyRectGreyScale[x][y] = Color.BLACK;
 
 			e2 = 2 * err;
 			if (e2 > dy) {
-				System.out.println("e2 > dy " + e2 + " err: " + err);
+				// System.out.println("e2 > dy " + e2 + " err: " + err);
 				err = err + dy;
-				x  = x + sx;
+				x = x + sx;
 			}
 			if (e2 < dx) {
-				System.out.println("e2 < dx" + e2 + " err: " + err);
+				// System.out.println("e2 < dx" + e2 + " err: " + err);
 				err = err + dx;
 				y = y + sy;
 			}
+		}
+
+		System.out.println(x0 + " : " + xn + " : " + y0 + " : " + yn);
+		if (change) {
+			dummyRectGreyScale = invertMatrix(dummyRectGreyScale);
 		}
 
 		return dummyRectGreyScale;
@@ -160,6 +165,21 @@ public class Bresenham {
 			number *= -1;
 		}
 		return number;
+	}
+
+	private static Color[][] invertMatrix(Color[][] dummyRectGreyScale) {
+		System.out.println("INVERT");
+
+		Color[][] oldMatrix = dummyRectGreyScale;
+		int x=oldMatrix.length;
+		int y=oldMatrix[0].length;
+		for (int i = 0; i <x; i++) {
+			for (int j = 0; j < y; j++) {
+				oldMatrix[i][j]= dummyRectGreyScale[(x-i)-1][(y-j)-1];
+			}
+		}
+
+		return dummyRectGreyScale;
 	}
 
 }
