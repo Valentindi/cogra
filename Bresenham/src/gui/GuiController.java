@@ -56,6 +56,7 @@ public class GuiController {
 		this.guiView.mbZPlus.setOnAction(new ZoomInHandler());
 		this.guiView.mbZMinus.setOnAction(new ZoomOutHandler());
 		this.guiView.miAexamplLine.setOnAction(new SetExampleLineHandler());
+		this.guiView.miClear.setOnAction(new ClearHandler());
 
 	}
 
@@ -101,6 +102,21 @@ public class GuiController {
 
 		}
 
+	}
+	
+public void clearMatrix() {
+	
+	Color[][] whiteColor = new Color[gridBuilder.getMatrixWidth()][gridBuilder.getMatrixHeight()];
+	
+	for (int i = 0; i < gridBuilder.getMatrixWidth(); i++) {
+		for (int j = 0; j < gridBuilder.getMatrixHeight(); j++) {
+			whiteColor[i][j]= Color.WHITE;
+		}
+		
+	}
+	
+	colorTheRect(whiteColor, 0, 0);
+		
 	}
 
 	class SetDummyHandler implements EventHandler<ActionEvent> {
@@ -168,6 +184,14 @@ public class GuiController {
 
 		}
 
+	}
+	
+	class ClearHandler implements EventHandler<ActionEvent> {
+
+		@Override
+		public void handle(ActionEvent event) {
+			clearMatrix();
+		}
 	}
 
 	class ZoomInHandler implements EventHandler<ActionEvent> {
@@ -310,6 +334,8 @@ public class GuiController {
 
 		}
 	}
+
+	
 
 	/*
 	 * class MouseDragEnteredListener implements EventHandler<MouseEvent> {

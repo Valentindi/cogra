@@ -82,6 +82,7 @@ public class GridBuilder {
     }	  
     return gridArray;
   }
+  
 
   private int getCountY(int pixelSize, int windowWidth) {
 		int pixelCountY = windowWidth / (pixelSize);
@@ -190,6 +191,14 @@ public class GridBuilder {
 			EventHandler<MouseEvent> mouseDragLeaveListener) {
 		this.handleMouseDragLeaveListener = mouseDragLeaveListener;
 
+	}
+	
+	public int getMatrixWidth(){
+		return gridArray.length;
+	}
+	
+	public int getMatrixHeight(){
+		return gridArray[0].length;
 	}
 
 }

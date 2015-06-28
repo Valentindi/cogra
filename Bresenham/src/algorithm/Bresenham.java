@@ -89,7 +89,6 @@ public class Bresenham {
 			} else {
 				y = y + sw;
 				System.out.println("y_alt: " + y + "sw: " + sw +  "y_neu: " + (y+sw));
-
 				d = d + d2;
 				System.out.println("d_alt: " + d + "d2: " + d2 +  "d_neu: " + (d+d2));
 

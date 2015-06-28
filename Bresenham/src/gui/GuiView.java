@@ -44,6 +44,8 @@ public class GuiView {
 	Menu menuAlgorithmen = new Menu("Algorithmen");
 	Menu menuZoom = new Menu("Zoom");
 	MenuItem miBeenden = new MenuItem("Beenden");
+	MenuItem miClear = new MenuItem("Clear");
+
 	RadioMenuItem miShowLine = new RadioMenuItem("Hilfslinie anzeigen");
 	RadioMenuItem miADummy = new RadioMenuItem("Dummy");
 	RadioMenuItem miABresenham = new RadioMenuItem(
@@ -92,7 +94,7 @@ public class GuiView {
 
 	public void addMenu() {
 		addEventHandler();
-		menuDatei.getItems().addAll(miShowLine, miBeenden);
+		menuDatei.getItems().addAll(miShowLine, miClear, miBeenden);
 		menuAlgorithmen.getItems().addAll(miADummy, miABresenham, miAvereinfB,
 				miAexamplLine);
 		menuZoom.getItems().addAll(miZPlus, miZMinus);
