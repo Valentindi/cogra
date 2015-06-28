@@ -1,5 +1,7 @@
 package gui;
 
+import java.util.ArrayList;
+
 import algorithm.Bresenham;
 import algorithm.DummyAlgoithm;
 import algorithm.exampleLine;
@@ -13,8 +15,10 @@ import gui.grid.GridBuilder;
 import gui.grid.components.CograRectangle;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.Node;
 import javafx.scene.control.MenuBar;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.MouseEvent;
@@ -116,6 +120,9 @@ public void clearMatrix() {
 	}
 	
 	colorTheRect(whiteColor, 0, 0);
+	guiView.backgroundPane.getChildren().clear();
+	buildGrid();
+
 		
 	}
 
