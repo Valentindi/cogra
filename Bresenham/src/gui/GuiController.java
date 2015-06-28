@@ -247,8 +247,8 @@ public class GuiController {
 
 				case "exampleLine":
 					exampleLine activeAlgortithm = new exampleLine();
-					rectColors = activeAlgortithm.run(beginX, beginY, endX,
-							endY);
+					rectColors = exampleLine.run(beginX, beginY, endX,
+							endY, changeX, changeY);
 					break;
 				// break;
 
