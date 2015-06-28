@@ -32,7 +32,7 @@ public class GuiController {
 
 	private int beginX = -1;
 	private int beginY = -1;
-	
+
 	private CograRectangle beginPixel;
 	private CograRectangle endPixel;
 
@@ -99,6 +99,24 @@ public class GuiController {
 			for (int j = 0; j < colorRect[i].length; j++) {
 				pixel = gridBuilder.getPixel((beginX + i), (beginY + j));
 
+				if (colorRect[i][j] != null && colorRect[i][j] == Color.BLACK) {
+					gridBuilder.setRectColor(pixel, colorRect[i][j]);
+				}
+			}
+
+		}
+
+	}
+
+	public void colorTheRectWhite(Color[][] colorRect, int beginX, int beginY) {
+
+		CograRectangle pixel = new CograRectangle();
+		pixel.setWidth(pixelSize);
+		pixel.setHeight(pixelSize);
+		for (int i = 0; i < colorRect.length; i++) {
+			for (int j = 0; j < colorRect[i].length; j++) {
+				pixel = gridBuilder.getPixel((beginX + i), (beginY + j));
+
 				if (colorRect[i][j] != null) {
 					gridBuilder.setRectColor(pixel, colorRect[i][j]);
 				}
@@ -107,23 +125,23 @@ public class GuiController {
 		}
 
 	}
-	
-public void clearMatrix() {
-	
-	Color[][] whiteColor = new Color[gridBuilder.getMatrixWidth()][gridBuilder.getMatrixHeight()];
-	
-	for (int i = 0; i < gridBuilder.getMatrixWidth(); i++) {
-		for (int j = 0; j < gridBuilder.getMatrixHeight(); j++) {
-			whiteColor[i][j]= Color.WHITE;
-		}
-		
-	}
-	
-	colorTheRect(whiteColor, 0, 0);
-	guiView.backgroundPane.getChildren().clear();
-	buildGrid();
 
-		
+	public void clearMatrix() {
+
+		Color[][] whiteColor = new Color[gridBuilder.getMatrixWidth()][gridBuilder
+				.getMatrixHeight()];
+
+		for (int i = 0; i < gridBuilder.getMatrixWidth(); i++) {
+			for (int j = 0; j < gridBuilder.getMatrixHeight(); j++) {
+				whiteColor[i][j] = Color.WHITE;
+			}
+
+		}
+
+		colorTheRectWhite(whiteColor, 0, 0);
+		guiView.backgroundPane.getChildren().clear();
+		buildGrid();
+
 	}
 
 	class SetDummyHandler implements EventHandler<ActionEvent> {
@@ -192,7 +210,7 @@ public void clearMatrix() {
 		}
 
 	}
-	
+
 	class ClearHandler implements EventHandler<ActionEvent> {
 
 		@Override
@@ -238,7 +256,7 @@ public void clearMatrix() {
 					endX = ((CograRectangle) event.getTarget()).getPosX();
 					endY = ((CograRectangle) event.getTarget()).getPosY();
 					endPixel = (CograRectangle) event.getTarget();
-			
+
 				} catch (Exception e) {
 					DialogFactory.ErrorDialog("Error",
 							"Drag wurde festgestellt",
@@ -278,8 +296,8 @@ public void clearMatrix() {
 
 				case "exampleLine":
 					exampleLine activeAlgortithm = new exampleLine();
-					rectColors = exampleLine.run(beginX, beginY, endX,
-							endY, changeX, changeY);
+					rectColors = exampleLine.run(beginX, beginY, endX, endY,
+							changeX, changeY);
 					break;
 				// break;
 
@@ -291,24 +309,32 @@ public void clearMatrix() {
 				if (guiView.miShowLine.isSelected()) {
 					System.out.println("ShowHelpLine");
 					Line helpLine = new Line();
-					if(changeX == false){
-						helpLine.setStartX(beginX*(pixelSize +1 ) + (0.5*pixelSize + 1));
-						helpLine.setEndX(endX * (pixelSize +1) - (0.5*pixelSize + 1));
-						
-					}else{
-						helpLine.setEndX(beginX*(pixelSize +1 ) + (0.5*pixelSize + 1));
-						helpLine.setStartX(endX * (pixelSize +1) - (0.5*pixelSize + 1));
-						
+					if (changeX == false) {
+						helpLine.setStartX(beginX * (pixelSize + 1)
+								+ (0.5 * pixelSize + 1));
+						helpLine.setEndX(endX * (pixelSize + 1)
+								- (0.5 * pixelSize + 1));
+
+					} else {
+						helpLine.setEndX(beginX * (pixelSize + 1)
+								+ (0.5 * pixelSize + 1));
+						helpLine.setStartX(endX * (pixelSize + 1)
+								- (0.5 * pixelSize + 1));
+
 					}
-						
-					if(changeY == false){
-						helpLine.setStartY(beginY* (pixelSize+1) + (0.5*pixelSize + 1));
-						helpLine.setEndY(endY * (pixelSize +1)- + (0.5*pixelSize + 1));
-						
-					}else{
-						helpLine.setEndY(beginY* (pixelSize+1) + (0.5*pixelSize + 1));
-						helpLine.setStartY(endY * (pixelSize +1)- + (0.5*pixelSize + 1));
-						
+
+					if (changeY == false) {
+						helpLine.setStartY(beginY * (pixelSize + 1)
+								+ (0.5 * pixelSize + 1));
+						helpLine.setEndY(endY * (pixelSize + 1)
+								- +(0.5 * pixelSize + 1));
+
+					} else {
+						helpLine.setEndY(beginY * (pixelSize + 1)
+								+ (0.5 * pixelSize + 1));
+						helpLine.setStartY(endY * (pixelSize + 1)
+								- +(0.5 * pixelSize + 1));
+
 					}
 					helpLine.setFill(Color.RED);
 					helpLine.setStroke(Color.RED);
@@ -341,8 +367,6 @@ public void clearMatrix() {
 
 		}
 	}
-
-	
 
 	/*
 	 * class MouseDragEnteredListener implements EventHandler<MouseEvent> {
