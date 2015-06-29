@@ -259,8 +259,8 @@ public class GuiController {
 
 	}
 
-	private static Color[][] bresline(Color[][] dummyRectGreyScale, int x0,
-			int y0, int xn, int yn, Color black) {
+	private Color[][] bresline(Color[][] dummyRectGreyScale, int x0, int y0,
+			int xn, int yn, Color black) {
 
 		int dx = xn - x0;
 		int dy = yn - y0;
@@ -294,11 +294,10 @@ public class GuiController {
 		return dummyRectGreyScale;
 	}
 
-	private static Color[][] bres1(Color[][] dummyRectGreyScale, int x0,
-			int y0, int xn, int dx, int dy, boolean sp) {
-
+	private Color[][] bres1(Color[][] dummyRectGreyScale, int x0, int y0,
+			int xn, int dx, int dy, boolean sp) {
 		int sw, d, d1, d2, x, y;
-
+		CograRectangle pixel;
 		if (dy < 0) {
 			sw = -1;
 			dy = -dy;
@@ -314,9 +313,15 @@ public class GuiController {
 		y = y0;
 		if (!sp) {
 			System.out.println("Paint: " + x + " : " + y);
+			pixel = gridBuilder.getPixel(x, y);
+			pixel.setFill(Color.BLACK);
+			gridBuilder.setPixel(pixel, x, y);
 
 		} else {
 			System.out.println("Paint: " + y + " : " + x);
+			pixel = gridBuilder.getPixel(y, x);
+			pixel.setFill(Color.BLACK);
+			gridBuilder.setPixel(pixel, y, x);
 
 			dummyRectGreyScale[y][x] = Color.BLACK;
 		}
@@ -338,10 +343,16 @@ public class GuiController {
 
 			if (!sp) {
 				System.out.println("Paint: " + x + " : " + y);
-				dummyRectGreyScale[x][y] = Color.BLACK;
+				pixel = gridBuilder.getPixel(x, y);
+				pixel.setFill(Color.BLACK);
+				gridBuilder.setPixel(pixel, x, y);
+
 			} else {
 				System.out.println("Paint: " + y + " : " + x);
-				dummyRectGreyScale[y][x] = Color.BLACK;
+				pixel = gridBuilder.getPixel(y, x);
+				pixel.setFill(Color.BLACK);
+				gridBuilder.setPixel(pixel, y, x);
+
 			}
 		}
 
