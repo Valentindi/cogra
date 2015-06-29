@@ -2,8 +2,8 @@ package algorithm;
 
 import java.util.Random;
 
-import factories.DialogFactory;
 import javafx.scene.paint.Color;
+import factories.DialogFactory;
 
 public class vereinfachterBresenham {
 

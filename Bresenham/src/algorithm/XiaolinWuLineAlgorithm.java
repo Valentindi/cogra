@@ -1,8 +1,6 @@
 package algorithm;
 
 import javafx.scene.paint.Color;
-import factories.DialogFactory;
-import factories.GreyScaleFactory;
 
 public class XiaolinWuLineAlgorithm {
 	

@@ -1,29 +1,18 @@
 package gui;
 
-import java.util.ArrayList;
-
-import algorithm.Bresenham;
-import algorithm.DummyAlgoithm;
-import algorithm.exampleLine;
-import algorithm.vereinfachterBresenham;
-
-import com.sun.javafx.scene.control.skin.ComboBoxListViewSkin.FakeFocusTextField;
-
 import factories.DialogFactory;
-import factories.FindeLineColumnFactory;
 import gui.grid.GridBuilder;
 import gui.grid.components.CograRectangle;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.Node;
-import javafx.scene.control.MenuBar;
-import javafx.scene.input.DragEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
+import algorithm.DummyAlgoithm;
+import algorithm.exampleLine;
+import algorithm.vereinfachterBresenham;
 
 public class GuiController {
 

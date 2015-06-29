@@ -1,9 +1,10 @@
 package gui.grid;
 
 
+import gui.grid.components.CograRectangle;
+
 import java.util.ArrayList;
 
-import gui.grid.components.CograRectangle;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.ColumnConstraints;

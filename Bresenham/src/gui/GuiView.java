@@ -1,34 +1,24 @@
 package gui;
 
-import factories.DialogFactory;
-import gui.GuiController.SetBresenhamHandler;
-import gui.GuiController.SetDummyHandler;
-import gui.GuiController.SetVereinfHandler;
-import gui.GuiController.ZoomInHandler;
-import gui.GuiController.ZoomOutHandler;
 import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
-import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.RadioMenuItem;
 import javafx.scene.control.SplitPane;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import javafx.scene.Group;
+import factories.DialogFactory;
 
 public class GuiView {
 
