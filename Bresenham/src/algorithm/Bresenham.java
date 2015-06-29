@@ -8,7 +8,26 @@ import javafx.scene.paint.Color;
 
 public class Bresenham {
 
-	public static Color[][] run(int beginX, int beginY, int endX, int endY, Boolean change) {
+	public static Color[][] run(int beginX, int beginY, int endX, int endY,
+			Boolean change) {
+
+		int beginXorg = beginX;
+		int beginYorg = beginY;
+		int endXorg = endX;
+		int endYorg = endY;
+
+		if (endX < beginX) {
+			int foo = endX;
+			endX = beginX;
+			beginX = foo;
+		}
+
+		if (endY < beginY) {
+			int foo = endY;
+			endY = beginY;
+			beginY = foo;
+		}
+
 		Color[][] dummyRectGreyScale = new Color[(int) (endX - beginX) + 1][(int) (endY - beginY) + 1];
 		System.out.println("The Bresenham is running!");
 
@@ -19,53 +38,14 @@ public class Bresenham {
 
 		}
 		// Implementierung nach Skript von Prof. Jaeger
-		// dummyRectGreyScale = bresline(dummyRectGreyScale, 0, 0,
-		// (endX - beginX), (endY - beginY), Color.BLACK);
+		dummyRectGreyScale = bresline(dummyRectGreyScale, beginXorg, beginYorg,
+				endXorg, endYorg, Color.BLACK);
 
 		// Valentins angepasste Interpretation
-		dummyRectGreyScale = valentinsBresenham(dummyRectGreyScale, 0, 0,
-				(endX - beginX), (endY - beginY), Color.BLACK, change);
-
-		return dummyRectGreyScale;
-	}
-
-	private static Color[][] valentinsBresenham(Color[][] dummyRectGreyScale,
-			int x0, int y0, int xn, int yn, Color black, Boolean change) {
-		int dx = abs(xn - x0);
-		int sx = sgn(xn - x0);
-		int dy = -abs(yn - y0);
-		int sy = sgn(yn - y0);
-
-		int x = 0;
-		int y = 0;
-
-		int err = dx + dy, e2;
-
-		double ascending = ((double) dx / (double) dy) * 2;
-		double actascnding = 0;
-		dummyRectGreyScale[x][y] = Color.BLACK;
-		while (x < dx) {
-			// System.out.println(x + " : " + y);
-			dummyRectGreyScale[x][y] = Color.BLACK;
-
-			e2 = 2 * err;
-			if (e2 > dy) {
-				// System.out.println("e2 > dy " + e2 + " err: " + err);
-				err = err + dy;
-				x = x + sx;
-			}
-			if (e2 < dx) {
-				// System.out.println("e2 < dx" + e2 + " err: " + err);
-				err = err + dx;
-				y = y + sy;
-			}
-		}
-
-		System.out.println(x0 + " : " + xn + " : " + y0 + " : " + yn);
-		if (change) {
-			dummyRectGreyScale = invertMatrix(dummyRectGreyScale);
-		}
-
+		/*
+		 * dummyRectGreyScale = valentinsBresenham(dummyRectGreyScale, 0, 0,
+		 * (endX - beginX), (endY - beginY), Color.BLACK, change);
+		 */
 		return dummyRectGreyScale;
 	}
 
@@ -74,6 +54,9 @@ public class Bresenham {
 
 		int dx = xn - x0;
 		int dy = yn - y0;
+
+		// System.out.println("BRESLINE");
+		System.out.println("abs(dx): " + abs(dx) + " abs(dy): " + abs(dy));
 
 		if (abs(dx) >= abs(dy)) {
 			System.out.println("Anstieg  -45 .. 0 .. +45");
@@ -110,6 +93,7 @@ public class Bresenham {
 		} else {
 			sw = 1;
 		}
+
 		d = 2 * dy - dx;
 		d1 = 2 * dy;
 		d2 = 2 * (dy - dx);
@@ -118,6 +102,7 @@ public class Bresenham {
 		if (!sp) {
 			System.out.println("Paint: " + x + " : " + y);
 
+			
 			dummyRectGreyScale[x][y] = Color.BLACK;
 		} else {
 			System.out.println("Paint: " + y + " : " + x);
@@ -129,7 +114,7 @@ public class Bresenham {
 			x = x + 1;
 			if (d < 0) {
 				System.out.println("d_alt: " + d + "d_neu: " + (d + 1));
-				d = d + 1;
+				d = d + d1;
 			} else {
 				y = y + sw;
 				System.out.println("y_alt: " + y + "sw: " + sw + "y_neu: "
@@ -171,12 +156,52 @@ public class Bresenham {
 		System.out.println("INVERT");
 
 		Color[][] oldMatrix = dummyRectGreyScale;
-		int x=oldMatrix.length;
-		int y=oldMatrix[0].length;
-		for (int i = 0; i <x; i++) {
+		int x = oldMatrix.length;
+		int y = oldMatrix[0].length;
+		for (int i = 0; i < x; i++) {
 			for (int j = 0; j < y; j++) {
-				oldMatrix[i][j]= dummyRectGreyScale[(x-i)-1][(y-j)-1];
+				oldMatrix[i][j] = dummyRectGreyScale[(x - i) - 1][(y - j) - 1];
 			}
+		}
+
+		return dummyRectGreyScale;
+	}
+
+	private static Color[][] valentinsBresenham(Color[][] dummyRectGreyScale,
+			int x0, int y0, int xn, int yn, Color black, Boolean change) {
+		int dx = abs(xn - x0);
+		int sx = sgn(xn - x0);
+		int dy = -abs(yn - y0);
+		int sy = sgn(yn - y0);
+
+		int x = 0;
+		int y = 0;
+
+		int err = dx + dy, e2;
+
+		double ascending = ((double) dx / (double) dy) * 2;
+		double actascnding = 0;
+		dummyRectGreyScale[x][y] = Color.BLACK;
+		while (x < dx) {
+			// System.out.println(x + " : " + y);
+			dummyRectGreyScale[x][y] = Color.BLACK;
+
+			e2 = 2 * err;
+			if (e2 > dy) {
+				// System.out.println("e2 > dy " + e2 + " err: " + err);
+				err = err + dy;
+				x = x + sx;
+			}
+			if (e2 < dx) {
+				// System.out.println("e2 < dx" + e2 + " err: " + err);
+				err = err + dx;
+				y = y + sy;
+			}
+		}
+
+		System.out.println(x0 + " : " + xn + " : " + y0 + " : " + yn);
+		if (change) {
+			dummyRectGreyScale = invertMatrix(dummyRectGreyScale);
 		}
 
 		return dummyRectGreyScale;
