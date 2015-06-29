@@ -147,34 +147,38 @@ public class GuiController {
 	private void drawHelpline(int beginX, int beginY, int endX, int endY,
 			Boolean changeX, Boolean changeY) {
 		if (guiView.miShowLine.isSelected()) {
-			// System.out.println("ShowHelpLine");
+			System.out.println("ShowHelpLine");
 			Line helpLine = new Line();
-			if (changeX == false) {
-				helpLine.setStartX(beginX * (pixelSize + 1)
-						+ (0.5 * pixelSize + 1));
-				helpLine.setEndX(endX * (pixelSize + 1) - (0.5 * pixelSize + 1));
 
-			} else {
-				helpLine.setEndX(beginX * (pixelSize + 1)
-						+ (0.5 * pixelSize + 1));
-				helpLine.setStartX(endX * (pixelSize + 1)
-						- (0.5 * pixelSize + 1));
+		
+			System.out.println("DrawHelpline: " + beginX + " : " + beginY
+					+ " : " + endX + " : " + endY);
+			helpLine.setStartX(beginX * (pixelSize+1) + (0.5 * pixelSize));
+			helpLine.setEndX(endX * (pixelSize+1) - (0.5 * pixelSize));
 
-			}
+			helpLine.setStartY(beginY * (pixelSize+1) + (0.5 * pixelSize));
+			helpLine.setEndY(endY * (pixelSize+1) - +(0.5 * pixelSize));
 
-			if (changeY == false) {
-				helpLine.setStartY(beginY * (pixelSize + 1)
-						+ (0.5 * pixelSize + 1));
-				helpLine.setEndY(endY * (pixelSize + 1)
-						- +(0.5 * pixelSize + 1));
-
-			} else {
-				helpLine.setEndY(beginY * (pixelSize + 1)
-						+ (0.5 * pixelSize + 1));
-				helpLine.setStartY(endY * (pixelSize + 1)
-						- +(0.5 * pixelSize + 1));
-
-			}
+			/*
+			 * if (changeX == false) { helpLine.setStartX(beginX * (pixelSize) +
+			 * (0.5 * pixelSize)); helpLine.setEndX(endX * (pixelSize) - (0.5 *
+			 * pixelSize ));
+			 * 
+			 * } else { helpLine.setEndX(beginX * (pixelSize) + (0.5 * pixelSize
+			 * )); helpLine.setStartX(endX * (pixelSize) - (0.5 * pixelSize ));
+			 * 
+			 * }
+			 * 
+			 * if (changeY == false) { helpLine.setStartY(beginY * (pixelSize) +
+			 * (0.5 * pixelSize )); helpLine.setEndY(endY * (pixelSize ) - +(0.5
+			 * * pixelSize ));
+			 * 
+			 * } else { helpLine.setEndY(beginY * (pixelSize ) + (0.5 *
+			 * pixelSize )); helpLine.setStartY(endY * (pixelSize) - +(0.5 *
+			 * pixelSize));
+			 * 
+			 * }
+			 */
 			helpLine.setFill(Color.RED);
 			helpLine.setStroke(Color.RED);
 
@@ -529,7 +533,8 @@ public class GuiController {
 
 				runAlgs(beginX, beginY, beginXorg, beginYorg, endX, endY,
 						endXorg, endYorg, change, changeX, changeY);
-				drawHelpline(beginX, beginY, endX, endY, changeX, changeY);
+				drawHelpline(beginXorg, beginYorg, endXorg, endYorg, changeX,
+						changeY);
 
 				guiView.status.setText("Klick für Zeichnen");
 				beginX = Integer.MIN_VALUE;
@@ -556,51 +561,4 @@ public class GuiController {
 
 	}
 
-	/*
-	 * class MouseDragEnteredListener implements EventHandler<MouseEvent> {
-	 * 
-	 * @Override public void handle(MouseEvent event) {
-	 * System.out.println("Mouse Down test"); //Zuweisung der Pixel bei Begin
-	 * des Mausziehens. beginX = event.getX(); beginY = event.getY();
-	 * System.out.println(beginX + " BEGIN " + beginY);
-	 * 
-	 * }
-	 * 
-	 * }
-	 * 
-	 * class MouseDragLeaveListener implements EventHandler<MouseEvent> {
-	 * 
-	 * @Override public void handle(MouseEvent event) {
-	 * System.out.println("Mouse UP test"); double foo; double endY =
-	 * event.getY(); double endX = event.getX(); //Austauschen der Variablen,
-	 * falls End > Begin if (endY < beginY) { foo = endY; endY = beginY; beginY
-	 * = foo; }
-	 * 
-	 * if (endX < beginX) { foo = endX; endX = beginX; beginX = foo; }
-	 * 
-	 * //Berechnung des Gedrückten CograRectangle int beginXLine =
-	 * FindeLineColumnFactory.getLineORColumn(beginX, pixelSize); int beginYLine
-	 * = FindeLineColumnFactory.getLineORColumn(beginY, pixelSize); int endXLine
-	 * = FindeLineColumnFactory.getLineORColumn(endX, pixelSize) + 1; int
-	 * endYLine = FindeLineColumnFactory.getLineORColumn(endY, pixelSize) + 1;
-	 * 
-	 * //Erstellung des der FarbMatrix Color rectColors[][] = new Color[endXLine
-	 * - beginXLine][endYLine - beginYLine];
-	 * 
-	 * //aufruf des aktiven Algoritmus switch (activeAlgorithm) { case "Dummy":
-	 * rectColors = DummyAlgoithm.run(beginXLine, beginYLine, endXLine,
-	 * endYLine); break; case "Bresenham": rectColors =
-	 * Bresenham.run(beginXLine, beginYLine, endXLine, endYLine); break; case
-	 * "vereinfachterBresenham": rectColors =
-	 * vereinfachterBresenham.run(beginXLine, beginYLine, endXLine, endYLine);
-	 * break;
-	 * 
-	 * case "exampleLine": rectColors = exampleLine.run(beginXLine, beginYLine,
-	 * endXLine, endYLine); break; // break;
-	 * 
-	 * default: break; } //Zeichnen des Grids colorTheRect(rectColors,
-	 * beginXLine, beginYLine); }
-	 * 
-	 * }
-	 */
 }
