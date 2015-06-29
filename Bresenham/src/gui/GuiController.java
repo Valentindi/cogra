@@ -147,42 +147,17 @@ public class GuiController {
 	private void drawHelpline(int beginX, int beginY, int endX, int endY,
 			Boolean changeX, Boolean changeY) {
 		if (guiView.miShowLine.isSelected()) {
-			System.out.println("ShowHelpLine");
 			Line helpLine = new Line();
 
-		
-			System.out.println("DrawHelpline: " + beginX + " : " + beginY
-					+ " : " + endX + " : " + endY);
-			helpLine.setStartX(beginX * (pixelSize+1) + (0.5 * pixelSize));
-			helpLine.setEndX(endX * (pixelSize+1) - (0.5 * pixelSize));
+			helpLine.setStartX(beginX * (pixelSize + 1) + (0.5 * pixelSize));
+			helpLine.setEndX(endX * (pixelSize + 1) - (0.5 * pixelSize));
 
-			helpLine.setStartY(beginY * (pixelSize+1) + (0.5 * pixelSize));
-			helpLine.setEndY(endY * (pixelSize+1) - +(0.5 * pixelSize));
+			helpLine.setStartY(beginY * (pixelSize + 1) + (0.5 * pixelSize));
+			helpLine.setEndY(endY * (pixelSize + 1) - +(0.5 * pixelSize));
 
-			/*
-			 * if (changeX == false) { helpLine.setStartX(beginX * (pixelSize) +
-			 * (0.5 * pixelSize)); helpLine.setEndX(endX * (pixelSize) - (0.5 *
-			 * pixelSize ));
-			 * 
-			 * } else { helpLine.setEndX(beginX * (pixelSize) + (0.5 * pixelSize
-			 * )); helpLine.setStartX(endX * (pixelSize) - (0.5 * pixelSize ));
-			 * 
-			 * }
-			 * 
-			 * if (changeY == false) { helpLine.setStartY(beginY * (pixelSize) +
-			 * (0.5 * pixelSize )); helpLine.setEndY(endY * (pixelSize ) - +(0.5
-			 * * pixelSize ));
-			 * 
-			 * } else { helpLine.setEndY(beginY * (pixelSize ) + (0.5 *
-			 * pixelSize )); helpLine.setStartY(endY * (pixelSize) - +(0.5 *
-			 * pixelSize));
-			 * 
-			 * }
-			 */
 			helpLine.setFill(Color.RED);
 			helpLine.setStroke(Color.RED);
 
-			// System.out.println(helpLine.toString());
 			guiView.backgroundPane.getChildren().add(helpLine);
 		}
 
@@ -242,29 +217,12 @@ public class GuiController {
 			beginY = foo;
 		}
 
-		Color[][] dummyRectGreyScale = new Color[(int) (endX - beginX) + 1][(int) (endY - beginY) + 1];
-		System.out.println("The Bresenham is running!");
-
-		for (int i = 0; i < (endX - beginX); i++) {
-			for (int j = 0; j < endY - beginY; j++) {
-				dummyRectGreyScale[i][j] = Color.WHITE;
-			}
-
-		}
 		// Implementierung nach Skript von Prof. Jaeger
-		bresline(dummyRectGreyScale, beginXorg, beginYorg, endXorg, endYorg,
-				Color.BLACK);
-
-		// Valentins angepasste Interpretation
-		/*
-		 * dummyRectGreyScale = valentinsBresenham(dummyRectGreyScale, 0, 0,
-		 * (endX - beginX), (endY - beginY), Color.BLACK, change);
-		 */
+		bresline(beginXorg, beginYorg, endXorg-1, endYorg-1, Color.BLACK);
 
 	}
 
-	private Color[][] bresline(Color[][] dummyRectGreyScale, int x0, int y0,
-			int xn, int yn, Color black) {
+	private void bresline(int x0, int y0, int xn, int yn, Color black) {
 
 		int dx = xn - x0;
 		int dy = yn - y0;
@@ -275,37 +233,36 @@ public class GuiController {
 		if (abs(dx) >= abs(dy)) {
 			System.out.println("Anstieg  -45 .. 0 .. +45");
 			if (x0 > xn) {
-				dummyRectGreyScale = bresline(dummyRectGreyScale, xn, yn, x0,
-						y0, Color.BLACK);
+				bresline(xn, yn, x0, y0, Color.BLACK);
+
 			} else {
-				dummyRectGreyScale = bres1(dummyRectGreyScale, x0, y0, xn, dx,
-						dy, false);
+				bres1(x0, y0, xn, dx, dy, false);
 			}
 
 		} else {
 			System.out.println("{Anstieg +45 .. 90 .. -45}");
 			if (y0 > yn) {
-				dummyRectGreyScale = bresline(dummyRectGreyScale, xn, yn, x0,
-						y0, Color.BLACK);
+				bresline(xn, yn, x0, y0, Color.BLACK);
+
 			} else {
-				/*
-				 * dummyRectGreyScale = bres1(dummyRectGreyScale, y0, x0, yn,
-				 * dy, dx, true);
-				 */
+
+				bres1(y0, x0, yn, dy, dx, true);
+
 			}
 		}
 
-		return dummyRectGreyScale;
 	}
 
-	private Color[][] bres1(Color[][] dummyRectGreyScale, int x0, int y0,
-			int xn, int dx, int dy, boolean sp) {
+	private void bres1(int x0, int y0, int xn, int dx, int dy, boolean sp) {
 		int sw, d, d1, d2, x, y;
+
+
+		System.out.println("Bresham: " + x0 + " : " + y0 + " : " + xn + " : "
+				+ dx + " : " + dy + " : " + sp);
 		CograRectangle pixel;
 		if (dy < 0) {
 			sw = -1;
 			dy = -dy;
-
 		} else {
 			sw = 1;
 		}
@@ -316,21 +273,18 @@ public class GuiController {
 		x = x0;
 		y = y0;
 		if (!sp) {
-			System.out.println("Paint: " + x + " : " + y);
 			pixel = gridBuilder.getPixel(x, y);
 			pixel.setFill(Color.BLACK);
 			gridBuilder.setPixel(pixel, x, y);
 
 		} else {
-			System.out.println("Paint: " + y + " : " + x);
 			pixel = gridBuilder.getPixel(y, x);
 			pixel.setFill(Color.BLACK);
 			gridBuilder.setPixel(pixel, y, x);
 
-			dummyRectGreyScale[y][x] = Color.BLACK;
 		}
 
-		while (x < (xn - 1)) {
+		while (x < xn) {
 			x = x + 1;
 			if (d < 0) {
 				System.out.println("d_alt: " + d + "d_neu: " + (d + 1));
@@ -346,21 +300,17 @@ public class GuiController {
 			}
 
 			if (!sp) {
-				System.out.println("Paint: " + x + " : " + y);
 				pixel = gridBuilder.getPixel(x, y);
 				pixel.setFill(Color.BLACK);
 				gridBuilder.setPixel(pixel, x, y);
 
 			} else {
-				System.out.println("Paint: " + y + " : " + x);
 				pixel = gridBuilder.getPixel(y, x);
 				pixel.setFill(Color.BLACK);
 				gridBuilder.setPixel(pixel, y, x);
 
 			}
 		}
-
-		return dummyRectGreyScale;
 
 	}
 
@@ -503,11 +453,10 @@ public class GuiController {
 				// Koordinaten die nicht sortiert sortiert werden
 				int beginXorg = beginX;
 				int beginYorg = beginY;
-				int endXorg = endX + 1;
-				int endYorg = endY + 1;
-
 				endX++;
 				endY++;
+				int endXorg = endX;
+				int endYorg = endY;
 
 				if (endX < beginX) {
 					changeX = true;
