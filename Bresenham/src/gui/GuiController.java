@@ -72,7 +72,7 @@ public class GuiController {
 
 	public void decPixelSize() {
 		if (pixelSize <= 5)
-			pixelSize = 3;
+			pixelSize = 1;
 		else
 			pixelSize = pixelSize - 5;
 

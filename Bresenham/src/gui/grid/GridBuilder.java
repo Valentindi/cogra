@@ -18,26 +18,24 @@ import javafx.scene.paint.Color;
 
 public class GridBuilder {
 
-  static final int offset = 1;
+  static int offset = 1;
 
-  private Pixel[][] gridArray;
-  private ArrayList<Pixel> savedPixel = new ArrayList<Pixel>();
-  private GridPainter gp;
+  private static Pixel[][] gridArray;
+  private static ArrayList<Pixel> savedPixel = new ArrayList<Pixel>();
+  private static GridPainter gp;
   private EventHandler<MouseEvent> handleClickOnPixel;
   private EventHandler<MouseEvent> handleMouseDragEnteredListener;
   private EventHandler<MouseEvent> handleMouseDragLeaveListener;
 
   public Pane buildGrid(int pixelSize, int windowHeight, int windowWidth) {
-
+    if(pixelSize==1)
+      offset = 0;
+    else
+      offset = 1;
 
     gp = new GridPainter(windowHeight, windowWidth);
 
     Pane root = new Pane();
-
-    final Canvas canvas = new Canvas(windowWidth, windowHeight);
-    GraphicsContext gc = canvas.getGraphicsContext2D();
-
-    gc.setFill(Color.WHITE);
 
     // Dynamische berechnung wie viele Pixel man braucht.
     int pixelCountX = getCountX(pixelSize, windowHeight);
