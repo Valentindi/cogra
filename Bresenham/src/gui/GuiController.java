@@ -24,6 +24,9 @@ public class GuiController {
 
 	CograRectangle beginPixel;
 	CograRectangle endPixel;
+	
+	private int mousePressedX = 0;
+	private int mousePressedY = 0;
 
 
 	public static String activeAlgorithm = "Dummy";
@@ -33,12 +36,10 @@ public class GuiController {
 		this.guiView = guiView;
 		this.gridBuilder = gridBuilder;
 
-		this.guiView.addResizeListener(new ResizeListener()); // Fenster
-																// ResizeListener
-		this.gridBuilder.setCickOnPixelHandler(new ClickOnPixelHandler()); // Pixel
-																			// ClickListener
-		// this.gridBuilder
-		// .addMouseDragEnteredListener(new MouseDragEnteredListener());// Drag
+		this.guiView.addResizeListener(new ResizeListener()); 
+		this.gridBuilder.setCickOnPixelHandler(new ClickOnPixelHandler()); 
+	    this.gridBuilder.setMousePressOnPixelHandler(new MousePressOnPixelHandler());									
+		this.gridBuilder.addMouseDragEnteredListener(new MouseDragEnteredListener());
 		// Begonnen
 		// this.gridBuilder
 		// .addMouseDragLeaveListener(new MouseDragLeaveListener());
@@ -453,6 +454,15 @@ public class GuiController {
 			buildGrid(); // Wenn neue Größe --> Grid neu bauen
 		}
 	}
+	
+	class MousePressOnPixelHandler implements EventHandler<MouseEvent> {
+
+      @Override
+      public void handle(MouseEvent event) {
+        mousePressedX = (int) event.getX();
+        mousePressedY = (int) event.getY();
+      }
+  }
 
 	class ClickOnPixelHandler implements EventHandler<MouseEvent> {
 
@@ -536,6 +546,21 @@ public class GuiController {
 		}
 
 	}
+	
+	class MouseDragEnteredListener implements EventHandler<MouseEvent> {
+
+    @Override
+    public void handle(MouseEvent event) {
+      // TODO Auto-generated method stub
+      gridBuilder.setTranslateX(gridBuilder.getTranslateX() + event.getX() - mousePressedX);
+      gridBuilder.setTranslateY(gridBuilder.getTranslateY() + event.getY() - mousePressedY);
+      
+      gridBuilder.toBack();
+      event.consume();
+    }
+	  
+	}
+
   }
 
 

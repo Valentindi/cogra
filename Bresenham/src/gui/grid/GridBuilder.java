@@ -16,7 +16,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.paint.Color;
 
-public class GridBuilder {
+public class GridBuilder extends Pane {
 
   static int offset = 0;
 
@@ -25,19 +25,19 @@ public class GridBuilder {
   private static GridPainter gp;
   private EventHandler<MouseEvent> handleClickOnPixel;
   private EventHandler<MouseEvent> handleMouseDragEnteredListener;
-  private EventHandler<MouseEvent> handleMouseDragLeaveListener;
+  private EventHandler<MouseEvent> handleMousePressOnPixel;
 
   public Pane buildGrid(int pixelSize, int windowHeight, int windowWidth) {
 
     gp = new GridPainter(windowHeight, windowWidth);
 
-    Pane root = new Pane();
-
     // Dynamische berechnung wie viele Pixel man braucht.
     int pixelCountX = getCountX(pixelSize, windowHeight);
     int pixelCountY = getCountY(pixelSize, windowWidth);
 
-    root.addEventHandler(MouseEvent.MOUSE_CLICKED, handleClickOnPixel);
+    this.addEventHandler(MouseEvent.MOUSE_CLICKED, handleClickOnPixel);
+    this.addEventHandler(MouseEvent.MOUSE_PRESSED, handleMousePressOnPixel);
+    this.addEventHandler(MouseEvent.MOUSE_DRAGGED, handleMouseDragEnteredListener);
 
     gridArray = new Pixel[pixelCountY][pixelCountX];
 
@@ -60,10 +60,9 @@ public class GridBuilder {
     }
 
     gp.paint(gridArray);
-    root.getChildren().add(gp.getGrid());
-
-    return root;
-
+    this.getChildren().add(gp.getGrid());
+    
+    return this;
   }
 
   private Pixel existingPixel(int i, int t) {
@@ -196,8 +195,8 @@ public class GridBuilder {
 
   }
 
-  public void addMouseDragLeaveListener(EventHandler<MouseEvent> mouseDragLeaveListener) {
-    this.handleMouseDragLeaveListener = mouseDragLeaveListener;
+  public void setMousePressOnPixelHandler(EventHandler<MouseEvent> handleMousePressOnPixel) {
+    this.handleMousePressOnPixel = handleMousePressOnPixel;
 
   }
 
