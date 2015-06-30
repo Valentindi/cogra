@@ -195,13 +195,9 @@ public class GridBuilder {
 		this.handleMouseDragLeaveListener = mouseDragLeaveListener;
 
 	}
-	
-	public int getMatrixWidth(){
-		return gridArray.length;
-	}
-	
-	public int getMatrixHeight(){
-		return gridArray[0].length;
-	}
+
+    public void clearGrid() {
+      savedRects.clear();
+    }
 
 }
