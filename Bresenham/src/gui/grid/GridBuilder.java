@@ -18,7 +18,7 @@ import javafx.scene.paint.Color;
 
 public class GridBuilder {
 
-  static int offset = 1;
+  static int offset = 0;
 
   private static Pixel[][] gridArray;
   private static ArrayList<Pixel> savedPixel = new ArrayList<Pixel>();
@@ -28,10 +28,6 @@ public class GridBuilder {
   private EventHandler<MouseEvent> handleMouseDragLeaveListener;
 
   public Pane buildGrid(int pixelSize, int windowHeight, int windowWidth) {
-    if(pixelSize==1)
-      offset = 0;
-    else
-      offset = 1;
 
     gp = new GridPainter(windowHeight, windowWidth);
 

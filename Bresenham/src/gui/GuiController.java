@@ -60,21 +60,18 @@ public class GuiController {
 				guiView.getWindowHeight(), guiView.getWindowWidth()));
 	}
 
-	public void incPixelSize() {
-		if (pixelSize < 5)
-			pixelSize = 5;
-		else
-			pixelSize = pixelSize + 5;
-
+	public void incPixelSize() {	
+	    pixelSize++;
+	    
 		System.out.println("ZoomIn. New PixelSize: " + pixelSize);
 		buildGrid();
 	}
 
 	public void decPixelSize() {
-		if (pixelSize <= 5)
-			pixelSize = 1;
-		else
-			pixelSize = pixelSize - 5;
+        pixelSize--;
+
+        if(pixelSize<=0)
+          pixelSize=1;
 
 		System.out.println("ZoomOut. New PixelSize: " + pixelSize);
 		buildGrid();
