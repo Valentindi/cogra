@@ -11,6 +11,7 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.RadioMenuItem;
+import javafx.scene.control.SeparatorMenuItem;
 import javafx.scene.control.SplitPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
@@ -43,7 +44,7 @@ public class GuiView {
 	RadioMenuItem miAvereinfB = new RadioMenuItem(
 			"Antialising Linie - abgewandelter Bresenham-Algorithmus");
 	RadioMenuItem miAexamplLine = new RadioMenuItem("Example Line");
-
+	SeparatorMenuItem mSeperator = new SeparatorMenuItem();
 	MenuItem miZPlus = new MenuItem("Zoom +");
 
 	MenuItem miZMinus = new MenuItem("Zoom -");
@@ -85,8 +86,8 @@ public class GuiView {
 	public void addMenu() {
 		addEventHandler();
 		menuDatei.getItems().addAll(miShowLine, miClear, miBeenden);
-		menuAlgorithmen.getItems().addAll(miADummy, miABresenham, miAvereinfB,
-				miAexamplLine);
+		menuAlgorithmen.getItems().addAll(/*miADummy,*/ miABresenham, miAvereinfB,
+				/*miAexamplLine,*/ mSeperator);
 		menuZoom.getItems().addAll(miZPlus, miZMinus);
 
 		menubar.getMenus().addAll(menuDatei, menuAlgorithmen);

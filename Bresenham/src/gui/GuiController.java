@@ -15,17 +15,16 @@ import algorithm.exampleLine;
 import algorithm.vereinfachterBresenham;
 
 public class GuiController {
-
+	
 	private GuiView guiView;
 	private GridBuilder gridBuilder;
 
 	private int beginX = -1;
 	private int beginY = -1;
-	
+
 	CograRectangle beginPixel;
 	CograRectangle endPixel;
 
-	public boolean algorithmusActive;
 
 	public static String activeAlgorithm = "Dummy";
 	private int pixelSize = 15;
@@ -81,42 +80,6 @@ public class GuiController {
 		buildGrid();
 	}
 
-	public void colorTheRect(Color[][] colorRect, int beginX, int beginY) {
-
-		CograRectangle pixel = new CograRectangle();
-		pixel.setWidth(pixelSize);
-		pixel.setHeight(pixelSize);
-		for (int i = 0; i < colorRect.length; i++) {
-			for (int j = 0; j < colorRect[i].length; j++) {
-				pixel = gridBuilder.getPixel((beginX + i), (beginY + j));
-
-				if (colorRect[i][j] != null && colorRect[i][j] == Color.BLACK) {
-					gridBuilder.setRectColor(pixel, colorRect[i][j]);
-				}
-			}
-
-		}
-
-	}
-
-	public void colorTheRectWhite(Color[][] colorRect, int beginX, int beginY) {
-
-		CograRectangle pixel = new CograRectangle();
-		pixel.setWidth(pixelSize);
-		pixel.setHeight(pixelSize);
-		for (int i = 0; i < colorRect.length; i++) {
-			for (int j = 0; j < colorRect[i].length; j++) {
-				pixel = gridBuilder.getPixel((beginX + i), (beginY + j));
-
-				if (colorRect[i][j] != null) {
-					gridBuilder.setRectColor(pixel, colorRect[i][j]);
-				}
-			}
-
-		}
-
-	}
-
 	public void clearMatrix() {
 
 		Color[][] whiteColor = new Color[gridBuilder.getMatrixWidth()][gridBuilder
@@ -153,10 +116,28 @@ public class GuiController {
 		}
 
 	}
+	/**
+	 * 
+	 * Ruft die einzelnen Algorithmen auf
+	 * 
+	 * @param beginX Koordinate von dem Beginn des Algorithmus (oben links)
+	 * @param beginY Koordinate von dem Beginn des Algorithmus (oben links)
+	 * @param beginXorg Koordinate von ersten Klick (Beginn der Linie). Es empfiehlt sich damit zu arbeiten!  
+	 * @param beginYorg Koordinate von ersten Klick (Beginn der Linie). Es empfiehlt sich damit zu arbeiten!
+	 * @param endX Koordinate von dem Beginn des Algorithmus (unten rechts)
+	 * @param endY Koordinate von dem Beginn des Algorithmus (unten rechts)
+	 * @param endXorg Koordinate von zweiten Klick (Ende der Linie). Es empfiehlt sich damit zu arbeiten!
+	 * @param endYorg Koordinate von zweiten Klick (Ende der Linie). Es empfiehlt sich damit zu arbeiten!
+	 * @param change true, wenn Algorithmus von unten lins nach oben rechts läuft
+	 * @param changeX true, wenn endX und beginX vertauscht wurden
+	 * @param changeY true, wenn endY und beginY vertauscht wurden
+	 */
 
 	private void runAlgs(int beginX, int beginY, int beginXorg, int beginYorg,
 			int endX, int endY, int endXorg, int endYorg, Boolean change,
 			Boolean changeX, Boolean changeY) {
+		
+		
 
 		Color rectColors[][] = new Color[endX - beginX][endY - beginY];
 		switch (activeAlgorithm) {
@@ -164,14 +145,41 @@ public class GuiController {
 			rectColors = DummyAlgoithm.run(beginX, beginY, endX, endY);
 			break;
 		case "Bresenham":
-			/*
-			 * rectColors = Bresenham.run(beginXorg, beginYorg, endXorg,
-			 * endYorg, change);
-			 */
-			bresline(beginXorg, beginYorg, endXorg - 1, endYorg - 1, Color.BLACK);
+			
+			//Aufruf des der Bresline-Vorbereitungsfunktion mit dem Originalwerten
+			bresline(beginXorg, beginYorg, endXorg - 1, endYorg - 1,
+					Color.BLACK);
 			break;
 		case "vereinfachterBresenham":
 			rectColors = vereinfachterBresenham.run(beginX, beginY, endX, endY);
+			/*
+			 * Hey Lina,
+			 * 
+			 * ich glaube mittlerweile, das es einfacher ist erstmal den
+			 * Algorithmus hier in dieser Klasse zu implementieren, da man hier
+			 * z.B. da hier der GridBuilder gehalten wird, und man direkt auf
+			 * das Grud zugreifen kann.
+			 * 
+			 * Außerdem sind Jaegers Algorithmen darauf angelegt, das sie nicht
+			 * bei unbedingt (0,0) beginnen, sondern auch irgendwo in dem Grid.
+			 * Wenn man mit dem RectColors arbeitet, wie ich es ursprüngich
+			 * gedacht habe, dann hätte man bei das nur auf einem Ausschnitt von
+			 * (0,0) bis (dx, dx) machen können. Aber das funktioniert alles
+			 * nicht so einfach wie ich mir das gedacht habe.
+			 * 
+			 * Ich hab mir gestern den Anti-Aliasing-Algorithmus in den Folien
+			 * mal kurz angeschaut, und ich denke, du brauchst noch eine
+			 * Funktion wie die bresline (Siehe Folie 2.14), der dem Algorithmus
+			 * die richtigen Werte übergibt und aus der dann der eigentliche
+			 * Algorithmus aufgerufen wird.
+			 * 
+			 * Und dann, wenn erstmal alles funktioniert, dann können wir ja
+			 * beim Refactoring die Algorithmen in eigene Klassen verschieben.
+			 * 
+			 * Übrigens, kann man SetzePixel(x,y,f) aus dem Folien, mit
+			 * changePixelColor(x,y, greyScaleFactory.getGreyScale(1-abs(d))
+			 * umsetzen.
+			 */
 			break;
 
 		case "exampleLine":
@@ -184,22 +192,22 @@ public class GuiController {
 		default:
 			break;
 		}
-		// System.out.println(rectColors.toString());
+		// Zeichnet rectCOlors in die Matrix und begint bei beginX, beginY
 		colorTheRect(rectColors, beginX, beginY);
 
 	}
 
-
-/**
- * Vorbereitung des Start des Bresline Algorithmus
- * @param x0
- * @param y0
- * @param xn
- * @param yn
- * @param black
- */
+	/**
+	 * Vorbereitung des Start des Bresline Algorithmus
+	 * 
+	 * @param x0
+	 * @param y0
+	 * @param xn
+	 * @param yn
+	 * @param black
+	 */
 	private void bresline(int x0, int y0, int xn, int yn, Color black) {
-		
+
 		int dx = xn - x0;
 		int dy = yn - y0;
 
@@ -227,15 +235,17 @@ public class GuiController {
 		}
 
 	}
-/**
- * Ausführung des Bresline-Algorithmuses.
- * @param x0
- * @param y0
- * @param xn
- * @param dx
- * @param dy
- * @param sp
- */
+
+	/**
+	 * Ausführung des Bresline-Algorithmuses.
+	 * 
+	 * @param x0
+	 * @param y0
+	 * @param xn
+	 * @param dx
+	 * @param dy
+	 * @param sp
+	 */
 	private void bres1(int x0, int y0, int xn, int dx, int dy, boolean sp) {
 		int sw, d, d1, d2, x, y;
 
@@ -262,6 +272,7 @@ public class GuiController {
 		}
 
 		while (x < xn) {
+
 			x = x + 1;
 			if (d < 0) {
 				System.out.println("d_alt: " + d + "d_neu: " + (d + 1));
@@ -293,19 +304,71 @@ public class GuiController {
 		gridBuilder.setPixel(pixel, x, y);
 
 	}
-
-	private static int sgn(int number) {
-		if (number < 0) {
-			return -1;
-		}
-		return 1;
-	}
-
+	/**
+	 * Gibt Positiven wert zurück
+	 * @param number
+	 * @return
+	 */
 	private static int abs(int number) {
 		if (number < 0) {
 			number *= -1;
 		}
 		return number;
+	}
+	
+	/**
+	 * Gibt Positiven wert zurück
+	 * @param number
+	 * @return
+	 */
+	private static double abs(double number) {
+		if (number < 0) {
+			number *= -1;
+		}
+		return number;
+	}
+
+	/**
+	 * 	Zeichnet rectCOlors
+
+	 * @param colorRect Matrix mit Farben, die in Matrix übertragen werden sollen
+	 * @param beginX x-Koordinate oben-links
+	 * @param beginY y-Koordinate oben-links
+	 */
+	public void colorTheRect(Color[][] colorRect, int beginX, int beginY) {
+
+		CograRectangle pixel = new CograRectangle();
+		pixel.setWidth(pixelSize);
+		pixel.setHeight(pixelSize);
+		for (int i = 0; i < colorRect.length; i++) {
+			for (int j = 0; j < colorRect[i].length; j++) {
+				pixel = gridBuilder.getPixel((beginX + i), (beginY + j));
+
+				if (colorRect[i][j] != null && colorRect[i][j] == Color.BLACK) {
+					gridBuilder.setRectColor(pixel, colorRect[i][j]);
+				}
+			}
+
+		}
+
+	}
+
+	public void colorTheRectWhite(Color[][] colorRect, int beginX, int beginY) {
+
+		CograRectangle pixel = new CograRectangle();
+		pixel.setWidth(pixelSize);
+		pixel.setHeight(pixelSize);
+		for (int i = 0; i < colorRect.length; i++) {
+			for (int j = 0; j < colorRect[i].length; j++) {
+				pixel = gridBuilder.getPixel((beginX + i), (beginY + j));
+
+				if (colorRect[i][j] != null) {
+					gridBuilder.setRectColor(pixel, colorRect[i][j]);
+				}
+			}
+
+		}
+
 	}
 
 	class SetDummyHandler implements EventHandler<ActionEvent> {
