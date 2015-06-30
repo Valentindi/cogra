@@ -21,9 +21,11 @@ public class GuiController {
 
 	private int beginX = -1;
 	private int beginY = -1;
+	
+	CograRectangle beginPixel;
+	CograRectangle endPixel;
 
-	private CograRectangle beginPixel;
-	private CograRectangle endPixel;
+	public boolean algorithmusActive;
 
 	public static String activeAlgorithm = "Dummy";
 	private int pixelSize = 15;
@@ -166,7 +168,7 @@ public class GuiController {
 			 * rectColors = Bresenham.run(beginXorg, beginYorg, endXorg,
 			 * endYorg, change);
 			 */
-			runBresenham(beginXorg, beginYorg, endXorg, endYorg);
+			bresline(beginXorg, beginYorg, endXorg - 1, endYorg - 1, Color.BLACK);
 			break;
 		case "vereinfachterBresenham":
 			rectColors = vereinfachterBresenham.run(beginX, beginY, endX, endY);
@@ -187,36 +189,20 @@ public class GuiController {
 
 	}
 
-	private void runBresenham(int beginX, int beginY, int endX, int endY) {
 
-		int beginXorg = beginX;
-		int beginYorg = beginY;
-		int endXorg = endX;
-		int endYorg = endY;
-
-		if (endX < beginX) {
-			int foo = endX;
-			endX = beginX;
-			beginX = foo;
-		}
-
-		if (endY < beginY) {
-			int foo = endY;
-			endY = beginY;
-			beginY = foo;
-		}
-
-		// Implementierung nach Skript von Prof. Jaeger
-		bresline(beginXorg, beginYorg, endXorg-1, endYorg-1, Color.BLACK);
-
-	}
-
+/**
+ * Vorbereitung des Start des Bresline Algorithmus
+ * @param x0
+ * @param y0
+ * @param xn
+ * @param yn
+ * @param black
+ */
 	private void bresline(int x0, int y0, int xn, int yn, Color black) {
-
+		
 		int dx = xn - x0;
 		int dy = yn - y0;
 
-		// System.out.println("BRESLINE");
 		System.out.println("abs(dx): " + abs(dx) + " abs(dy): " + abs(dy));
 
 		if (abs(dx) >= abs(dy)) {
@@ -241,14 +227,20 @@ public class GuiController {
 		}
 
 	}
-
+/**
+ * Ausführung des Bresline-Algorithmuses.
+ * @param x0
+ * @param y0
+ * @param xn
+ * @param dx
+ * @param dy
+ * @param sp
+ */
 	private void bres1(int x0, int y0, int xn, int dx, int dy, boolean sp) {
 		int sw, d, d1, d2, x, y;
 
-
 		System.out.println("Bresham: " + x0 + " : " + y0 + " : " + xn + " : "
 				+ dx + " : " + dy + " : " + sp);
-		CograRectangle pixel;
 		if (dy < 0) {
 			sw = -1;
 			dy = -dy;
@@ -262,14 +254,10 @@ public class GuiController {
 		x = x0;
 		y = y0;
 		if (!sp) {
-			pixel = gridBuilder.getPixel(x, y);
-			pixel.setFill(Color.BLACK);
-			gridBuilder.setPixel(pixel, x, y);
+			changePixelColor(x, y, Color.BLACK);
 
 		} else {
-			pixel = gridBuilder.getPixel(y, x);
-			pixel.setFill(Color.BLACK);
-			gridBuilder.setPixel(pixel, y, x);
+			changePixelColor(y, x, Color.BLACK);
 
 		}
 
@@ -289,18 +277,35 @@ public class GuiController {
 			}
 
 			if (!sp) {
-				pixel = gridBuilder.getPixel(x, y);
-				pixel.setFill(Color.BLACK);
-				gridBuilder.setPixel(pixel, x, y);
+				changePixelColor(x, y, Color.BLACK);
 
 			} else {
-				pixel = gridBuilder.getPixel(y, x);
-				pixel.setFill(Color.BLACK);
-				gridBuilder.setPixel(pixel, y, x);
+				changePixelColor(y, x, Color.BLACK);
 
 			}
 		}
 
+	}
+
+	private void changePixelColor(int x, int y, Color color) {
+		CograRectangle pixel = gridBuilder.getPixel(x, y);
+		pixel.setFill(color);
+		gridBuilder.setPixel(pixel, x, y);
+
+	}
+
+	private static int sgn(int number) {
+		if (number < 0) {
+			return -1;
+		}
+		return 1;
+	}
+
+	private static int abs(int number) {
+		if (number < 0) {
+			number *= -1;
+		}
+		return number;
 	}
 
 	class SetDummyHandler implements EventHandler<ActionEvent> {
@@ -317,20 +322,6 @@ public class GuiController {
 			// System.out.println(activeAlgorithm);
 		}
 
-	}
-
-	private static int sgn(int number) {
-		if (number < 0) {
-			return -1;
-		}
-		return 1;
-	}
-
-	private static int abs(int number) {
-		if (number < 0) {
-			number *= -1;
-		}
-		return number;
 	}
 
 	class SetBresenhamHandler implements EventHandler<ActionEvent> {
@@ -488,9 +479,11 @@ public class GuiController {
 					System.out.println("BeginY: " + beginY);
 
 				} catch (Exception e) {
-					DialogFactory.ErrorDialog("Error",
-							"Drag wurde festgestellt",
-							"Strukturen werden durch 2 Klicks erstellt");
+					DialogFactory
+							.ErrorDialog(
+									"Error",
+									"Drag wurde festgestellt, Strukturen werden durch 2 Klicks erstellt",
+									"Oder es wurde auf den Rand eines Pixels gedrückt!");
 				}
 				guiView.status.setText("Kick für Fertigstellen");
 			}
