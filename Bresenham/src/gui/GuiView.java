@@ -50,7 +50,7 @@ public class GuiView {
 	MenuItem miZMinus = new MenuItem("Zoom -");
 
 	public Label status = new Label(
-			"Auf Raster Klicken um Startpunkt zu w‰hlen");
+			"Auf Raster Klicken um Startpunkt zu w√§hlen");
 	Button mbZPlus = new Button("Zoom +");
 	Button mbZMinus = new Button("Zoom -");
 

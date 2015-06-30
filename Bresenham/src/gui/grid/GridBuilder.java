@@ -116,6 +116,7 @@ public class GridBuilder {
 
 	public void setPixel(CograRectangle pixel, int x, int y) {
 		this.gridArray[x][y] = pixel;
+		savedRects.add(pixel);
 		// System.out.println("Pixel: " + getPixelCords(pixel)[0] + " " +
 		// getPixelCords(pixel)[1] + " clicked!");
 	}
@@ -143,6 +144,7 @@ public class GridBuilder {
 
 	public void paintAPixel(int x, int y, Color color) {
 		gridArray[x][y].setFill(color);
+		savedRects.add(gridArray[x][y]);
 	}
 
 	public CograRectangle getPixel(int x, int y) {
