@@ -1,6 +1,7 @@
 package gui;
 
 import factories.DialogFactory;
+import factories.GreyScaleFactory;
 import gui.grid.GridBuilder;
 import gui.grid.components.CograRectangle;
 import javafx.beans.value.ChangeListener;
@@ -128,7 +129,7 @@ public class GuiController {
 	 * @param endY Koordinate von dem Beginn des Algorithmus (unten rechts)
 	 * @param endXorg Koordinate von zweiten Klick (Ende der Linie). Es empfiehlt sich damit zu arbeiten!
 	 * @param endYorg Koordinate von zweiten Klick (Ende der Linie). Es empfiehlt sich damit zu arbeiten!
-	 * @param change true, wenn Algorithmus von unten lins nach oben rechts läuft
+	 * @param change true, wenn Algorithmus von unten lins nach oben rechts lï¿½uft
 	 * @param changeX true, wenn endX und beginX vertauscht wurden
 	 * @param changeY true, wenn endY und beginY vertauscht wurden
 	 */
@@ -151,7 +152,7 @@ public class GuiController {
 					Color.BLACK);
 			break;
 		case "vereinfachterBresenham":
-			rectColors = vereinfachterBresenham.run(beginX, beginY, endX, endY);
+			bresline(beginXorg, beginYorg, endXorg - 1, endYorg -1, Color.BLACK);
 			/*
 			 * Hey Lina,
 			 * 
@@ -160,23 +161,23 @@ public class GuiController {
 			 * z.B. da hier der GridBuilder gehalten wird, und man direkt auf
 			 * das Grud zugreifen kann.
 			 * 
-			 * Außerdem sind Jaegers Algorithmen darauf angelegt, das sie nicht
+			 * Auï¿½erdem sind Jaegers Algorithmen darauf angelegt, das sie nicht
 			 * bei unbedingt (0,0) beginnen, sondern auch irgendwo in dem Grid.
-			 * Wenn man mit dem RectColors arbeitet, wie ich es ursprüngich
-			 * gedacht habe, dann hätte man bei das nur auf einem Ausschnitt von
-			 * (0,0) bis (dx, dx) machen können. Aber das funktioniert alles
+			 * Wenn man mit dem RectColors arbeitet, wie ich es ursprï¿½ngich
+			 * gedacht habe, dann hï¿½tte man bei das nur auf einem Ausschnitt von
+			 * (0,0) bis (dx, dx) machen kï¿½nnen. Aber das funktioniert alles
 			 * nicht so einfach wie ich mir das gedacht habe.
 			 * 
 			 * Ich hab mir gestern den Anti-Aliasing-Algorithmus in den Folien
 			 * mal kurz angeschaut, und ich denke, du brauchst noch eine
 			 * Funktion wie die bresline (Siehe Folie 2.14), der dem Algorithmus
-			 * die richtigen Werte übergibt und aus der dann der eigentliche
+			 * die richtigen Werte ï¿½bergibt und aus der dann der eigentliche
 			 * Algorithmus aufgerufen wird.
 			 * 
-			 * Und dann, wenn erstmal alles funktioniert, dann können wir ja
+			 * Und dann, wenn erstmal alles funktioniert, dann kï¿½nnen wir ja
 			 * beim Refactoring die Algorithmen in eigene Klassen verschieben.
 			 * 
-			 * Übrigens, kann man SetzePixel(x,y,f) aus dem Folien, mit
+			 * ï¿½brigens, kann man SetzePixel(x,y,f) aus dem Folien, mit
 			 * changePixelColor(x,y, greyScaleFactory.getGreyScale(1-abs(d))
 			 * umsetzen.
 			 */
@@ -219,7 +220,11 @@ public class GuiController {
 				bresline(xn, yn, x0, y0, Color.BLACK);
 
 			} else {
-				bres1(x0, y0, xn, dx, dy, false);
+				if (activeAlgorithm == "Bresenham"){
+					bres1(x0, y0, xn, dx, dy, false);
+				}else{
+					wuLine(x0, y0, xn, dx, dy, false);
+				}
 			}
 
 		} else {
@@ -228,16 +233,19 @@ public class GuiController {
 				bresline(xn, yn, x0, y0, Color.BLACK);
 
 			} else {
-
-				bres1(y0, x0, yn, dy, dx, true);
-
+				if (activeAlgorithm == "Bresenham"){
+					bres1(y0, x0, yn, dy, dx, true);
+				}else{
+					wuLine(y0, x0, yn, dy, dx, true);
+					
+				}
 			}
 		}
 
 	}
 
 	/**
-	 * Ausführung des Bresline-Algorithmuses.
+	 * Ausfï¿½hrung des Bresline-Algorithmuses.
 	 * 
 	 * @param x0
 	 * @param y0
@@ -297,6 +305,44 @@ public class GuiController {
 		}
 
 	}
+	
+	private void wuLine(int x0, int y0, int xn, int dx, int dy, boolean sp){
+		
+		double d = 0;
+		double incrd = 1 - (dy/dx);
+		int yn = y0 + dy;
+		
+		System.out.println("Wu: " + x0 + " : " + y0 + " : " + xn + " : "
+				+ dx + " : " + dy + " : " + sp);
+		
+		for (int i = 0; i < dx; i++){
+			xn++;
+			yn++;
+			d = d + incrd;
+			changePixelColor(xn,yn, GreyScaleFactory.getGreyScale(1-abs(d)));
+			if (d <= 0){
+				if (!sp){
+					changePixelColor(xn,yn+1, GreyScaleFactory.getGreyScale(1-abs(d)));
+				}else{
+					changePixelColor(yn, xn+1, GreyScaleFactory.getGreyScale(1-abs(d)));
+					
+				}
+				
+			}else{
+				yn--;
+				d = d-1;
+				if (!sp){
+					changePixelColor(xn,yn, GreyScaleFactory.getGreyScale(1-abs(d)));
+				}else{
+					changePixelColor(yn, xn, GreyScaleFactory.getGreyScale(1-abs(d)));
+				}
+				
+			}
+			
+		}
+		
+		
+	}
 
 	private void changePixelColor(int x, int y, Color color) {
 		CograRectangle pixel = gridBuilder.getPixel(x, y);
@@ -305,7 +351,7 @@ public class GuiController {
 
 	}
 	/**
-	 * Gibt Positiven wert zurück
+	 * Gibt Positiven wert zurï¿½ck
 	 * @param number
 	 * @return
 	 */
@@ -317,7 +363,7 @@ public class GuiController {
 	}
 	
 	/**
-	 * Gibt Positiven wert zurück
+	 * Gibt Positiven wert zurï¿½ck
 	 * @param number
 	 * @return
 	 */
@@ -331,7 +377,7 @@ public class GuiController {
 	/**
 	 * 	Zeichnet rectCOlors
 
-	 * @param colorRect Matrix mit Farben, die in Matrix übertragen werden sollen
+	 * @param colorRect Matrix mit Farben, die in Matrix ï¿½bertragen werden sollen
 	 * @param beginX x-Koordinate oben-links
 	 * @param beginY y-Koordinate oben-links
 	 */
@@ -528,7 +574,7 @@ public class GuiController {
 				drawHelpline(beginXorg, beginYorg, endXorg, endYorg, changeX,
 						changeY);
 
-				guiView.status.setText("Klick für Zeichnen");
+				guiView.status.setText("Klick fï¿½r Zeichnen");
 				beginX = Integer.MIN_VALUE;
 				beginY = Integer.MIN_VALUE;
 			} else {
@@ -546,9 +592,9 @@ public class GuiController {
 							.ErrorDialog(
 									"Error",
 									"Drag wurde festgestellt, Strukturen werden durch 2 Klicks erstellt",
-									"Oder es wurde auf den Rand eines Pixels gedrückt!");
+									"Oder es wurde auf den Rand eines Pixels gedrï¿½ckt!");
 				}
-				guiView.status.setText("Kick für Fertigstellen");
+				guiView.status.setText("Kick fï¿½r Fertigstellen");
 			}
 
 		}
