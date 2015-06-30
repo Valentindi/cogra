@@ -16,7 +16,7 @@ import algorithm.exampleLine;
 import algorithm.vereinfachterBresenham;
 
 public class GuiController {
-	
+
 	private GuiView guiView;
 	private GridBuilder gridBuilder;
 
@@ -25,7 +25,6 @@ public class GuiController {
 
 	CograRectangle beginPixel;
 	CograRectangle endPixel;
-
 
 	public static String activeAlgorithm = "Dummy";
 	private int pixelSize = 15;
@@ -83,7 +82,7 @@ public class GuiController {
 
 	public void clearMatrix() {
 
-	    gridBuilder.clearGrid();
+		gridBuilder.clearGrid();
 		buildGrid();
 
 	}
@@ -106,28 +105,42 @@ public class GuiController {
 		}
 
 	}
+
 	/**
 	 * 
 	 * Ruft die einzelnen Algorithmen auf
 	 * 
-	 * @param beginX Koordinate von dem Beginn des Algorithmus (oben links)
-	 * @param beginY Koordinate von dem Beginn des Algorithmus (oben links)
-	 * @param beginXorg Koordinate von ersten Klick (Beginn der Linie). Es empfiehlt sich damit zu arbeiten!  
-	 * @param beginYorg Koordinate von ersten Klick (Beginn der Linie). Es empfiehlt sich damit zu arbeiten!
-	 * @param endX Koordinate von dem Beginn des Algorithmus (unten rechts)
-	 * @param endY Koordinate von dem Beginn des Algorithmus (unten rechts)
-	 * @param endXorg Koordinate von zweiten Klick (Ende der Linie). Es empfiehlt sich damit zu arbeiten!
-	 * @param endYorg Koordinate von zweiten Klick (Ende der Linie). Es empfiehlt sich damit zu arbeiten!
-	 * @param change true, wenn Algorithmus von unten lins nach oben rechts l�uft
-	 * @param changeX true, wenn endX und beginX vertauscht wurden
-	 * @param changeY true, wenn endY und beginY vertauscht wurden
+	 * @param beginX
+	 *            Koordinate von dem Beginn des Algorithmus (oben links)
+	 * @param beginY
+	 *            Koordinate von dem Beginn des Algorithmus (oben links)
+	 * @param beginXorg
+	 *            Koordinate von ersten Klick (Beginn der Linie). Es empfiehlt
+	 *            sich damit zu arbeiten!
+	 * @param beginYorg
+	 *            Koordinate von ersten Klick (Beginn der Linie). Es empfiehlt
+	 *            sich damit zu arbeiten!
+	 * @param endX
+	 *            Koordinate von dem Beginn des Algorithmus (unten rechts)
+	 * @param endY
+	 *            Koordinate von dem Beginn des Algorithmus (unten rechts)
+	 * @param endXorg
+	 *            Koordinate von zweiten Klick (Ende der Linie). Es empfiehlt
+	 *            sich damit zu arbeiten!
+	 * @param endYorg
+	 *            Koordinate von zweiten Klick (Ende der Linie). Es empfiehlt
+	 *            sich damit zu arbeiten!
+	 * @param change
+	 *            true, wenn Algorithmus von unten lins nach oben rechts l�uft
+	 * @param changeX
+	 *            true, wenn endX und beginX vertauscht wurden
+	 * @param changeY
+	 *            true, wenn endY und beginY vertauscht wurden
 	 */
 
 	private void runAlgs(int beginX, int beginY, int beginXorg, int beginYorg,
 			int endX, int endY, int endXorg, int endYorg, Boolean change,
 			Boolean changeX, Boolean changeY) {
-		
-		
 
 		Color rectColors[][] = new Color[endX - beginX][endY - beginY];
 		switch (activeAlgorithm) {
@@ -135,13 +148,15 @@ public class GuiController {
 			rectColors = DummyAlgoithm.run(beginX, beginY, endX, endY);
 			break;
 		case "Bresenham":
-			
-			//Aufruf des der Bresline-Vorbereitungsfunktion mit dem Originalwerten
+
+			// Aufruf des der Bresline-Vorbereitungsfunktion mit dem
+			// Originalwerten
 			bresline(beginXorg, beginYorg, endXorg - 1, endYorg - 1,
 					Color.BLACK);
 			break;
 		case "vereinfachterBresenham":
-			bresline(beginXorg, beginYorg, endXorg - 1, endYorg -1, Color.BLACK);
+			bresline(beginXorg, beginYorg, endXorg - 1, endYorg - 1,
+					Color.BLACK);
 			/*
 			 * Hey Lina,
 			 * 
@@ -150,12 +165,12 @@ public class GuiController {
 			 * z.B. da hier der GridBuilder gehalten wird, und man direkt auf
 			 * das Grud zugreifen kann.
 			 * 
-			 * Au�erdem sind Jaegers Algorithmen darauf angelegt, das sie nicht
-			 * bei unbedingt (0,0) beginnen, sondern auch irgendwo in dem Grid.
-			 * Wenn man mit dem RectColors arbeitet, wie ich es urspr�ngich
-			 * gedacht habe, dann h�tte man bei das nur auf einem Ausschnitt von
-			 * (0,0) bis (dx, dx) machen k�nnen. Aber das funktioniert alles
-			 * nicht so einfach wie ich mir das gedacht habe.
+			 * Au�erdem sind Jaegers Algorithmen darauf angelegt, das sie
+			 * nicht bei unbedingt (0,0) beginnen, sondern auch irgendwo in dem
+			 * Grid. Wenn man mit dem RectColors arbeitet, wie ich es
+			 * urspr�ngich gedacht habe, dann h�tte man bei das nur auf
+			 * einem Ausschnitt von (0,0) bis (dx, dx) machen k�nnen. Aber das
+			 * funktioniert alles nicht so einfach wie ich mir das gedacht habe.
 			 * 
 			 * Ich hab mir gestern den Anti-Aliasing-Algorithmus in den Folien
 			 * mal kurz angeschaut, und ich denke, du brauchst noch eine
@@ -209,9 +224,9 @@ public class GuiController {
 				bresline(xn, yn, x0, y0, Color.BLACK);
 
 			} else {
-				if (activeAlgorithm == "Bresenham"){
+				if (activeAlgorithm == "Bresenham") {
 					bres1(x0, y0, xn, dx, dy, false);
-				}else{
+				} else {
 					wuLine(x0, y0, xn, dx, dy, false);
 				}
 			}
@@ -222,11 +237,11 @@ public class GuiController {
 				bresline(xn, yn, x0, y0, Color.BLACK);
 
 			} else {
-				if (activeAlgorithm == "Bresenham"){
+				if (activeAlgorithm == "Bresenham") {
 					bres1(y0, x0, yn, dy, dx, true);
-				}else{
+				} else {
 					wuLine(y0, x0, yn, dy, dx, true);
-					
+
 				}
 			}
 		}
@@ -294,43 +309,40 @@ public class GuiController {
 		}
 
 	}
-	
-	private void wuLine(int x0, int y0, int xn, int dx, int dy, boolean sp){
-		
+
+	private void wuLine(int x0, int y0, int xn, int dx, int dy, boolean sp) {
+		int x = x0;
+		int y = y0;
 		double d = 0;
-		double incrd = 1 - (dy/dx);
+		double incrd = 1 - (((double) dy) /((double) dx));
 		int yn = y0 + dy;
+
+		System.out.println("Wu: " + x0 + " : " + y0 + " : " + xn + " : " + dx
+				+ " : " + dy + " : " + sp);
 		
-		System.out.println("Wu: " + x0 + " : " + y0 + " : " + xn + " : "
-				+ dx + " : " + dy + " : " + sp);
+		changePixelColor(x, y, GreyScaleFactory.getGreyScale(0));
 		
-		for (int i = 0; i < dx; i++){
-			xn++;
-			yn++;
+		for (int i = 0; i < dx; i++) {
+			x++;
+			y++;
 			d = d + incrd;
-			changePixelColor(xn,yn, GreyScaleFactory.getGreyScale(1-abs(d)));
-			if (d <= 0){
-				if (!sp){
-					changePixelColor(xn,yn+1, GreyScaleFactory.getGreyScale(1-abs(d)));
-				}else{
-					changePixelColor(yn, xn+1, GreyScaleFactory.getGreyScale(1-abs(d)));
-					
-				}
-				
-			}else{
-				yn--;
-				d = d-1;
-				if (!sp){
-					changePixelColor(xn,yn, GreyScaleFactory.getGreyScale(1-abs(d)));
-				}else{
-					changePixelColor(yn, xn, GreyScaleFactory.getGreyScale(1-abs(d)));
-				}
-				
+			changePixelColor(x, y, GreyScaleFactory.getGreyScale( abs(d)));
+			if (d <= 0) {
+
+				changePixelColor(x, y + 1,
+						GreyScaleFactory.getGreyScale(1 -abs(d)));
+
+			} else {
+				y--;
+				d = d - 1;
+
+				changePixelColor(x, y,
+						GreyScaleFactory.getGreyScale( abs(d)));
+
 			}
-			
+
 		}
-		
-		
+
 	}
 
 	private void changePixelColor(int x, int y, Color color) {
@@ -339,8 +351,10 @@ public class GuiController {
 		gridBuilder.setPixel(pixel, x, y);
 
 	}
+
 	/**
 	 * Gibt Positiven wert zur�ck
+	 * 
 	 * @param number
 	 * @return
 	 */
@@ -350,9 +364,10 @@ public class GuiController {
 		}
 		return number;
 	}
-	
+
 	/**
 	 * Gibt Positiven wert zur�ck
+	 * 
 	 * @param number
 	 * @return
 	 */
@@ -364,11 +379,14 @@ public class GuiController {
 	}
 
 	/**
-	 * 	Zeichnet rectCOlors
-
-	 * @param colorRect Matrix mit Farben, die in Matrix �bertragen werden sollen
-	 * @param beginX x-Koordinate oben-links
-	 * @param beginY y-Koordinate oben-links
+	 * Zeichnet rectCOlors
+	 * 
+	 * @param colorRect
+	 *            Matrix mit Farben, die in Matrix �bertragen werden sollen
+	 * @param beginX
+	 *            x-Koordinate oben-links
+	 * @param beginY
+	 *            y-Koordinate oben-links
 	 */
 	public void colorTheRect(Color[][] colorRect, int beginX, int beginY) {
 
