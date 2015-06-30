@@ -182,7 +182,7 @@ public class GuiController {
 			break;
 		}
 		// Zeichnet rectCOlors in die Matrix und begint bei beginX, beginY
-		colorTheRect(rectColors, beginX, beginY);
+		//colorTheRect(rectColors, beginX, beginY);
 
 	}
 
@@ -253,11 +253,9 @@ public class GuiController {
 		x = x0;
 		y = y0;
 		if (!sp) {
-			changePixelColor(x, y, Color.BLACK);
-
+			gridBuilder.setPixel(x, y, Color.BLACK);
 		} else {
-			changePixelColor(y, x, Color.BLACK);
-
+			gridBuilder.setPixel(y, x, Color.BLACK);
 		}
 
 		while (x < xn) {
@@ -277,22 +275,22 @@ public class GuiController {
 			}
 
 			if (!sp) {
-				changePixelColor(x, y, Color.BLACK);
-
+			  gridBuilder.setPixel(x, y, Color.BLACK);
 			} else {
-				changePixelColor(y, x, Color.BLACK);
-
+			  gridBuilder.setPixel(y, x, Color.BLACK);
 			}
 		}
+		
+		buildGrid();
 
 	}
 
-	private void changePixelColor(int x, int y, Color color) {
+/*	private void changePixelColor(int x, int y, Color color) {
 		CograRectangle pixel = gridBuilder.getPixel(x, y);
 		pixel.setFill(color);
 		gridBuilder.setPixel(pixel, x, y);
 
-	}
+	}*/
 	/**
 	 * Gibt Positiven wert zur�ck
 	 * @param number
@@ -324,7 +322,7 @@ public class GuiController {
 	 * @param beginX x-Koordinate oben-links
 	 * @param beginY y-Koordinate oben-links
 	 */
-	public void colorTheRect(Color[][] colorRect, int beginX, int beginY) {
+/*	public void colorTheRect(Color[][] colorRect, int beginX, int beginY) {
 
 		CograRectangle pixel = new CograRectangle();
 		pixel.setWidth(pixelSize);
@@ -340,9 +338,9 @@ public class GuiController {
 
 		}
 
-	}
+	}*/
 
-	public void colorTheRectWhite(Color[][] colorRect, int beginX, int beginY) {
+	/*public void colorTheRectWhite(Color[][] colorRect, int beginX, int beginY) {
 
 		CograRectangle pixel = new CograRectangle();
 		pixel.setWidth(pixelSize);
@@ -358,7 +356,7 @@ public class GuiController {
 
 		}
 
-	}
+	}*/
 
 	class SetDummyHandler implements EventHandler<ActionEvent> {
 
@@ -471,9 +469,8 @@ public class GuiController {
 			if (beginX > -1 && beginY > -1) {
 				int endX, endY;
 				try {
-					endX = ((CograRectangle) event.getTarget()).getPosX();
-					endY = ((CograRectangle) event.getTarget()).getPosY();
-					endPixel = (CograRectangle) event.getTarget();
+					endX = gridBuilder.getPixel((int) event.getX(),(int) event.getY()).getxInMap();
+					endY = gridBuilder.getPixel((int) event.getX(),(int) event.getY()).getyInMap();
 
 				} catch (Exception e) {
 					DialogFactory.ErrorDialog("Error",
@@ -517,15 +514,14 @@ public class GuiController {
 				drawHelpline(beginXorg, beginYorg, endXorg, endYorg, changeX,
 						changeY);
 
-				guiView.status.setText("Klick f�r Zeichnen");
+				guiView.status.setText("Klick für Zeichnen");
 				beginX = Integer.MIN_VALUE;
 				beginY = Integer.MIN_VALUE;
 			} else {
 
 				try {
-					beginX = ((CograRectangle) event.getTarget()).getPosX();
-					beginY = ((CograRectangle) event.getTarget()).getPosY();
-					beginPixel = (CograRectangle) event.getTarget();
+					beginX = gridBuilder.getPixel((int) event.getX(),(int) event.getY()).getxInMap();
+					beginY = gridBuilder.getPixel((int) event.getX(),(int) event.getY()).getyInMap();
 
 					System.out.println("BeginX: " + beginX);
 					System.out.println("BeginY: " + beginY);
@@ -535,13 +531,14 @@ public class GuiController {
 							.ErrorDialog(
 									"Error",
 									"Drag wurde festgestellt, Strukturen werden durch 2 Klicks erstellt",
-									"Oder es wurde auf den Rand eines Pixels gedr�ckt!");
+									"Oder es wurde auf den Rand eines Pixels gedrückt!");
 				}
-				guiView.status.setText("Kick f�r Fertigstellen");
+				guiView.status.setText("Kick für Fertigstellen");
 			}
 
 		}
 
 	}
+  }
 
-}
+

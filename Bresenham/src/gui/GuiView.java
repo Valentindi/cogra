@@ -4,6 +4,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -129,7 +130,7 @@ public class GuiView {
 
 	}
 
-	public void setGrid(GridPane grid) {
+	public void setGrid(Pane grid) {
 		backgroundPane = new Pane();
 		backgroundPane.setStyle("-fx-background-color: Black");
 		backgroundPane.getChildren().add(grid);
