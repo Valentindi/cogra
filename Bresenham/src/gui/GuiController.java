@@ -83,18 +83,7 @@ public class GuiController {
 
 	public void clearMatrix() {
 
-		Color[][] whiteColor = new Color[gridBuilder.getMatrixWidth()][gridBuilder
-				.getMatrixHeight()];
-
-		for (int i = 0; i < gridBuilder.getMatrixWidth(); i++) {
-			for (int j = 0; j < gridBuilder.getMatrixHeight(); j++) {
-				whiteColor[i][j] = Color.WHITE;
-			}
-
-		}
-
-		colorTheRectWhite(whiteColor, 0, 0);
-		guiView.backgroundPane.getChildren().clear();
+	    gridBuilder.clearGrid();
 		buildGrid();
 
 	}
