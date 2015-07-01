@@ -150,8 +150,12 @@ public class GridBuilder extends Pane {
    */
 
   public void setPixel(int x, int y, Color color) {
-    gridArray[x][y].setColor(color);
-    savedPixel.add(gridArray[x][y]);
+    if(x < gridArray.length) {
+      if(y < gridArray[x].length) {
+        gridArray[x][y].setColor(color);
+        savedPixel.add(gridArray[x][y]);
+      }
+    }
   }
 
   public Pixel getPixel(int x, int y) {
