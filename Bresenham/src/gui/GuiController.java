@@ -1,6 +1,7 @@
 package gui;
 
 import factories.DialogFactory;
+import factories.GreyScaleFactory;
 import gui.grid.GridBuilder;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -18,6 +19,7 @@ import algorithm.exampleLine;
 import algorithm.vereinfachterBresenham;
 
 public class GuiController {
+
 
   private GuiView guiView;
   private GridBuilder gridBuilder;
@@ -47,7 +49,6 @@ public class GuiController {
     // Begonnen
     // this.gridBuilder
     // .addMouseDragLeaveListener(new MouseDragLeaveListener());
-    this.guiView.miADummy.setOnAction(new SetDummyHandler());
     this.guiView.miABresenham.setOnAction(new SetBresenhamHandler());
     this.guiView.miAvereinfB.setOnAction(new SetVereinfHandler());
     this.guiView.miZPlus.setOnAction(new ZoomInHandler());
@@ -133,266 +134,229 @@ public class GuiController {
       guiView.backgroundPane.getChildren().add(helpLine);
     }
 
-  }
+	}
 
-  /**
-   * 
-   * Ruft die einzelnen Algorithmen auf
-   * 
-   * @param beginX Koordinate von dem Beginn des Algorithmus (oben links)
-   * @param beginY Koordinate von dem Beginn des Algorithmus (oben links)
-   * @param beginXorg Koordinate von ersten Klick (Beginn der Linie). Es empfiehlt sich damit zu
-   *        arbeiten!
-   * @param beginYorg Koordinate von ersten Klick (Beginn der Linie). Es empfiehlt sich damit zu
-   *        arbeiten!
-   * @param endX Koordinate von dem Beginn des Algorithmus (unten rechts)
-   * @param endY Koordinate von dem Beginn des Algorithmus (unten rechts)
-   * @param endXorg Koordinate von zweiten Klick (Ende der Linie). Es empfiehlt sich damit zu
-   *        arbeiten!
-   * @param endYorg Koordinate von zweiten Klick (Ende der Linie). Es empfiehlt sich damit zu
-   *        arbeiten!
-   * @param change true, wenn Algorithmus von unten lins nach oben rechts l�uft
-   * @param changeX true, wenn endX und beginX vertauscht wurden
-   * @param changeY true, wenn endY und beginY vertauscht wurden
-   */
+	/**
+	 * 
+	 * Ruft die einzelnen Algorithmen auf
+	 * 
+	 * @param beginX
+	 *            Koordinate von dem Beginn des Algorithmus (oben links)
+	 * @param beginY
+	 *            Koordinate von dem Beginn des Algorithmus (oben links)
+	 * @param beginXorg
+	 *            Koordinate von ersten Klick (Beginn der Linie). Es empfiehlt
+	 *            sich damit zu arbeiten!
+	 * @param beginYorg
+	 *            Koordinate von ersten Klick (Beginn der Linie). Es empfiehlt
+	 *            sich damit zu arbeiten!
+	 * @param endX
+	 *            Koordinate von dem Beginn des Algorithmus (unten rechts)
+	 * @param endY
+	 *            Koordinate von dem Beginn des Algorithmus (unten rechts)
+	 * @param endXorg
+	 *            Koordinate von zweiten Klick (Ende der Linie). Es empfiehlt
+	 *            sich damit zu arbeiten!
+	 * @param endYorg
+	 *            Koordinate von zweiten Klick (Ende der Linie). Es empfiehlt
+	 *            sich damit zu arbeiten!
+	 * @param change
+	 *            true, wenn Algorithmus von unten lins nach oben rechts l�uft
+	 * @param changeX
+	 *            true, wenn endX und beginX vertauscht wurden
+	 * @param changeY
+	 *            true, wenn endY und beginY vertauscht wurden
+	 */
+	private void runAlgs(int beginX, int beginY, int beginXorg, int beginYorg,
+			int endX, int endY, int endXorg, int endYorg, Boolean change,
+			Boolean changeX, Boolean changeY) {
+		Color rectColors[][] = new Color[endX - beginX][endY - beginY];
+		switch (activeAlgorithm) {
+		case "Dummy":
+			rectColors = DummyAlgoithm.run(beginX, beginY, endX, endY);
+			break;
+		case "Bresenham":
 
-  private void runAlgs(int beginX, int beginY, int beginXorg, int beginYorg, int endX, int endY,
-      int endXorg, int endYorg, Boolean change, Boolean changeX, Boolean changeY) {
+			// Aufruf des der Bresline-Vorbereitungsfunktion mit dem
+			// Originalwerten
+			bresline(beginXorg, beginYorg, endXorg - 1, endYorg - 1,
+					Color.BLACK);
+			break;
+		case "vereinfachterBresenham":
+			bresline(beginXorg, beginYorg, endXorg - 1, endYorg - 1,
+					Color.BLACK);
+			break;
 
-
-
-    Color rectColors[][] = new Color[endX - beginX][endY - beginY];
-    switch (activeAlgorithm) {
-      case "Dummy":
-        rectColors = DummyAlgoithm.run(beginX, beginY, endX, endY);
-        break;
-      case "Bresenham":
-
-        // Aufruf des der Bresline-Vorbereitungsfunktion mit dem Originalwerten
-        bresline(beginXorg, beginYorg, endXorg - 1, endYorg - 1, Color.BLACK);
-        break;
-      case "vereinfachterBresenham":
-        rectColors = vereinfachterBresenham.run(beginX, beginY, endX, endY);
-        /*
-         * Hey Lina,
-         * 
-         * ich glaube mittlerweile, das es einfacher ist erstmal den Algorithmus hier in dieser
-         * Klasse zu implementieren, da man hier z.B. da hier der GridBuilder gehalten wird, und man
-         * direkt auf das Grud zugreifen kann.
-         * 
-         * Au�erdem sind Jaegers Algorithmen darauf angelegt, das sie nicht bei unbedingt (0,0)
-         * beginnen, sondern auch irgendwo in dem Grid. Wenn man mit dem RectColors arbeitet, wie
-         * ich es urspr�ngich gedacht habe, dann h�tte man bei das nur auf einem Ausschnitt von
-         * (0,0) bis (dx, dx) machen k�nnen. Aber das funktioniert alles nicht so einfach wie ich
-         * mir das gedacht habe.
-         * 
-         * Ich hab mir gestern den Anti-Aliasing-Algorithmus in den Folien mal kurz angeschaut, und
-         * ich denke, du brauchst noch eine Funktion wie die bresline (Siehe Folie 2.14), der dem
-         * Algorithmus die richtigen Werte �bergibt und aus der dann der eigentliche Algorithmus
-         * aufgerufen wird.
-         * 
-         * Und dann, wenn erstmal alles funktioniert, dann k�nnen wir ja beim Refactoring die
-         * Algorithmen in eigene Klassen verschieben.
-         * 
-         * �brigens, kann man SetzePixel(x,y,f) aus dem Folien, mit changePixelColor(x,y,
-         * greyScaleFactory.getGreyScale(1-abs(d)) umsetzen.
-         */
-        break;
-
-      case "exampleLine":
-        exampleLine activeAlgortithm = new exampleLine();
-        rectColors = exampleLine.run(beginX, beginY, endX, endY, changeX, changeY);
-        break;
-      // break;
-
-      default:
-        break;
     }
-    // Zeichnet rectCOlors in die Matrix und begint bei beginX, beginY
-    // colorTheRect(rectColors, beginX, beginY);
+}
 
-  }
 
-  /**
-   * Vorbereitung des Start des Bresline Algorithmus
-   * 
-   * @param x0
-   * @param y0
-   * @param xn
-   * @param yn
-   * @param black
-   */
-  private void bresline(int x0, int y0, int xn, int yn, Color black) {
+    /**
+     * Vorbereitung des Start des Bresline Algorithmus
+     * 
+     * @param x0
+     * @param y0
+     * @param xn
+     * @param yn
+     * @param black
+     */
+    private void bresline(int x0, int y0, int xn, int yn, Color black) {
 
-    int dx = xn - x0;
-    int dy = yn - y0;
+        int dx = xn - x0;
+        int dy = yn - y0;
 
-    System.out.println("abs(dx): " + abs(dx) + " abs(dy): " + abs(dy));
+        System.out.println("abs(dx): " + abs(dx) + " abs(dy): " + abs(dy));
 
-    if (abs(dx) >= abs(dy)) {
-      System.out.println("Anstieg  -45 .. 0 .. +45");
-      if (x0 > xn) {
-        bresline(xn, yn, x0, y0, Color.BLACK);
+        if (abs(dx) >= abs(dy)) {
+            System.out.println("Anstieg  -45 .. 0 .. +45");
+            if (x0 > xn) {
+                bresline(xn, yn, x0, y0, Color.BLACK);
 
-      } else {
-        bres1(x0, y0, xn, dx, dy, false);
-      }
+            } else {
+                if (activeAlgorithm == "Bresenham") {
+                    bres1(x0, y0, xn, dx, dy, false);
+                } else {
+                    wuLine(x0, y0, xn, dx, dy, false);
+                }
+            }
 
-    } else {
-      System.out.println("{Anstieg +45 .. 90 .. -45}");
-      if (y0 > yn) {
-        bresline(xn, yn, x0, y0, Color.BLACK);
+        } else {
+            System.out.println("{Anstieg +45 .. 90 .. -45}");
+            if (y0 > yn) {
+                bresline(xn, yn, x0, y0, Color.BLACK);
 
-      } else {
+            } else {
+                if (activeAlgorithm == "Bresenham") {
+                    bres1(y0, x0, yn, dy, dx, true);
+                } else {
+                    wuLine(y0, x0, yn, dy, dx, true);
 
-        bres1(y0, x0, yn, dy, dx, true);
-
-      }
+                }
+            }
+        }
+        buildGrid();
     }
 
-  }
+    /**
+     * Ausf�hrung des Bresline-Algorithmuses.
+     * 
+     * @param x0
+     * @param y0
+     * @param xn
+     * @param dx
+     * @param dy
+     * @param sp
+     */
+    private void bres1(int x0, int y0, int xn, int dx, int dy, boolean sp) {
+        int sw, d, d1, d2, x, y;
 
-  /**
-   * Ausf�hrung des Bresline-Algorithmuses.
-   * 
-   * @param x0
-   * @param y0
-   * @param xn
-   * @param dx
-   * @param dy
-   * @param sp
-   */
-  private void bres1(int x0, int y0, int xn, int dx, int dy, boolean sp) {
-    int sw, d, d1, d2, x, y;
+        System.out.println("Bresham: " + x0 + " : " + y0 + " : " + xn + " : "
+                + dx + " : " + dy + " : " + sp);
+        if (dy < 0) {
+            sw = -1;
+            dy = -dy;
+        } else {
+            sw = 1;
+        }
 
-    System.out.println("Bresham: " + x0 + " : " + y0 + " : " + xn + " : " + dx + " : " + dy + " : "
-        + sp);
-    if (dy < 0) {
-      sw = -1;
-      dy = -dy;
-    } else {
-      sw = 1;
+        d = 2 * dy - dx;
+        d1 = 2 * dy;
+        d2 = 2 * (dy - dx);
+        x = x0;
+        y = y0;
+        if (!sp) {
+          gridBuilder.setPixel(x, y, Color.BLACK);
+        } else {
+          gridBuilder.setPixel(x, y, Color.BLACK);
+        }
+
+        while (x < xn) {
+
+            x = x + 1;
+            if (d < 0) {
+                System.out.println("d_alt: " + d + "d_neu: " + (d + 1));
+                d = d + d1;
+            } else {
+                y = y + sw;
+                System.out.println("y_alt: " + y + "sw: " + sw + "y_neu: "
+                        + (y + sw));
+                d = d + d2;
+                System.out.println("d_alt: " + d + "d2: " + d2 + "d_neu: "
+                        + (d + d2));
+
+            }
+
+            if (!sp) {
+              gridBuilder.setPixel(x, y, Color.BLACK);
+            } else {
+              gridBuilder.setPixel(x, y, Color.BLACK);
+            }
+        }
+        
+        buildGrid();
     }
 
-    d = 2 * dy - dx;
-    d1 = 2 * dy;
-    d2 = 2 * (dy - dx);
-    x = x0;
-    y = y0;
-    if (!sp) {
-      gridBuilder.setPixel(x, y, Color.BLACK);
-    } else {
-      gridBuilder.setPixel(y, x, Color.BLACK);
+    private void wuLine(int x0, int y0, int xn, int dx, int dy, boolean sp) {
+        int x = x0;
+        int y = y0;
+        double d = 0;
+        double incrd = 1 - (((double) dy) /((double) dx));
+        int yn = y0 + dy;
+
+        System.out.println("Wu: " + x0 + " : " + y0 + " : " + xn + " : " + dx
+                + " : " + dy + " : " + sp);
+        
+        gridBuilder.setPixel(x, y, GreyScaleFactory.getGreyScale(0));
+
+        for (int i = 0; i < dx; i++) {
+            x++;
+            y++;
+            d = d + incrd;
+            gridBuilder.setPixel(x, y, GreyScaleFactory.getGreyScale( abs(d)));
+            if (d <= 0) {
+
+              gridBuilder.setPixel(x, y + 1,
+                        GreyScaleFactory.getGreyScale(1 -abs(d)));
+
+            } else {
+                y--;
+                d = d - 1;
+
+                gridBuilder.setPixel(x, y,
+                        GreyScaleFactory.getGreyScale( abs(d)));
+
+            }
+
+        }
+        
+        buildGrid();
     }
 
-    while (x < xn) {
+	/**
+	 * Gibt Positiven wert zur�ck
+	 * 
+	 * @param number
+	 * @return
+	 */
+	private static int abs(int number) {
+		if (number < 0) {
+			number *= -1;
+		}
+		return number;
+	}
 
-      x = x + 1;
-      if (d < 0) {
-        System.out.println("d_alt: " + d + "d_neu: " + (d + 1));
-        d = d + d1;
-      } else {
-        y = y + sw;
-        System.out.println("y_alt: " + y + "sw: " + sw + "y_neu: " + (y + sw));
-        d = d + d2;
-        System.out.println("d_alt: " + d + "d2: " + d2 + "d_neu: " + (d + d2));
-
-      }
-
-      if (!sp) {
-        gridBuilder.setPixel(x, y, Color.BLACK);
-      } else {
-        gridBuilder.setPixel(y, x, Color.BLACK);
-      }
-    }
-
-    buildGrid();
-
-  }
-
-  /*
-   * private void changePixelColor(int x, int y, Color color) { CograRectangle pixel =
-   * gridBuilder.getPixel(x, y); pixel.setFill(color); gridBuilder.setPixel(pixel, x, y);
-   * 
-   * }
-   */
-  /**
-   * Gibt Positiven wert zur�ck
-   * 
-   * @param number
-   * @return
-   */
-  private static int abs(int number) {
-    if (number < 0) {
-      number *= -1;
-    }
-    return number;
-  }
-
-  /**
-   * Gibt Positiven wert zur�ck
-   * 
-   * @param number
-   * @return
-   */
-  private static double abs(double number) {
-    if (number < 0) {
-      number *= -1;
-    }
-    return number;
-  }
-
-  /**
-   * Zeichnet rectCOlors
-   * 
-   * @param colorRect Matrix mit Farben, die in Matrix �bertragen werden sollen
-   * @param beginX x-Koordinate oben-links
-   * @param beginY y-Koordinate oben-links
-   */
-  /*
-   * public void colorTheRect(Color[][] colorRect, int beginX, int beginY) {
-   * 
-   * CograRectangle pixel = new CograRectangle(); pixel.setWidth(pixelSize);
-   * pixel.setHeight(pixelSize); for (int i = 0; i < colorRect.length; i++) { for (int j = 0; j <
-   * colorRect[i].length; j++) { pixel = gridBuilder.getPixel((beginX + i), (beginY + j));
-   * 
-   * if (colorRect[i][j] != null && colorRect[i][j] == Color.BLACK) {
-   * gridBuilder.setRectColor(pixel, colorRect[i][j]); } }
-   * 
-   * }
-   * 
-   * }
-   */
-
-  /*
-   * public void colorTheRectWhite(Color[][] colorRect, int beginX, int beginY) {
-   * 
-   * CograRectangle pixel = new CograRectangle(); pixel.setWidth(pixelSize);
-   * pixel.setHeight(pixelSize); for (int i = 0; i < colorRect.length; i++) { for (int j = 0; j <
-   * colorRect[i].length; j++) { pixel = gridBuilder.getPixel((beginX + i), (beginY + j));
-   * 
-   * if (colorRect[i][j] != null) { gridBuilder.setRectColor(pixel, colorRect[i][j]); } }
-   * 
-   * }
-   * 
-   * }
-   */
-
-  class SetDummyHandler implements EventHandler<ActionEvent> {
-
-    @Override
-    public void handle(ActionEvent event) {
-      guiView.menuAlgorithmen.setText("Active Algorithm: Dummy");
-      guiView.miADummy.setSelected(true);
-      guiView.miABresenham.setSelected(false);
-      guiView.miAvereinfB.setSelected(false);
-      guiView.miAexamplLine.setSelected(false);
-
-      activeAlgorithm = "Dummy";
-      // System.out.println(activeAlgorithm);
-    }
-
-  }
+	/**
+	 * Gibt Positiven wert zur�ck
+	 * 
+	 * @param number
+	 * @return
+	 */
+	private static double abs(double number) {
+		if (number < 0) {
+			number *= -1;
+		}
+		return number;
+	}
 
   class SetBresenhamHandler implements EventHandler<ActionEvent> {
 
