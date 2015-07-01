@@ -1,19 +1,11 @@
 package gui.grid;
 
 
-import gui.grid.components.CograRectangle;
-
 import java.util.ArrayList;
 
 import javafx.event.EventHandler;
-import javafx.scene.Group;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.RowConstraints;
 import javafx.scene.paint.Color;
 
 public class GridBuilder extends Pane {
@@ -27,19 +19,25 @@ public class GridBuilder extends Pane {
   private EventHandler<MouseEvent> handleMouseDragEnteredListener;
   private EventHandler<MouseEvent> handleMousePressOnPixel;
 
-  public Pane buildGrid(int pixelSize, int windowHeight, int windowWidth) {
-
-    gp = new GridPainter(windowHeight, windowWidth);
+  public Pane buildGrid(int pixelSize, int pixelCountX, int pixelCountY) {
+    
+    if(!this.getChildren().isEmpty())
+      this.getChildren().remove(0);
+    
+    if(pixelSize > 15)
+      offset = 1;
+    else
+      offset = 0;
+    
+    gp = new GridPainter(pixelCountX*pixelSize, pixelCountY*pixelSize);
 
     // Dynamische berechnung wie viele Pixel man braucht.
-    int pixelCountX = getCountX(pixelSize, windowHeight);
-    int pixelCountY = getCountY(pixelSize, windowWidth);
-
+  
     this.addEventHandler(MouseEvent.MOUSE_CLICKED, handleClickOnPixel);
     this.addEventHandler(MouseEvent.MOUSE_PRESSED, handleMousePressOnPixel);
     this.addEventHandler(MouseEvent.MOUSE_DRAGGED, handleMouseDragEnteredListener);
 
-    gridArray = new Pixel[pixelCountY][pixelCountX];
+    gridArray = new Pixel[pixelCountX][pixelCountY];
 
     int insertX = 0;
     int insertY = 0;
@@ -202,6 +200,10 @@ public class GridBuilder extends Pane {
 
   public void clearGrid() {
     savedPixel.clear();
+  }
+
+  public void clearCanvas() {
+    gp.clear();
   }
 
 }

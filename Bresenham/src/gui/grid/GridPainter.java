@@ -8,20 +8,23 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.Pane;
 
 public class GridPainter {
-  int windowHeight;
-  int windowWidth;
-  Pane background;
-  final Canvas canvas;
-  GraphicsContext gc;
 
-  GridPainter(int windowHeight, int windowWidth) {
-    this.windowHeight = windowHeight;
-    this.windowWidth = windowWidth;
+  private Pane background;
+  private Canvas canvas;
+  private GraphicsContext gc;
+  private int sizeX, sizeY;
+
+  GridPainter(int sizeX, int sizeY) {
+    this.sizeX = sizeX;
+    this.sizeY = sizeY;
 
     background = new Pane();
-    background.setStyle("-fx-background-color: black");
+    background.setStyle("-fx-background-color: #f9f9f9");
+    
+    background.setPrefWidth(sizeX);
+    background.setPrefHeight(sizeY);
 
-    canvas = new Canvas(windowWidth, windowHeight);
+    canvas = new Canvas(sizeX, sizeY);
     gc = canvas.getGraphicsContext2D();
 
     background.getChildren().add(canvas);
@@ -48,6 +51,10 @@ public class GridPainter {
 
   Pane getGrid() {
     return background;
+  }
+
+  public void clear() {
+    gc.clearRect(0, 0, sizeX, sizeY);
   }
   
 }

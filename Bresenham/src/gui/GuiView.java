@@ -24,7 +24,7 @@ import factories.DialogFactory;
 public class GuiView {
 
 	private AnchorPane rootLayout;
-	public Pane backgroundPane;
+	public StackPane backgroundPane;
 	private Stage primaryStage;
 	private SplitPane bottom;
 
@@ -111,6 +111,7 @@ public class GuiView {
 		topSP.getItems().addAll(menubar, bottom);
 		topSP.setDividerPositions(0.4f);
 		((BorderPane) rootLayout.getChildren().get(0)).setTop(topSP);
+		menubar.toFront();
 
 	
 	}
@@ -130,8 +131,8 @@ public class GuiView {
 	}
 
 	public void setGrid(Pane pane) {
-		backgroundPane = new Pane();
-		backgroundPane.setStyle("-fx-background-color: Black");
+		backgroundPane = new StackPane();
+		backgroundPane.setStyle("-fx-background-color: #E6E6E6");
 		backgroundPane.getChildren().add(pane);
 		((BorderPane) rootLayout.getChildren().get(0))
 				.setCenter(backgroundPane);
