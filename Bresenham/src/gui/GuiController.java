@@ -200,42 +200,42 @@ public class GuiController {
      * @param yn
      * @param black
      */
-    private void bresline(int x0, int y0, int xn, int yn, Color black) {
+	private void bresline(int x0, int y0, int xn, int yn, Color black) {
 
-        int dx = xn - x0;
-        int dy = yn - y0;
+      int dx = xn - x0;
+      int dy = yn - y0;
 
-        System.out.println("abs(dx): " + abs(dx) + " abs(dy): " + abs(dy));
+      System.out.println("abs(dx): " + abs(dx) + " abs(dy): " + abs(dy));
 
-        if (abs(dx) >= abs(dy)) {
-            System.out.println("Anstieg  -45 .. 0 .. +45");
-            if (x0 > xn) {
-                bresline(xn, yn, x0, y0, Color.BLACK);
+      if (abs(dx) >= abs(dy)) {
+          System.out.println("Anstieg  -45 .. 0 .. +45");
+          if (x0 > xn) {
+              bresline(xn, yn, x0, y0, Color.BLACK);
 
-            } else {
-                if (activeAlgorithm == "Bresenham") {
-                    bres1(x0, y0, xn, dx, dy, false);
-                } else {
-                    wuLine(x0, y0, xn, dx, dy, false);
-                }
-            }
+          } else {
+              if (activeAlgorithm == "Bresenham") {
+                  bres1(x0, y0, xn, dx, dy, false);
+              } else {
+                  wuLine(x0, y0, xn, dx, dy, false);
+              }
+          }
 
-        } else {
-            System.out.println("{Anstieg +45 .. 90 .. -45}");
-            if (y0 > yn) {
-                bresline(xn, yn, x0, y0, Color.BLACK);
+      } else {
+          System.out.println("{Anstieg +45 .. 90 .. -45}");
+          if (y0 > yn) {
+              bresline(xn, yn, x0, y0, Color.BLACK);
 
-            } else {
-                if (activeAlgorithm == "Bresenham") {
-                    bres1(y0, x0, yn, dy, dx, true);
-                } else {
-                    wuLine(y0, x0, yn, dy, dx, true);
+          } else {
+              if (activeAlgorithm == "Bresenham") {
+                  bres1(y0, x0, yn, dy, dx, true);
+              } else {
+                  wuLine(y0, x0, yn, dy, dx, true);
 
-                }
-            }
-        }
-        buildGrid();
-    }
+              }
+          }
+      }
+
+  }
 
     /**
      * Ausf�hrung des Bresline-Algorithmuses.
@@ -247,54 +247,58 @@ public class GuiController {
      * @param dy
      * @param sp
      */
-    private void bres1(int x0, int y0, int xn, int dx, int dy, boolean sp) {
-        int sw, d, d1, d2, x, y;
+	private void bres1(int x0, int y0, int xn, int dx, int dy, boolean sp) {
+      int sw, d, d1, d2, x, y;
 
-        System.out.println("Bresham: " + x0 + " : " + y0 + " : " + xn + " : "
-                + dx + " : " + dy + " : " + sp);
-        if (dy < 0) {
-            sw = -1;
-            dy = -dy;
-        } else {
-            sw = 1;
-        }
+      System.out.println("Bresham: " + x0 + " : " + y0 + " : " + xn + " : "
+              + dx + " : " + dy + " : " + sp);
+      if (dy < 0) {
+          sw = -1;
+          dy = -dy;
+      } else {
+          sw = 1;
+      }
 
-        d = 2 * dy - dx;
-        d1 = 2 * dy;
-        d2 = 2 * (dy - dx);
-        x = x0;
-        y = y0;
-        if (!sp) {
-          gridBuilder.setPixel(x, y, Color.BLACK);
-        } else {
-          gridBuilder.setPixel(x, y, Color.BLACK);
-        }
+      d = 2 * dy - dx;
+      d1 = 2 * dy;
+      d2 = 2 * (dy - dx);
+      x = x0;
+      y = y0;
+      if (!sp) {
+        gridBuilder.setPixel(x, y, Color.BLACK);
 
-        while (x < xn) {
+      } else {
+        gridBuilder.setPixel(y, x, Color.BLACK);
 
-            x = x + 1;
-            if (d < 0) {
-                System.out.println("d_alt: " + d + "d_neu: " + (d + 1));
-                d = d + d1;
-            } else {
-                y = y + sw;
-                System.out.println("y_alt: " + y + "sw: " + sw + "y_neu: "
-                        + (y + sw));
-                d = d + d2;
-                System.out.println("d_alt: " + d + "d2: " + d2 + "d_neu: "
-                        + (d + d2));
+      }
 
-            }
+      while (x < xn) {
 
-            if (!sp) {
-              gridBuilder.setPixel(x, y, Color.BLACK);
-            } else {
-              gridBuilder.setPixel(x, y, Color.BLACK);
-            }
-        }
-        
-        buildGrid();
-    }
+          x = x + 1;
+          if (d < 0) {
+              System.out.println("d_alt: " + d + "d_neu: " + (d + 1));
+              d = d + d1;
+          } else {
+              y = y + sw;
+              System.out.println("y_alt: " + y + "sw: " + sw + "y_neu: "
+                      + (y + sw));
+              d = d + d2;
+              System.out.println("d_alt: " + d + "d2: " + d2 + "d_neu: "
+                      + (d + d2));
+
+          }
+
+          if (!sp) {
+            gridBuilder.setPixel(x, y, Color.BLACK);
+
+          } else {
+            gridBuilder.setPixel(y, x, Color.BLACK);
+
+          }
+      }
+
+      buildGrid();
+  }
 
     private void wuLine(int x0, int y0, int xn, int dx, int dy, boolean sp) {
         int x = x0;
