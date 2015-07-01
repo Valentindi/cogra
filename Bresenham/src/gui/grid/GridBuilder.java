@@ -10,7 +10,7 @@ import javafx.scene.paint.Color;
 
 public class GridBuilder extends Pane {
 
-  static int offset = 0;
+  public static int offset = 0;
 
   private static Pixel[][] gridArray;
   private static ArrayList<Pixel> savedPixel = new ArrayList<Pixel>();
@@ -29,9 +29,8 @@ public class GridBuilder extends Pane {
     else
       offset = 0;
     
-    gp = new GridPainter(pixelCountX*pixelSize, pixelCountY*pixelSize);
-
-    // Dynamische berechnung wie viele Pixel man braucht.
+    gp = new GridPainter(pixelCountX*(pixelSize+offset)-(offset*1), pixelCountY*(pixelSize+offset)-(offset*1));
+    this.setStyle("-fx-background-color: black");
   
     this.addEventHandler(MouseEvent.MOUSE_CLICKED, handleClickOnPixel);
     this.addEventHandler(MouseEvent.MOUSE_PRESSED, handleMousePressOnPixel);
@@ -56,6 +55,9 @@ public class GridBuilder extends Pane {
       insertX += pixelSize + offset;
       insertY = 0;
     }
+    
+    this.setMaxWidth(pixelCountX*(pixelSize+offset)-(offset*1));
+    this.setMaxHeight(pixelCountY*(pixelSize+offset)-(offset*1));
 
     gp.paint(gridArray);
     this.getChildren().add(gp.getGrid());
@@ -182,10 +184,6 @@ public class GridBuilder extends Pane {
 
   public void setHandleClickOnPixel(EventHandler<MouseEvent> handleClickOnPixel) {
     this.handleClickOnPixel = handleClickOnPixel;
-  }
-
-  public static int getOffset() {
-    return offset;
   }
 
   public void addMouseDragEnteredListener(EventHandler<MouseEvent> mouseDragEnteredListener) {

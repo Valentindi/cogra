@@ -72,17 +72,18 @@ public class GuiController {
     System.out.println("ZoomIn. New PixelSize: " + pixelSize);
     gridBuilder.clearCanvas();
     buildGrid();
+    guiView.updateMenu();
   }
 
   public void decPixelSize() {
-    pixelSize--;
+    if (pixelSize != 1) {
+      pixelSize--;
 
-    if (pixelSize <= 0)
-      pixelSize = 1;
-
-    System.out.println("ZoomOut. New PixelSize: " + pixelSize);
-    gridBuilder.clearCanvas();
-    buildGrid();
+      System.out.println("ZoomOut. New PixelSize: " + pixelSize);
+      gridBuilder.clearCanvas();
+      buildGrid();
+      guiView.updateMenu();
+    }
   }
 
   public void clearMatrix() {
@@ -458,6 +459,7 @@ public class GuiController {
     public void handle(MouseEvent event) {
       mousePressedX = (int) event.getX();
       mousePressedY = (int) event.getY();
+
     }
   }
 
@@ -549,10 +551,10 @@ public class GuiController {
 
       if (event.getButton() == MouseButton.SECONDARY) {
 
-        gridBuilder.toBack();
         gridBuilder.setTranslateX(gridBuilder.getTranslateX() + event.getX() - mousePressedX);
         gridBuilder.setTranslateY(gridBuilder.getTranslateY() + event.getY() - mousePressedY);
         gridBuilder.toBack();
+        guiView.updateMenu();
 
         event.consume();
 

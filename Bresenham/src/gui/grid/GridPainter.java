@@ -30,10 +30,10 @@ public class GridPainter {
     background.getChildren().add(canvas);
   }
 
-  void paint(Pixel[][] gridArray) {
-    for (int x = 0; x < gridArray.length; x++) {
-      for (int y = 0; y < gridArray[x].length; y++) {
-        paint(gridArray[x][y]);
+  void paint(Pixel[][] pixelArray) {
+    for (int x = 0; x < pixelArray.length; x++) {
+      for (int y = 0; y < pixelArray[x].length; y++) {
+        paint(pixelArray[x][y]);
       }
     }
   }
@@ -43,8 +43,8 @@ public class GridPainter {
     gc.fillRect(pixel.getX(), pixel.getY(), pixel.getSize(), pixel.getSize());
   }
 
-  void paint(ArrayList<Pixel> savedPixel) {
-    for(Pixel pixel : savedPixel) {
+  void paint(ArrayList<Pixel> picxelList) {
+    for(Pixel pixel : picxelList) {
       paint(pixel);
     }
   }

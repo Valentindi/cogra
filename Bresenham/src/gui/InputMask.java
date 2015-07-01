@@ -70,18 +70,10 @@ public class InputMask extends Stage {
      * Botom Pane
      */
     Button bok = new Button("Bestätigen");
-    Button babbrechen = new Button("Abbrechen");
-    babbrechen.setCancelButton(true);
-    HBox botombox = new HBox(bok, babbrechen);
+    HBox botombox = new HBox(bok);
     botombox.setAlignment(Pos.BOTTOM_RIGHT);
     botombox.setPadding(new Insets(15, 15, 15, 15));
     botombox.setSpacing(10);
-    babbrechen.setOnAction(new EventHandler<ActionEvent>() {
-      @Override
-      public void handle(ActionEvent event) {
-        close();
-      }
-    });
 
     bok.setOnAction(new EventHandler<ActionEvent>() {
       @Override

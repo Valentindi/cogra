@@ -46,8 +46,13 @@ public class GuiView {
 	RadioMenuItem miAexamplLine = new RadioMenuItem("Example Line");
 	SeparatorMenuItem mSeperator = new SeparatorMenuItem();
 	MenuItem miZPlus = new MenuItem("Zoom +");
-
 	MenuItem miZMinus = new MenuItem("Zoom -");
+	
+    final StackPane stZoomPlus = new StackPane();
+    final StackPane stZoomMinus = new StackPane();
+    final StackPane stStatusLabel = new StackPane();
+
+    final SplitPane topSP = new SplitPane();
 
 	public Label status = new Label(
 			"Auf Raster Klicken um Startpunkt zu wählen");
@@ -68,7 +73,6 @@ public class GuiView {
 			scene = new Scene(rootLayout);
 
 			addMenu();
-			addBottom();
 
 			primaryStage.setScene(scene);
 			primaryStage.show();
@@ -79,12 +83,7 @@ public class GuiView {
 
 	}
 
-	private void addBottom() {
-
-	}
-
 	public void addMenu() {
-		addEventHandler();
 		menuDatei.getItems().addAll(miShowLine, miClear, miBeenden);
 		menuAlgorithmen.getItems().addAll(/*miADummy,*/ miABresenham, miAvereinfB,
 				/*miAexamplLine,*/ mSeperator);
@@ -93,25 +92,19 @@ public class GuiView {
 		menubar.getMenus().addAll(menuDatei, menuAlgorithmen);
 		menubar.setLayoutX(scene.getWidth());
 
-		final StackPane stZoomPlus = new StackPane();
-		final StackPane stZoomMinus = new StackPane();
-		final StackPane stStatusLabel = new StackPane(status);
-
-		final SplitPane topSP = new SplitPane();
-
-
 		stZoomPlus.getChildren().add(mbZPlus);
 		stZoomMinus.getChildren().add(mbZMinus);
 		bottom = new SplitPane();
 		bottom.getItems().addAll(stStatusLabel, mbZPlus, mbZMinus);
 		bottom.setDividerPositions(0.5f, 0.75f);
+		
+		stStatusLabel.getChildren().add(status);
 
 		menubar.setLayoutX(200);
 
 		topSP.getItems().addAll(menubar, bottom);
 		topSP.setDividerPositions(0.4f);
 		((BorderPane) rootLayout.getChildren().get(0)).setTop(topSP);
-		menubar.toFront();
 
 	
 	}
@@ -155,6 +148,11 @@ public class GuiView {
 		scene.widthProperty().addListener(resizeListener);
 		scene.heightProperty().addListener(resizeListener);
 	}
+
+  public void updateMenu() {
+    ((BorderPane) rootLayout.getChildren().get(0)).getChildren().remove(topSP);
+    ((BorderPane) rootLayout.getChildren().get(0)).setTop(topSP);
+  }
 
 	/*
 	 * public void addMouseDragEnteredListener( MouseDragEnteredListener
