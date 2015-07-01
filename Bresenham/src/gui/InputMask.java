@@ -55,8 +55,8 @@ public class InputMask extends Stage {
     final TextField sizeYTextFiel = new TextField();
     sizeYTextFiel.setMaxWidth(300);
 
-    sizeYTextFiel.setText("500");
-    sizeXTextField.setText("500");
+    sizeYTextFiel.setText("200");
+    sizeXTextField.setText("200");
     Label lx = new Label("Breite in Pixel: ");
     Label ly = new Label("Höhe in Pixel");
 

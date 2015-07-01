@@ -32,6 +32,7 @@ public class Main extends Application {
     
     GuiController gc = new GuiController(guiView, gridBuilder);
     gc.buildGrid();
+    gc.centerGrid();
 
   }
 

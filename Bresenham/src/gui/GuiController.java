@@ -6,8 +6,11 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.event.EventType;
+import javafx.scene.Cursor;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import algorithm.DummyAlgoithm;
@@ -37,8 +40,10 @@ public class GuiController {
 
     this.guiView.addResizeListener(new ResizeListener());
     this.gridBuilder.setCickOnPixelHandler(new ClickOnPixelHandler());
+    this.gridBuilder.setMouseReleasedHandler(new MouseReleasedHandler());
     this.gridBuilder.setMousePressOnPixelHandler(new MousePressOnPixelHandler());
     this.gridBuilder.addMouseDragEnteredListener(new MouseDragEnteredListener());
+    this.gridBuilder.setScrollHandler(new ScrollHandler());
     // Begonnen
     // this.gridBuilder
     // .addMouseDragLeaveListener(new MouseDragLeaveListener());
@@ -67,12 +72,24 @@ public class GuiController {
   }
 
   public void incPixelSize() {
-    pixelSize++;
-
-    System.out.println("ZoomIn. New PixelSize: " + pixelSize);
-    gridBuilder.clearCanvas();
-    buildGrid();
-    guiView.updateMenu();
+    if (pixelSize != 35) {
+      pixelSize++;
+  
+      System.out.println("ZoomIn. New PixelSize: " + pixelSize);
+      gridBuilder.clearCanvas();
+      buildGrid();
+      
+      gridBuilder.setTranslateX(gridBuilder.getTranslateX()
+          -(((sizeInPixelX*(pixelSize+GridBuilder.offset))-(sizeInPixelX*(pixelSize-1+GridBuilder.offset)))/2));
+      gridBuilder.setTranslateY(gridBuilder.getTranslateY()
+          -(((sizeInPixelY*(pixelSize+GridBuilder.offset))-(sizeInPixelY*(pixelSize-1+GridBuilder.offset)))/2));
+      
+      System.out.println(gridBuilder.getTranslateX());
+      System.out.println(gridBuilder.getTranslateY());
+      
+      
+      guiView.updateMenu();
+    }
   }
 
   public void decPixelSize() {
@@ -82,6 +99,12 @@ public class GuiController {
       System.out.println("ZoomOut. New PixelSize: " + pixelSize);
       gridBuilder.clearCanvas();
       buildGrid();
+      
+      gridBuilder.setTranslateX(gridBuilder.getTranslateX()
+          -(((sizeInPixelX*(pixelSize+GridBuilder.offset))-(sizeInPixelX*(pixelSize+1+GridBuilder.offset)))/2));
+      gridBuilder.setTranslateY(gridBuilder.getTranslateY()
+          -(((sizeInPixelY*(pixelSize+GridBuilder.offset))-(sizeInPixelY*(pixelSize+1+GridBuilder.offset)))/2));
+      
       guiView.updateMenu();
     }
   }
@@ -462,6 +485,14 @@ public class GuiController {
 
     }
   }
+  
+  class MouseReleasedHandler implements EventHandler<MouseEvent> {
+
+    @Override
+    public void handle(MouseEvent event) {
+       guiView.scene.setCursor(Cursor.DEFAULT);
+    }
+  }
 
   class ClickOnPixelHandler implements EventHandler<MouseEvent> {
 
@@ -555,12 +586,36 @@ public class GuiController {
         gridBuilder.setTranslateY(gridBuilder.getTranslateY() + event.getY() - mousePressedY);
         gridBuilder.toBack();
         guiView.updateMenu();
+        
+        guiView.scene.setCursor(Cursor.CLOSED_HAND);
 
         event.consume();
 
       }
     }
 
+  }
+  
+  class ScrollHandler implements EventHandler<ScrollEvent> {
+
+    @Override
+    public void handle(ScrollEvent event) {
+      
+      double notches = event.getDeltaY();
+      System.out.println("ScrollEvent! " + notches);
+      
+      if(notches > 0)
+        incPixelSize();
+      else
+        decPixelSize();
+      
+    }
+
+  }
+
+  public void centerGrid() {
+    gridBuilder.setTranslateX((guiView.getWindowWidth()/2)-((sizeInPixelX*pixelSize+GridBuilder.offset)/2));
+    gridBuilder.setTranslateY((guiView.getWindowHeight()/2)-((sizeInPixelY*pixelSize+GridBuilder.offset)/2));
   }
 
 }

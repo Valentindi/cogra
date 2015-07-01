@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 
@@ -18,6 +19,9 @@ public class GridBuilder extends Pane {
   private EventHandler<MouseEvent> handleClickOnPixel;
   private EventHandler<MouseEvent> handleMouseDragEnteredListener;
   private EventHandler<MouseEvent> handleMousePressOnPixel;
+  private EventHandler<MouseEvent> handleMouseRelease;
+  private EventHandler<ScrollEvent> handleScroll;
+
 
   public Pane buildGrid(int pixelSize, int pixelCountX, int pixelCountY) {
     
@@ -34,7 +38,9 @@ public class GridBuilder extends Pane {
   
     this.addEventHandler(MouseEvent.MOUSE_CLICKED, handleClickOnPixel);
     this.addEventHandler(MouseEvent.MOUSE_PRESSED, handleMousePressOnPixel);
+    this.addEventHandler(MouseEvent.MOUSE_RELEASED, handleMouseRelease);
     this.addEventHandler(MouseEvent.MOUSE_DRAGGED, handleMouseDragEnteredListener);
+    this.setOnScroll(handleScroll);
 
     gridArray = new Pixel[pixelCountX][pixelCountY];
 
@@ -188,12 +194,18 @@ public class GridBuilder extends Pane {
 
   public void addMouseDragEnteredListener(EventHandler<MouseEvent> mouseDragEnteredListener) {
     this.handleMouseDragEnteredListener = mouseDragEnteredListener;
-
   }
 
   public void setMousePressOnPixelHandler(EventHandler<MouseEvent> handleMousePressOnPixel) {
     this.handleMousePressOnPixel = handleMousePressOnPixel;
-
+  }
+  
+  public void setMouseReleasedHandler(EventHandler<MouseEvent> handleMouseRelease) {
+    this.handleMouseRelease = handleMouseRelease;
+  }
+  
+  public void setScrollHandler(EventHandler<ScrollEvent> handleScroll) {
+    this.handleScroll = handleScroll;
   }
 
   public void clearGrid() {

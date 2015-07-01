@@ -24,11 +24,11 @@ import factories.DialogFactory;
 public class GuiView {
 
 	private AnchorPane rootLayout;
-	public StackPane backgroundPane;
+	public Pane backgroundPane;
 	private Stage primaryStage;
 	private SplitPane bottom;
 
-	private Scene scene;
+	public Scene scene;
 
 	MenuBar menubar = new MenuBar();
 	Menu menuDatei = new Menu("File");
@@ -124,7 +124,7 @@ public class GuiView {
 	}
 
 	public void setGrid(Pane pane) {
-		backgroundPane = new StackPane();
+		backgroundPane = new Pane();
 		backgroundPane.setStyle("-fx-background-color: #E6E6E6");
 		backgroundPane.getChildren().add(pane);
 		((BorderPane) rootLayout.getChildren().get(0))
