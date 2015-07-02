@@ -1,15 +1,11 @@
 package algorithm;
 
-import java.util.Random;
-
-import factories.DialogFactory;
-import factories.GreyScaleFactory;
 import javafx.scene.paint.Color;
 
 public class exampleLine {
 
 	public static Color[][] run(int beginX, int beginY, int endX, int endY, Boolean changeX, Boolean changeY){
-		DialogFactory.ErrorDialog(null, "Nicht Implementiert", null);
+		System.out.println("Noch nicht implementiert");
 		return null;
 	}
 //	public Color[][] dummyRectGreyScale;

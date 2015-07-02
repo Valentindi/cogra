@@ -1,9 +1,8 @@
 package algorithm;
 
-import java.util.Random;
 
 import javafx.scene.paint.Color;
-import factories.DialogFactory;
+
 
 public class vereinfachterBresenham {
 
@@ -14,7 +13,6 @@ public class vereinfachterBresenham {
 		endX=1;
 		endY=1;
 		Color[][] dummyRectGreyScale = new Color[(int) (endX-beginX)][(int) (endY-beginY)];
-		Random r = new Random();
 		System.out.println("The vereinfachterBresenham is running!");
 		//System.out.println(beginX + "  " + beginY + "  " + endX + "  " + endY);
 		
@@ -24,7 +22,8 @@ public class vereinfachterBresenham {
 			}
 			
 		}
-		DialogFactory.ErrorDialog(null, "Noch nicht implementert", null);
+		
+		System.out.println("Noch nicht implementiert");
 
 		return dummyRectGreyScale;
 	}

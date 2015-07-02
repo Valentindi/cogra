@@ -1,7 +1,5 @@
 package algorithm;
 
-import javafx.scene.paint.Color;
-
 public class XiaolinWuLineAlgorithm {
 	
 //	public static Color[][] run(int beginX, int beginY, int endX, int endY) {

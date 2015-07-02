@@ -1,6 +1,5 @@
 package gui.grid;
 
-
 import java.util.ArrayList;
 
 import javafx.event.EventHandler;

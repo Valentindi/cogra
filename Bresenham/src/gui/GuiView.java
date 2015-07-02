@@ -1,5 +1,6 @@
 package gui;
 
+import gui.GuiController.CloseWindowEventHandler;
 import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -15,11 +16,9 @@ import javafx.scene.control.SeparatorMenuItem;
 import javafx.scene.control.SplitPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
-import factories.DialogFactory;
 
 public class GuiView {
 
@@ -47,15 +46,15 @@ public class GuiView {
 	SeparatorMenuItem mSeperator = new SeparatorMenuItem();
 	MenuItem miZPlus = new MenuItem("Zoom +");
 	MenuItem miZMinus = new MenuItem("Zoom -");
-	
-    final StackPane stZoomPlus = new StackPane();
-    final StackPane stZoomMinus = new StackPane();
-    final StackPane stStatusLabel = new StackPane();
 
-    final SplitPane topSP = new SplitPane();
+	final StackPane stZoomPlus = new StackPane();
+	final StackPane stZoomMinus = new StackPane();
+	final StackPane stStatusLabel = new StackPane();
+
+	final SplitPane topSP = new SplitPane();
 
 	public Label status = new Label(
-			"Auf Raster Klicken um Startpunkt zu wählen");
+			"Auf Raster Klicken um Startpunkt zu wÃ¤hlen");
 	Button mbZPlus = new Button("Zoom +");
 	Button mbZMinus = new Button("Zoom -");
 
@@ -84,9 +83,21 @@ public class GuiView {
 	}
 
 	public void addMenu() {
+		
+		miBeenden.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+
+				System.exit(0);
+
+			}
+		});
+		
 		menuDatei.getItems().addAll(miShowLine, miClear, miBeenden);
-		menuAlgorithmen.getItems().addAll(/*miADummy,*/ miABresenham, miAvereinfB,
-				/*miAexamplLine,*/ mSeperator);
+		menuAlgorithmen.getItems().addAll(/* miADummy, */miABresenham,
+				miAvereinfB,
+				/* miAexamplLine, */mSeperator);
 		menuZoom.getItems().addAll(miZPlus, miZMinus);
 
 		menubar.getMenus().addAll(menuDatei, menuAlgorithmen);
@@ -97,7 +108,7 @@ public class GuiView {
 		bottom = new SplitPane();
 		bottom.getItems().addAll(stStatusLabel, mbZPlus, mbZMinus);
 		bottom.setDividerPositions(0.5f, 0.75f);
-		
+
 		stStatusLabel.getChildren().add(status);
 
 		menubar.setLayoutX(200);
@@ -106,23 +117,9 @@ public class GuiView {
 		topSP.setDividerPositions(0.4f);
 		((BorderPane) rootLayout.getChildren().get(0)).setTop(topSP);
 
+	}
+
 	
-	}
-
-	private void addEventHandler() {
-		miBeenden.setOnAction(new EventHandler<ActionEvent>() {
-
-			@Override
-			public void handle(ActionEvent event) {
-				if (DialogFactory.acceptDialog(null, "Beenden", null)) {
-					System.exit(0);
-				}
-
-			}
-		});
-
-	}
-
 	public void setGrid(Pane pane) {
 		backgroundPane = new Pane();
 		backgroundPane.setStyle("-fx-background-color: #E6E6E6");
@@ -149,10 +146,17 @@ public class GuiView {
 		scene.heightProperty().addListener(resizeListener);
 	}
 
-  public void updateMenu() {
-    ((BorderPane) rootLayout.getChildren().get(0)).getChildren().remove(topSP);
-    ((BorderPane) rootLayout.getChildren().get(0)).setTop(topSP);
-  }
+	public void updateMenu() {
+		((BorderPane) rootLayout.getChildren().get(0)).getChildren().remove(
+				topSP);
+		((BorderPane) rootLayout.getChildren().get(0)).setTop(topSP);
+	}
+
+	public void setCloseEvent(CloseWindowEventHandler closeWindowEventHandler) {
+		System.out.println("Schade und auf Wiedersehen");
+		primaryStage.setOnCloseRequest(closeWindowEventHandler);
+
+	}
 
 	/*
 	 * public void addMouseDragEnteredListener( MouseDragEnteredListener
