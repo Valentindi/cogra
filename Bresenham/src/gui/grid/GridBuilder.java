@@ -94,6 +94,7 @@ public class GridBuilder extends Pane {
   public void setPixel(int x, int y, Color color) {
     if (x < gridArray.length) {
       if (y < gridArray[x].length) {
+    	  System.out.println("Set Pixel at:  " + x + " : " + y);
         gridArray[x][y].setColor(color);
         savedPixel.add(gridArray[x][y]);
       }
