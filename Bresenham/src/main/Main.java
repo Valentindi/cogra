@@ -31,8 +31,7 @@ public class Main extends Application {
     GridBuilder gridBuilder = new GridBuilder();
     
     GuiController gc = new GuiController(guiView, gridBuilder);
-    gc.buildGrid();
-    gc.centerGrid();
+    gc.init();
 
   }
 

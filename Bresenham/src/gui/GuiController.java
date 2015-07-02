@@ -70,10 +70,11 @@ public class GuiController {
   public void buildGrid() {
 
     guiView.setGrid(gridBuilder.buildGrid(pixelSize, sizeInPixelX, sizeInPixelY));
+    guiView.updateMenu();
   }
 
   public void incPixelSize() {
-    if (pixelSize != 35) {
+    if (pixelSize != 35 || ((sizeInPixelX+sizeInPixelY)/2) <= 60) {
       pixelSize++;
   
       System.out.println("ZoomIn. New PixelSize: " + pixelSize);
@@ -88,8 +89,6 @@ public class GuiController {
       System.out.println(gridBuilder.getTranslateX());
       System.out.println(gridBuilder.getTranslateY());
       
-      
-      guiView.updateMenu();
     }
   }
 
@@ -105,8 +104,6 @@ public class GuiController {
           -(((sizeInPixelX*(pixelSize+GridBuilder.offset))-(sizeInPixelX*(pixelSize+1+GridBuilder.offset)))/2));
       gridBuilder.setTranslateY(gridBuilder.getTranslateY()
           -(((sizeInPixelY*(pixelSize+GridBuilder.offset))-(sizeInPixelY*(pixelSize+1+GridBuilder.offset)))/2));
-      
-      guiView.updateMenu();
     }
   }
 
@@ -334,6 +331,7 @@ public class GuiController {
         }
         
         buildGrid();
+       
     }
 
 	/**
@@ -440,6 +438,7 @@ public class GuiController {
 
     public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneWidth,
         Number newSceneWidth) {
+      centerGrid();
       buildGrid(); // Wenn neue Größe --> Grid neu bauen
     }
   }
@@ -584,6 +583,17 @@ public class GuiController {
   public void centerGrid() {
     gridBuilder.setTranslateX((guiView.getWindowWidth()/2)-((sizeInPixelX*pixelSize+GridBuilder.offset)/2));
     gridBuilder.setTranslateY((guiView.getWindowHeight()/2)-((sizeInPixelY*pixelSize+GridBuilder.offset)/2));
+  }
+
+  public void init() {
+    pixelSize = (int) ((guiView.getWindowHeight()/sizeInPixelY)*0.9);
+    
+    if (pixelSize > 35 && ((sizeInPixelX+sizeInPixelY)/2) > 60) {
+      pixelSize = 35;
+    }
+    
+    buildGrid();
+    centerGrid();    
   }
 
 }
