@@ -293,36 +293,58 @@ public class GuiController {
   }
 
   private void wuLine(int x0, int y0, int xn, int dx, int dy, boolean sp) {
-    int x = x0;
-    int y = y0;
-    double d = 0;
-    double incrd = 1 - (((double) dy) / ((double) dx));
-    System.out
-        .println("Wu: " + x0 + " : " + y0 + " : " + xn + " : " + dx + " : " + dy + " : " + sp);
+	    int sw, d, d1, d2, x, y;
+		double x2 = 0;
+		double xn2 = dx;
+		double y2 = 0;
+		double yn2 = dy;
+		double foo;
+		int bar;
+		Boolean exchange = false;
+		System.out.println("start");
+		if (yn2 > xn2) {
+			foo = yn2;
+			bar = y0;
+			yn2 = xn2;
+			y0 = x0;
+			xn2 = foo;
+			x0 = bar;
+			exchange = true;
+			System.out.println("Tausch");
+		}
 
-    gridBuilder.setPixel(x, y, GreyScaleFactory.getGreyScale(0));
+		double incr = yn2 / xn2;
+		double value = 0;
+		
+		gridBuilder.setPixel(x0, y0, Color.BLACK);
+		while (abs(x2) < abs(xn2)) {
 
-    for (int i = 0; i < dx; i++) {
-      x++;
-      y++;
-      d = d + incrd;
-      gridBuilder.setPixel(x, y, GreyScaleFactory.getGreyScale(abs(d)));
-      if (d <= 0) {
+			x2++;
+			value += incr;
 
-        gridBuilder.setPixel(x, y + 1, GreyScaleFactory.getGreyScale(1 - abs(d)));
+			if (value >= 1) {
+				y2++;
+				value--;
+			}
+			if (value <= -1) {
+				y2--;
+				value++;
+			}
+			if (!exchange) {
+		        gridBuilder.setPixel((int)x2+x0, (int)y2+y0, GreyScaleFactory.getGreyScale(abs(value)));
+		        gridBuilder.setPixel((int)x2+x0, (int)y2+y0+1, GreyScaleFactory.getGreyScale(abs(1-value)));
+				System.out
+						.println(x2 + " : " + y2 + " : " + incr + " : " + value);
+			} else {
+				gridBuilder.setPixel((int)y2+y0, (int)x2+x0, GreyScaleFactory.getGreyScale(abs(value)));
+		        gridBuilder.setPixel((int)y2+y0, (int)x2+x0+1, GreyScaleFactory.getGreyScale(abs(1-value)));
+				System.out
+						.println(y2 + " : " + x2 + " : " + incr + " : " + value);
 
-      } else {
-        y--;
-        d = d - 1;
+			}
+		}
 
-        gridBuilder.setPixel(x, y, GreyScaleFactory.getGreyScale(abs(d)));
-
-      }
-
-    }
-
-    buildGrid();
-
+	    buildGrid();
   }
 
   /**
