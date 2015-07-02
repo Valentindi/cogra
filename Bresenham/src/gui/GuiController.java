@@ -558,7 +558,7 @@ public class GuiController {
     @Override
     public void handle(MouseEvent event) {
 
-      if (event.getButton() == MouseButton.SECONDARY) {
+      if (event.getButton() == MouseButton.SECONDARY || event.getButton() == MouseButton.MIDDLE) {
 
         gridBuilder.setTranslateX(gridBuilder.getTranslateX() + event.getX() - mousePressedX);
         gridBuilder.setTranslateY(gridBuilder.getTranslateY() + event.getY() - mousePressedY);
