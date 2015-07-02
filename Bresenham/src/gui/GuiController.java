@@ -32,6 +32,7 @@ public class GuiController {
 
   public static String activeAlgorithm = "Dummy";
   private int pixelSize = 1;
+  private Line helpLine;
 
   public GuiController(GuiView guiView, GridBuilder gridBuilder) {
     this.guiView = guiView;
@@ -81,6 +82,7 @@ public class GuiController {
 
       System.out.println("ZoomIn. New PixelSize: " + pixelSize);
       gridBuilder.clearCanvas();
+      gridBuilder.getChildren().remove(helpLine);
       buildGrid();
 
       gridBuilder
@@ -105,6 +107,7 @@ public class GuiController {
 
       System.out.println("ZoomOut. New PixelSize: " + pixelSize);
       gridBuilder.clearCanvas();
+      gridBuilder.getChildren().remove(helpLine);
       buildGrid();
 
       gridBuilder
@@ -123,22 +126,21 @@ public class GuiController {
 
   }
   
-  @Deprecated
   private void drawHelpline(int beginX, int beginY, int endX, int endY, Boolean changeX,
       Boolean changeY) {
     if (guiView.miShowLine.isSelected()) {
-      Line helpLine = new Line();
+      helpLine = new Line();
+      
+      helpLine.setStartX(beginX * (pixelSize+GridBuilder.offset) + pixelSize/2);
+      helpLine.setEndX(endX * (pixelSize+GridBuilder.offset) - pixelSize/2);
 
-      helpLine.setStartX(beginX * (pixelSize + 1) + (0.5 * pixelSize));
-      helpLine.setEndX(endX * (pixelSize + 1) - (0.5 * pixelSize));
-
-      helpLine.setStartY(beginY * (pixelSize + 1) + (0.5 * pixelSize));
-      helpLine.setEndY(endY * (pixelSize + 1) - +(0.5 * pixelSize));
+      helpLine.setStartY(beginY * (pixelSize+GridBuilder.offset) + pixelSize/2);
+      helpLine.setEndY(endY * (pixelSize+GridBuilder.offset) - pixelSize/2);
 
       helpLine.setFill(Color.RED);
       helpLine.setStroke(Color.RED);
 
-      guiView.backgroundPane.getChildren().add(helpLine);
+      gridBuilder.getChildren().add(helpLine);
     }
 
   }
