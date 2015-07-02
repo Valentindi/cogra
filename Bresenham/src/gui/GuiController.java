@@ -7,7 +7,6 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.event.EventType;
 import javafx.scene.Cursor;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -15,8 +14,6 @@ import javafx.scene.input.ScrollEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import algorithm.DummyAlgoithm;
-import algorithm.exampleLine;
-import algorithm.vereinfachterBresenham;
 
 public class GuiController {
 
@@ -67,31 +64,41 @@ public class GuiController {
 
   }
 
+  /**
+   * Baut das Grid
+   */
   public void buildGrid() {
-
     guiView.setGrid(gridBuilder.buildGrid(pixelSize, sizeInPixelX, sizeInPixelY));
     guiView.updateMenu();
   }
 
+  /**
+   * Zoom rein
+   */
   public void incPixelSize() {
-    if (pixelSize != 35 || ((sizeInPixelX+sizeInPixelY)/2) <= 60) {
+    if (pixelSize != 35 || ((sizeInPixelX + sizeInPixelY) / 2) <= 60) {
       pixelSize++;
-  
+
       System.out.println("ZoomIn. New PixelSize: " + pixelSize);
       gridBuilder.clearCanvas();
       buildGrid();
-      
-      gridBuilder.setTranslateX(gridBuilder.getTranslateX()
-          -(((sizeInPixelX*(pixelSize+GridBuilder.offset))-(sizeInPixelX*(pixelSize-1+GridBuilder.offset)))/2));
-      gridBuilder.setTranslateY(gridBuilder.getTranslateY()
-          -(((sizeInPixelY*(pixelSize+GridBuilder.offset))-(sizeInPixelY*(pixelSize-1+GridBuilder.offset)))/2));
-      
+
+      gridBuilder
+          .setTranslateX(gridBuilder.getTranslateX()
+              - (((sizeInPixelX * (pixelSize + GridBuilder.offset)) - (sizeInPixelX * (pixelSize - 1 + GridBuilder.offset))) / 2));
+      gridBuilder
+          .setTranslateY(gridBuilder.getTranslateY()
+              - (((sizeInPixelY * (pixelSize + GridBuilder.offset)) - (sizeInPixelY * (pixelSize - 1 + GridBuilder.offset))) / 2));
+
       System.out.println(gridBuilder.getTranslateX());
       System.out.println(gridBuilder.getTranslateY());
-      
+
     }
   }
 
+  /**
+   * Zoom raus
+   */
   public void decPixelSize() {
     if (pixelSize != 1) {
       pixelSize--;
@@ -99,11 +106,13 @@ public class GuiController {
       System.out.println("ZoomOut. New PixelSize: " + pixelSize);
       gridBuilder.clearCanvas();
       buildGrid();
-      
-      gridBuilder.setTranslateX(gridBuilder.getTranslateX()
-          -(((sizeInPixelX*(pixelSize+GridBuilder.offset))-(sizeInPixelX*(pixelSize+1+GridBuilder.offset)))/2));
-      gridBuilder.setTranslateY(gridBuilder.getTranslateY()
-          -(((sizeInPixelY*(pixelSize+GridBuilder.offset))-(sizeInPixelY*(pixelSize+1+GridBuilder.offset)))/2));
+
+      gridBuilder
+          .setTranslateX(gridBuilder.getTranslateX()
+              - (((sizeInPixelX * (pixelSize + GridBuilder.offset)) - (sizeInPixelX * (pixelSize + 1 + GridBuilder.offset))) / 2));
+      gridBuilder
+          .setTranslateY(gridBuilder.getTranslateY()
+              - (((sizeInPixelY * (pixelSize + GridBuilder.offset)) - (sizeInPixelY * (pixelSize + 1 + GridBuilder.offset))) / 2));
     }
   }
 
@@ -113,7 +122,8 @@ public class GuiController {
     buildGrid();
 
   }
-
+  
+  @Deprecated
   private void drawHelpline(int beginX, int beginY, int endX, int endY, Boolean changeX,
       Boolean changeY) {
     if (guiView.miShowLine.isSelected()) {
@@ -131,136 +141,143 @@ public class GuiController {
       guiView.backgroundPane.getChildren().add(helpLine);
     }
 
-	}
+  }
 
-	/**
-	 * 
-	 * Ruft die einzelnen Algorithmen auf
-	 * 
-	 * @param beginX
-	 *            Koordinate von dem Beginn des Algorithmus (oben links)
-	 * @param beginY
-	 *            Koordinate von dem Beginn des Algorithmus (oben links)
-	 * @param beginXorg
-	 *            Koordinate von ersten Klick (Beginn der Linie). Es empfiehlt
-	 *            sich damit zu arbeiten!
-	 * @param beginYorg
-	 *            Koordinate von ersten Klick (Beginn der Linie). Es empfiehlt
-	 *            sich damit zu arbeiten!
-	 * @param endX
-	 *            Koordinate von dem Beginn des Algorithmus (unten rechts)
-	 * @param endY
-	 *            Koordinate von dem Beginn des Algorithmus (unten rechts)
-	 * @param endXorg
-	 *            Koordinate von zweiten Klick (Ende der Linie). Es empfiehlt
-	 *            sich damit zu arbeiten!
-	 * @param endYorg
-	 *            Koordinate von zweiten Klick (Ende der Linie). Es empfiehlt
-	 *            sich damit zu arbeiten!
-	 * @param change
-	 *            true, wenn Algorithmus von unten lins nach oben rechts l�uft
-	 * @param changeX
-	 *            true, wenn endX und beginX vertauscht wurden
-	 * @param changeY
-	 *            true, wenn endY und beginY vertauscht wurden
-	 */
-	private void runAlgs(int beginX, int beginY, int beginXorg, int beginYorg,
-			int endX, int endY, int endXorg, int endYorg, Boolean change,
-			Boolean changeX, Boolean changeY) {
-		Color rectColors[][] = new Color[endX - beginX][endY - beginY];
-		switch (activeAlgorithm) {
-		case "Dummy":
-			rectColors = DummyAlgoithm.run(beginX, beginY, endX, endY);
-			break;
-		case "Bresenham":
+  /**
+   * 
+   * Ruft die einzelnen Algorithmen auf
+   * 
+   * @param beginX Koordinate von dem Beginn des Algorithmus (oben links)
+   * @param beginY Koordinate von dem Beginn des Algorithmus (oben links)
+   * @param beginXorg Koordinate von ersten Klick (Beginn der Linie). Es empfiehlt sich damit zu
+   *        arbeiten!
+   * @param beginYorg Koordinate von ersten Klick (Beginn der Linie). Es empfiehlt sich damit zu
+   *        arbeiten!
+   * @param endX Koordinate von dem Beginn des Algorithmus (unten rechts)
+   * @param endY Koordinate von dem Beginn des Algorithmus (unten rechts)
+   * @param endXorg Koordinate von zweiten Klick (Ende der Linie). Es empfiehlt sich damit zu
+   *        arbeiten!
+   * @param endYorg Koordinate von zweiten Klick (Ende der Linie). Es empfiehlt sich damit zu
+   *        arbeiten!
+   * @param change true, wenn Algorithmus von unten lins nach oben rechts l�uft
+   * @param changeX true, wenn endX und beginX vertauscht wurden
+   * @param changeY true, wenn endY und beginY vertauscht wurden
+   */
+  private void runAlgs(int beginX, int beginY, int beginXorg, int beginYorg, int endX, int endY,
+      int endXorg, int endYorg, Boolean change, Boolean changeX, Boolean changeY) {
+    switch (activeAlgorithm) {
+      case "Dummy":
+        DummyAlgoithm.run(beginX, beginY, endX, endY);
+        break;
+      case "Bresenham":
 
-			// Aufruf des der Bresline-Vorbereitungsfunktion mit dem
-			// Originalwerten
-			bresline(beginXorg, beginYorg, endXorg - 1, endYorg - 1,
-					Color.BLACK);
-			break;
-		case "vereinfachterBresenham":
-			bresline(beginXorg, beginYorg, endXorg - 1, endYorg - 1,
-					Color.BLACK);
-			break;
+        // Aufruf des der Bresline-Vorbereitungsfunktion mit dem
+        // Originalwerten
+        bresline(beginXorg, beginYorg, endXorg - 1, endYorg - 1, Color.BLACK);
+        break;
+      case "vereinfachterBresenham":
+        bresline(beginXorg, beginYorg, endXorg - 1, endYorg - 1, Color.BLACK);
+        break;
 
     }
-}
+  }
 
 
-    /**
-     * Vorbereitung des Start des Bresline Algorithmus
-     * 
-     * @param x0
-     * @param y0
-     * @param xn
-     * @param yn
-     * @param black
-     */
-	private void bresline(int x0, int y0, int xn, int yn, Color black) {
+  /**
+   * Vorbereitung des Start des Bresline Algorithmus
+   * 
+   * @param x0
+   * @param y0
+   * @param xn
+   * @param yn
+   * @param black
+   */
+  private void bresline(int x0, int y0, int xn, int yn, Color black) {
 
-      int dx = xn - x0;
-      int dy = yn - y0;
+    int dx = xn - x0;
+    int dy = yn - y0;
 
-      System.out.println("abs(dx): " + abs(dx) + " abs(dy): " + abs(dy));
+    System.out.println("abs(dx): " + abs(dx) + " abs(dy): " + abs(dy));
 
-      if (abs(dx) >= abs(dy)) {
-          System.out.println("Anstieg  -45 .. 0 .. +45");
-          if (x0 > xn) {
-              bresline(xn, yn, x0, y0, Color.BLACK);
-
-          } else {
-              if (activeAlgorithm == "Bresenham") {
-                  bres1(x0, y0, xn, dx, dy, false);
-              } else {
-                  wuLine(x0, y0, xn, dx, dy, false);
-              }
-          }
+    if (abs(dx) >= abs(dy)) {
+      System.out.println("Anstieg  -45 .. 0 .. +45");
+      if (x0 > xn) {
+        bresline(xn, yn, x0, y0, Color.BLACK);
 
       } else {
-          System.out.println("{Anstieg +45 .. 90 .. -45}");
-          if (y0 > yn) {
-              bresline(xn, yn, x0, y0, Color.BLACK);
-
-          } else {
-              if (activeAlgorithm == "Bresenham") {
-                  bres1(y0, x0, yn, dy, dx, true);
-              } else {
-                  wuLine(y0, x0, yn, dy, dx, true);
-
-              }
-          }
+        if (activeAlgorithm == "Bresenham") {
+          bres1(x0, y0, xn, dx, dy, false);
+        } else {
+          wuLine(x0, y0, xn, dx, dy, false);
+        }
       }
+
+    } else {
+      System.out.println("{Anstieg +45 .. 90 .. -45}");
+      if (y0 > yn) {
+        bresline(xn, yn, x0, y0, Color.BLACK);
+
+      } else {
+        if (activeAlgorithm == "Bresenham") {
+          bres1(y0, x0, yn, dy, dx, true);
+        } else {
+          wuLine(y0, x0, yn, dy, dx, true);
+
+        }
+      }
+    }
 
   }
 
-    /**
-     * Ausf�hrung des Bresline-Algorithmuses.
-     * 
-     * @param x0
-     * @param y0
-     * @param xn
-     * @param dx
-     * @param dy
-     * @param sp
-     */
-	private void bres1(int x0, int y0, int xn, int dx, int dy, boolean sp) {
-      int sw, d, d1, d2, x, y;
+  /**
+   * Ausf�hrung des Bresline-Algorithmuses.
+   * 
+   * @param x0
+   * @param y0
+   * @param xn
+   * @param dx
+   * @param dy
+   * @param sp
+   */
+  private void bres1(int x0, int y0, int xn, int dx, int dy, boolean sp) {
+    int sw, d, d1, d2, x, y;
 
-      System.out.println("Bresham: " + x0 + " : " + y0 + " : " + xn + " : "
-              + dx + " : " + dy + " : " + sp);
-      if (dy < 0) {
-          sw = -1;
-          dy = -dy;
+    System.out.println("Bresham: " + x0 + " : " + y0 + " : " + xn + " : " + dx + " : " + dy + " : "
+        + sp);
+    if (dy < 0) {
+      sw = -1;
+      dy = -dy;
+    } else {
+      sw = 1;
+    }
+
+    d = 2 * dy - dx;
+    d1 = 2 * dy;
+    d2 = 2 * (dy - dx);
+    x = x0;
+    y = y0;
+    if (!sp) {
+      gridBuilder.setPixel(x, y, Color.BLACK);
+
+    } else {
+      gridBuilder.setPixel(y, x, Color.BLACK);
+
+    }
+
+    while (x < xn) {
+
+      x = x + 1;
+      if (d < 0) {
+        System.out.println("d_alt: " + d + "d_neu: " + (d + 1));
+        d = d + d1;
       } else {
-          sw = 1;
+        y = y + sw;
+        System.out.println("y_alt: " + y + "sw: " + sw + "y_neu: " + (y + sw));
+        d = d + d2;
+        System.out.println("d_alt: " + d + "d2: " + d2 + "d_neu: " + (d + d2));
+
       }
 
-      d = 2 * dy - dx;
-      d1 = 2 * dy;
-      d2 = 2 * (dy - dx);
-      x = x0;
-      y = y0;
       if (!sp) {
         gridBuilder.setPixel(x, y, Color.BLACK);
 
@@ -268,97 +285,89 @@ public class GuiController {
         gridBuilder.setPixel(y, x, Color.BLACK);
 
       }
-
-      while (x < xn) {
-
-          x = x + 1;
-          if (d < 0) {
-              System.out.println("d_alt: " + d + "d_neu: " + (d + 1));
-              d = d + d1;
-          } else {
-              y = y + sw;
-              System.out.println("y_alt: " + y + "sw: " + sw + "y_neu: "
-                      + (y + sw));
-              d = d + d2;
-              System.out.println("d_alt: " + d + "d2: " + d2 + "d_neu: "
-                      + (d + d2));
-
-          }
-
-          if (!sp) {
-            gridBuilder.setPixel(x, y, Color.BLACK);
-
-          } else {
-            gridBuilder.setPixel(y, x, Color.BLACK);
-
-          }
-      }
-
-      buildGrid();
-  }
-
-    private void wuLine(int x0, int y0, int xn, int dx, int dy, boolean sp) {
-        int x = x0;
-        int y = y0;
-        double d = 0;
-        double incrd = 1 - (((double) dy) /((double) dx));
-        int yn = y0 + dy;
-
-        System.out.println("Wu: " + x0 + " : " + y0 + " : " + xn + " : " + dx
-                + " : " + dy + " : " + sp);
-        
-        gridBuilder.setPixel(x, y, GreyScaleFactory.getGreyScale(0));
-
-        for (int i = 0; i < dx; i++) {
-            x++;
-            y++;
-            d = d + incrd;
-            gridBuilder.setPixel(x, y, GreyScaleFactory.getGreyScale( abs(d)));
-            if (d <= 0) {
-
-              gridBuilder.setPixel(x, y + 1,
-                        GreyScaleFactory.getGreyScale(1 -abs(d)));
-
-            } else {
-                y--;
-                d = d - 1;
-
-                gridBuilder.setPixel(x, y,
-                        GreyScaleFactory.getGreyScale( abs(d)));
-
-            }
-
-        }
-        
-        buildGrid();
-       
     }
 
-	/**
-	 * Gibt Positiven wert zur�ck
-	 * 
-	 * @param number
-	 * @return
-	 */
-	private static int abs(int number) {
-		if (number < 0) {
-			number *= -1;
-		}
-		return number;
-	}
+    buildGrid();
+  }
 
-	/**
-	 * Gibt Positiven wert zur�ck
-	 * 
-	 * @param number
-	 * @return
-	 */
-	private static double abs(double number) {
-		if (number < 0) {
-			number *= -1;
-		}
-		return number;
-	}
+  private void wuLine(int x0, int y0, int xn, int dx, int dy, boolean sp) {
+    int x = x0;
+    int y = y0;
+    double d = 0;
+    double incrd = 1 - (((double) dy) / ((double) dx));
+    System.out
+        .println("Wu: " + x0 + " : " + y0 + " : " + xn + " : " + dx + " : " + dy + " : " + sp);
+
+    gridBuilder.setPixel(x, y, GreyScaleFactory.getGreyScale(0));
+
+    for (int i = 0; i < dx; i++) {
+      x++;
+      y++;
+      d = d + incrd;
+      gridBuilder.setPixel(x, y, GreyScaleFactory.getGreyScale(abs(d)));
+      if (d <= 0) {
+
+        gridBuilder.setPixel(x, y + 1, GreyScaleFactory.getGreyScale(1 - abs(d)));
+
+      } else {
+        y--;
+        d = d - 1;
+
+        gridBuilder.setPixel(x, y, GreyScaleFactory.getGreyScale(abs(d)));
+
+      }
+
+    }
+
+    buildGrid();
+
+  }
+
+  /**
+   * Gibt Positiven wert zur�ck
+   * 
+   * @param number
+   * @return
+   */
+  private static int abs(int number) {
+    if (number < 0) {
+      number *= -1;
+    }
+    return number;
+  }
+
+  /**
+   * Gibt Positiven wert zur�ck
+   * 
+   * @param number
+   * @return
+   */
+  private static double abs(double number) {
+    if (number < 0) {
+      number *= -1;
+    }
+    return number;
+  }
+
+
+  public void centerGrid() {
+    gridBuilder.setTranslateX((guiView.getWindowWidth() / 2)
+        - ((sizeInPixelX * pixelSize + GridBuilder.offset) / 2));
+    gridBuilder.setTranslateY((guiView.getWindowHeight() / 2)
+        - ((sizeInPixelY * pixelSize + GridBuilder.offset) / 2));
+  }
+
+  public void init() {
+    pixelSize = (int) ((guiView.getWindowHeight() / sizeInPixelY) * 0.9);
+
+    if (pixelSize > 35 && ((sizeInPixelX + sizeInPixelY) / 2) > 60) {
+      pixelSize = 35;
+    }
+
+    buildGrid();
+    centerGrid();
+  }
+
 
   class SetBresenhamHandler implements EventHandler<ActionEvent> {
 
@@ -452,12 +461,12 @@ public class GuiController {
 
     }
   }
-  
+
   class MouseReleasedHandler implements EventHandler<MouseEvent> {
 
     @Override
     public void handle(MouseEvent event) {
-       guiView.scene.setCursor(Cursor.DEFAULT);
+      guiView.scene.setCursor(Cursor.DEFAULT);
     }
   }
 
@@ -553,7 +562,7 @@ public class GuiController {
         gridBuilder.setTranslateY(gridBuilder.getTranslateY() + event.getY() - mousePressedY);
         gridBuilder.toBack();
         guiView.updateMenu();
-        
+
         guiView.scene.setCursor(Cursor.CLOSED_HAND);
 
         event.consume();
@@ -562,38 +571,22 @@ public class GuiController {
     }
 
   }
-  
+
   class ScrollHandler implements EventHandler<ScrollEvent> {
 
     @Override
     public void handle(ScrollEvent event) {
-      
+
       double notches = event.getDeltaY();
       System.out.println("ScrollEvent! " + notches);
-      
-      if(notches > 0)
+
+      if (notches > 0)
         incPixelSize();
       else
         decPixelSize();
-      
+
     }
 
-  }
-
-  public void centerGrid() {
-    gridBuilder.setTranslateX((guiView.getWindowWidth()/2)-((sizeInPixelX*pixelSize+GridBuilder.offset)/2));
-    gridBuilder.setTranslateY((guiView.getWindowHeight()/2)-((sizeInPixelY*pixelSize+GridBuilder.offset)/2));
-  }
-
-  public void init() {
-    pixelSize = (int) ((guiView.getWindowHeight()/sizeInPixelY)*0.9);
-    
-    if (pixelSize > 35 && ((sizeInPixelX+sizeInPixelY)/2) > 60) {
-      pixelSize = 35;
-    }
-    
-    buildGrid();
-    centerGrid();    
   }
 
 }

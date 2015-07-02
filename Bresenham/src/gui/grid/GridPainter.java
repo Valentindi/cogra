@@ -2,7 +2,6 @@ package gui.grid;
 
 import java.util.ArrayList;
 
-import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.Pane;
@@ -20,7 +19,7 @@ public class GridPainter {
 
     background = new Pane();
     background.setStyle("-fx-background-color: #f9f9f9");
-    
+
     background.setPrefWidth(sizeX);
     background.setPrefHeight(sizeY);
 
@@ -44,7 +43,7 @@ public class GridPainter {
   }
 
   void paint(ArrayList<Pixel> picxelList) {
-    for(Pixel pixel : picxelList) {
+    for (Pixel pixel : picxelList) {
       paint(pixel);
     }
   }
@@ -56,5 +55,5 @@ public class GridPainter {
   public void clear() {
     gc.clearRect(0, 0, sizeX, sizeY);
   }
-  
+
 }
