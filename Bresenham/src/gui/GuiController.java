@@ -1,6 +1,5 @@
 package gui;
 
-import factories.DialogFactory;
 import factories.GreyScaleFactory;
 import gui.grid.GridBuilder;
 import javafx.beans.value.ChangeListener;
@@ -13,6 +12,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
+import javafx.stage.WindowEvent;
 import algorithm.DummyAlgoithm;
 
 public class GuiController {
@@ -55,7 +55,7 @@ public class GuiController {
     this.guiView.mbZMinus.setOnAction(new ZoomOutHandler());
     this.guiView.miAexamplLine.setOnAction(new SetExampleLineHandler());
     this.guiView.miClear.setOnAction(new ClearHandler());
-
+   this.guiView.setCloseEvent(new CloseWindowEventHandler());
     InputMask im = new InputMask();
     im.run();
     im.showAndWait();
@@ -369,7 +369,15 @@ public class GuiController {
     buildGrid();
     centerGrid();
   }
+  class CloseWindowEventHandler implements EventHandler<WindowEvent>{
 
+	@Override
+	public void handle(WindowEvent arg0) {
+		System.exit(1);
+		
+	}
+	  
+  }
 
   class SetBresenhamHandler implements EventHandler<ActionEvent> {
 
@@ -489,8 +497,7 @@ public class GuiController {
             endY = gridBuilder.getPixel((int) event.getX(), (int) event.getY()).getyInMap();
 
           } catch (Exception e) {
-            DialogFactory.ErrorDialog("Error", "Drag wurde festgestellt",
-                "Strukturen werden durch 2 Klicks erstellt");
+           System.out.println(e);
             return;
           }
 
@@ -541,9 +548,8 @@ public class GuiController {
             System.out.println("BeginY: " + beginY);
 
           } catch (Exception e) {
-            DialogFactory.ErrorDialog("Error",
-                "Drag wurde festgestellt, Strukturen werden durch 2 Klicks erstellt",
-                "Oder es wurde auf den Rand eines Pixels gedrückt!");
+              System.out.println(e);
+
           }
           guiView.status.setText("Kick für Fertigstellen");
         }
