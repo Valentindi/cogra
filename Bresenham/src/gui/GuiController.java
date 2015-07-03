@@ -178,10 +178,54 @@ public class GuiController {
         bresline(beginXorg, beginYorg, endXorg - 1, endYorg - 1, Color.BLACK);
         break;
       case "vereinfachterBresenham":
-        bresline(beginXorg, beginYorg, endXorg - 1, endYorg - 1, Color.BLACK);
+        lineadvance(beginXorg, beginYorg, endXorg - 1, endYorg - 1, Color.BLACK);
         break;
 
     }
+  }
+  /**
+   * 
+   * Vorbereitung des Antialiasing Algo
+   * @param x0
+   * @param y0
+   * @param xn
+   * @param yn
+   * @param black
+   */
+  private void lineadvance(int x0, int y0, int xn, int yn, Color black) {
+	  
+	  int dx = xn - x0;
+	  int dy = yn - y0;
+	  
+	  if(Math.abs(dx) >= Math.abs(dy)){
+		  if(yn >= y0){
+			  if(xn >= x0){
+				  wuLine(x0, y0, xn, dx, dy, false);
+			  }else{
+				  wuLine(x0, y0, xn, -dx, dy, true);
+			  }
+		  }else{
+			  if(xn >= x0){
+				  wuLine(xn, yn, x0, dx, -dy, true);
+			  }else{
+				  wuLine(xn, yn, x0, -dx, -dy, false);
+			  }
+		  }
+	  }else{
+		  if(xn >= x0){
+			  if(yn >= y0){
+				  wuLineY(x0, y0, xn, dx, dy, false);
+			  }else{
+				  wuLineY(x0, y0, xn, dx, -dy, true);
+			  }
+		  }else{
+			  if(yn >= y0){
+				  wuLineY(xn, yn, x0, -dx, dy, true);
+			  }else{
+				  wuLineY(xn, yn, x0, -dx, -dy, false);
+			  }
+		  }
+	  }
   }
 
 
@@ -204,14 +248,10 @@ public class GuiController {
     if (abs(dx) >= abs(dy)) {
       System.out.println("Anstieg  -45 .. 0 .. +45");
       if (x0 > xn) {
-        bresline(xn, yn, x0, y0, Color.BLACK);
-
+    	bresline(xn, yn, x0, y0, Color.BLACK); 
+        
       } else {
-        if (activeAlgorithm == "Bresenham") {
-          bres1(x0, y0, xn, dx, dy, false);
-        } else {
-          wuLine(x0, y0, xn, dx, dy, false);
-        }
+         bres1(x0, y0, xn, dx, dy, false);
       }
 
     } else {
@@ -220,16 +260,13 @@ public class GuiController {
         bresline(xn, yn, x0, y0, Color.BLACK);
 
       } else {
-        if (activeAlgorithm == "Bresenham") {
-          bres1(y0, x0, yn, dy, dx, true);
-        } else {
-          wuLine(y0, x0, yn, dy, dx, true);
+    	  bres1(y0, x0, yn, dy, dx, true);
+        
 
         }
       }
     }
 
-  }
 
   /**
    * Ausf�hrung des Bresline-Algorithmuses.
@@ -292,31 +329,48 @@ public class GuiController {
     buildGrid();
   }
 
-  private void wuLine(int x0, int y0, int xn, int dx, int dy, boolean sp) {
+  /**
+   * 
+   * Algo für Anstieg -45 .. 0 .. 45
+   * @param x0
+   * @param y0
+   * @param xn
+   * @param dx
+   * @param dy
+   * @param inv
+   */
+  private void wuLine(int x0, int y0, int xn, int dx, int dy, boolean inv) {
     int x = x0;
     int y = y0;
     double d = 0;
     double incrd = 1 - (((double) dy) / ((double) dx));
     System.out
-        .println("Wu: " + x0 + " : " + y0 + " : " + xn + " : " + dx + " : " + dy + " : " + sp);
-
-    gridBuilder.setPixel(x, y, GreyScaleFactory.getGreyScale(0));
+        .println("Wu: " + x0 + " : " + y0 + " : " + xn + " : " + dx + " : " + dy + " : " + inv);
+    
+  	 gridBuilder.setPixel(x, y, GreyScaleFactory.getGreyScale(0));
 
     for (int i = 0; i < dx; i++) {
-      x++;
+      if(!inv){
+    	  x++;
+      }else{
+    	  x--;
+      }
       y++;
       d = d + incrd;
       gridBuilder.setPixel(x, y, GreyScaleFactory.getGreyScale(abs(d)));
+      
       if (d <= 0) {
-
-        gridBuilder.setPixel(x, y + 1, GreyScaleFactory.getGreyScale(1 - abs(d)));
+    	  
+    	gridBuilder.setPixel(x, y + 1, GreyScaleFactory.getGreyScale(1 - abs(d)));
+    	   
 
       } else {
         y--;
         d = d - 1;
-
+        
         gridBuilder.setPixel(x, y, GreyScaleFactory.getGreyScale(abs(d)));
-
+ 	  
+       
       }
 
     }
@@ -324,6 +378,56 @@ public class GuiController {
     buildGrid();
 
   }
+  
+  /**
+   * 
+   * Algo für Anstieg -45 .. 90 .. 45
+   * @param x0
+   * @param y0
+   * @param xn
+   * @param dx
+   * @param dy
+   * @param inv
+   */
+  private void wuLineY(int x0, int y0, int xn, int dx, int dy, boolean inv) {
+	    int x = x0;
+	    int y = y0;
+	    double d = 0;
+	    double incrd = 1 - (((double) dx) / ((double) dy));
+	    System.out
+	        .println("Wu: " + x0 + " : " + y0 + " : " + xn + " : " + dx + " : " + dy + " : " + inv);
+	    
+	  	 gridBuilder.setPixel(x, y, GreyScaleFactory.getGreyScale(0));
+
+	    for (int i = 0; i < dy; i++) {
+	      if(!inv){
+	    	  y++;
+	      }else{
+	    	  y--;
+	      }
+	      x++;
+	      d = d + incrd;
+	      gridBuilder.setPixel(x, y, GreyScaleFactory.getGreyScale(abs(d)));
+	      
+	      if (d <= 0) {
+	    	  
+	    	gridBuilder.setPixel(x + 1, y, GreyScaleFactory.getGreyScale(1 - abs(d)));
+	    	   
+
+	      } else {
+	    	  x--;
+	    	  d = d - 1;
+	        
+	    	  gridBuilder.setPixel(x, y, GreyScaleFactory.getGreyScale(abs(d)));
+	 	  
+	       
+	      }
+
+	    }
+
+	    buildGrid();
+
+	  }
 
   /**
    * Gibt Positiven wert zur�ck
