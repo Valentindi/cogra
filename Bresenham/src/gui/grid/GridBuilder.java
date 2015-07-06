@@ -85,8 +85,11 @@ public class GridBuilder extends Pane {
 
   private void updateSavedPixel(int pixelSize) {
 
-    for (Pixel pixel : savedPixel) {
-      pixel.setSize(pixelSize);
+    for (int i = 0; i < savedPixel.size(); i++) {
+      savedPixel.get(i).setSize(pixelSize);
+      
+      if( savedPixel.get(i).getColor().getBlue() > 200)
+        savedPixel.remove(i);
     }
 
   }

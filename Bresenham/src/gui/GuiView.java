@@ -35,7 +35,8 @@ public class GuiView {
 	Menu menuZoom = new Menu("Zoom");
 	MenuItem miBeenden = new MenuItem("Beenden");
 	MenuItem miClear = new MenuItem("Clear");
-
+	MenuItem miMuster = new MenuItem("Muster");
+	    
 	RadioMenuItem miShowLine = new RadioMenuItem("Hilfslinie anzeigen");
 	RadioMenuItem miADummy = new RadioMenuItem("Dummy");
 	RadioMenuItem miABresenham = new RadioMenuItem(
@@ -54,7 +55,7 @@ public class GuiView {
 	final SplitPane topSP = new SplitPane();
 
 	public Label status = new Label(
-			"Auf Raster Klicken um Startpunkt zu wÃ¤hlen");
+			"Auf Raster Klicken um Startpunkt zu wählen");
 	Button mbZPlus = new Button("Zoom +");
 	Button mbZMinus = new Button("Zoom -");
 
@@ -94,7 +95,7 @@ public class GuiView {
 			}
 		});
 		
-		menuDatei.getItems().addAll(miShowLine, miClear, miBeenden);
+		menuDatei.getItems().addAll(miShowLine, miClear, miBeenden, miMuster);
 		menuAlgorithmen.getItems().addAll(/* miADummy, */miABresenham,
 				miAvereinfB,
 				/* miAexamplLine, */mSeperator);
